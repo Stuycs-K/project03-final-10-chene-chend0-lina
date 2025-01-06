@@ -18,10 +18,10 @@ Expanded description including how much time was spent on task.
 ### 2024-01-03 - Brief description
 Expanded description including how much time was spent on task.
 
-## Player 3
+## Abigail Lin
 
-### 2024-01-02 - Brief description
-Expanded description including how much time was spent on task.
+### 2025-01-06 - Created linked list files, added function headers.
+Created card.c, card.h, and deck.c. Researched and referenced to past labs to create card.h headers and struct for card_node.
 
 ### 2024-01-03 - Brief description
 Expanded description including how much time was spent on task.
