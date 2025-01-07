@@ -21,7 +21,7 @@ Expanded description including how much time was spent on task.
 ## Abigail Lin
 
 ### 2025-01-06 - Created linked list files, added function headers.
-Created card.c, card.h, and deck.c. Researched and referenced to past labs to create card.h headers and struct for card_node.
+Created card.c, card.h, and deck.c. Researched and referenced to past labs to create card.h headers and struct for card_node. Spent the class period.
 
-### 2024-01-03 - Brief description
-Expanded description including how much time was spent on task.
+### 2025-01-06 - Working on implementing functions in card.h.
+Implemented createCard, createDeck.
