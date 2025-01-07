@@ -2,5 +2,5 @@
 
 int main(){
     struct card_node* deck = NULL;
-    
+
 }
