@@ -26,3 +26,17 @@ void createDeck(struct card_node *deck){
         }
     }
 }
+
+void printCard(struct card_node *card){
+    if (card){
+        printf("%s of %s\n",faces[card->face],suits[card->face]);
+    }
+}
+
+void printDeck(struct card_node *card){
+    struct card_node *current = deck;
+    while (current){
+        printCard(current);
+        current = current->next;
+    }
+}

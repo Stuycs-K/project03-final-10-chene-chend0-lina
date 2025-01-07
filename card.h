@@ -19,6 +19,9 @@ struct card_node{
 // faces array
 char *faces[] = {"Ace","2","3","4","5","6","7","8","9","10","Jack","Queen","King"};
 
+// suits array
+char *suits[] = {"Hearts, Diamonds, Clubs, Spades"};
+
 void createDeck(struct card_node *deck);
 void printCard(struct card_node *card);
 void printDeck(struct card_node *card);
