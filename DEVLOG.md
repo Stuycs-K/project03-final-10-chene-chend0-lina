@@ -13,7 +13,8 @@ Expanded description including how much time was spent on task.
 ## Player 2 -- David Chen
 
 ### 2024-01-06 - Beginning layouts
-Copied group Google Doc (for proposals), began laying out main processes.
+- Copied group Google Doc (for proposals), began laying out main processes.
+- Wrote pseudo-pseudocode outlines for client/server interaction at home.
 
 ### 2024-01-03 - Brief description
 Expanded description including how much time was spent on task.
