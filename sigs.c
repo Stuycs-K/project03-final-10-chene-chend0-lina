@@ -8,6 +8,7 @@
 
 
 void setup_sighandler() {
+    struct sigaction exit;
     struct sigaction timeout;
     timeout.sa_handler = sigalrm_handler;
     timeout.sa_flags = 0;
