@@ -47,10 +47,6 @@ int fetch(char player_cards[], char dealer_cards[], int *winner) {
 	// winner is 0 for no winner, -1 for dealer, 1 for player 1
 }
 
-enum Move {
-	HIT,
-	STAND
-}
 enum Move read_move() {
 	// reads move
 	return HIT;
@@ -77,10 +73,10 @@ void logs() {
 	printf("<effectively cats the results file... tempted to actually just cat it>\n");
 }
 
-void client(int in, int out) {
-	FILE *in = fdopen(in, "r");
-	FILE *out = fdopen(out, "w");
-	printf("Clienting yes %d %d\n", in, out);
+void client(int in_fd, int out_fd) {
+	FILE *in = fdopen(in_fd, "r");
+	FILE *out = fdopen(out_fd, "w");
+	printf("Clienting yes %d %d\n", in_fd, out_fd);
 	displayIntro();
 	while (1) {
 		switch (readMainMenu()) {
