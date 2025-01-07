@@ -1,19 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <errno.h>
 
-void client(int in, int out) {
-	printf("Clienting yes %d %d\n", in, out);
-}
-void server(int in, int out) {
-	printf("Servering yes %d %d\n", in, out);
-}
-
-void fatal(const char *title) {
-	perror(title);
-	exit(errno);
-}
+#include "client.h"
+#include "server.h"
+#include "util.h"
 
 int main(void) {
 	int child_pid;
