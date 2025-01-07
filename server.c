@@ -2,6 +2,28 @@
 #include <string.h>
 #include "server.h"
 
+int main() {
+	int to_client;
+	int from_client;
+	while (1) {
+		from_client = server_setup();
+		int pid = fork();
+		if (pid == 0) {
+			int to_client;
+			server_handshake(&to_client, from_client);
+			play();
+		}
+	}
+}
+
+void play() {
+	//shuffle card
+	//select card
+	//send card to player
+	//wait for play response
+	//adds next player
+	
+}
 void open_log() {
 	// probably match to file.h
 }
