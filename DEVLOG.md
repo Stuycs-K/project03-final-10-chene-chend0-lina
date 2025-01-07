@@ -17,10 +17,11 @@ Began implementing sighandler for SIGALRM(3 minutes)
 ### 2024-01-03 - Brief description
 Expanded description including how much time was spent on task.
 
-## Player 2
+## Player 2 -- David Chen
 
-### 2024-01-02 - Brief description
-Expanded description including how much time was spent on task.
+### 2024-01-06 - Beginning layouts
+- Copied group Google Doc (for proposals), began laying out main processes.
+- Wrote pseudo-pseudocode outlines for client/server interaction at home.
 
 ### 2024-01-03 - Brief description
 Expanded description including how much time was spent on task.
@@ -32,6 +33,3 @@ Created card.c, card.h, and deck.c. Researched and referenced to past labs to cr
 
 ### 2025-01-06 - Working on implementing functions in card.h.
 Implemented createCard, createDeck, printCard and printDeck. Updated card.h to include an array for the suits. Spent around 40 minutes.
-
-### 2024-01-03 - Brief description
-Expanded description including how much time was spent on task.
