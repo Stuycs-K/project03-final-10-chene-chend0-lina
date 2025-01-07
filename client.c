@@ -6,6 +6,7 @@ void displayIntro() {
 }
 
 enum Action {
+	NONE,
 	PLAY,
 	LOGS,
 	QUIT
@@ -14,22 +15,26 @@ enum Action {
 enum Action readMainMenu() {
 	char **ptr;
 	int size;
-	while (1) {
+	enum Action ret = NONE;
+	while (ret == NONE) {
 		printf("\n\n(1) Play\t(2) View logs\t(3) Quit: ");
 		fflush(stdout);
 		ptr = NULL;
 		getline(ptr, &size, stdin);
 		switch (*ptr[0]) {
 			case '1':
-				return PLAY;
+				ret = PLAY;
+				break;
 			case '2':
-				return LOGS;
+				ret = LOGS;
+				break;
 			case '3':
-				return QUIT;
+				ret = QUIT;
+				break;
 			default:
 				printf("Invalid input!\n");
-				free(ptr);
 		}
+		free(ptr);
 	}
 
 }
