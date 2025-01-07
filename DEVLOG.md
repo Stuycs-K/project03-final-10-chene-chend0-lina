@@ -32,6 +32,3 @@ Created card.c, card.h, and deck.c. Researched and referenced to past labs to cr
 
 ### 2025-01-06 - Working on implementing functions in card.h.
 Implemented createCard, createDeck, printCard and printDeck. Updated card.h to include an array for the suits. Spent around 40 minutes.
-
-### 2024-01-03 - Brief description
-Expanded description including how much time was spent on task.
