@@ -11,7 +11,8 @@ int main() {
 		int pid = fork();
 		if (pid == 0) {
 			int to_client;
-			server_handshake(&to_client, from_client);
+			int client_pid;
+			server_handshake(&to_client, from_client, &client_pid);
 			play();
 		}
 	}
@@ -20,7 +21,7 @@ int main() {
 void play(int to_client, int from_client) {
 	struct card_node * deck;
 	createDeck(deck);
-	
+
 	//shuffle card
 	//select card
 	//send card to player

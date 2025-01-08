@@ -28,14 +28,15 @@ int server_setup() {
   return from_client;
 }
 
-int server_handshake(int *to_client, int from_client) {
+int server_handshake(int *to_client, int from_client, int * client_pid) {
   char client_pipe[256];
   if (read(from_client, client_pipe, sizeof(client_pipe)) <= 0) {
     perror("error reading client pipe name");
     unlink(WKP);
     exit(1);
   }
- 
+
+   *client_pid = atoi(client_pipe); 
 
   *to_client = open(client_pipe, O_WRONLY);
   if (*to_client == -1) {
@@ -55,6 +56,7 @@ int server_handshake(int *to_client, int from_client) {
     close(*to_client);
     exit(1);
   }
+    return from_client;
 }
 int client_handshake(int *to_server) {
   char private_pipe[256];
@@ -100,4 +102,6 @@ int client_handshake(int *to_server) {
     close(private_fd);
     exit(1);
   }
+  unlink(private_pipe);
+  return private_fd;
 }
