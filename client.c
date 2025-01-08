@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
+#include "card.h"
 #include "client.h"
 #include "util.h"
 
@@ -42,14 +43,13 @@ enum Action readMainMenu() {
 	return ret;
 }
 
-void print_hand(const char *name, char cards[], size_t n) {
-	printf("%s: ", name);
-	for (size_t i = 0; i < n; i++)
-		printf("%c ", cards[i]);
-	printf("\n");
+void print_hand(const char *name, struct card_node *card) {
+	printf("%s:\n", name);
+	printDeck(card);
+	printf("=====\n");
 }
 
-int fetch(char player_cards[], char dealer_cards[], int *winner) {
+int fetch(struct card_node **p_hand, struct card_node **d_hand, int *winner) {
 	// reads game state from server side
 	// returns 1 when is player's turn
 	// winner is 0 for no winner, -1 for dealer, 1 for player 1
@@ -88,14 +88,14 @@ void send_move(enum Move m) {
 
 void play() {
 	// char as temporary type
-	char player_cards[3] = {'?', '?', '?'};
-	char dealer_cards[3] = {'?', '?', '?'};
+	struct card_node *player_hand = createCard(0, 0, NULL);
+	struct card_node *dealer_hand = createCard(0, 0, player_hand);
 	int winner = 0;
 	// display
 	while (!winner) {
-		print_hand("Dealer", dealer_cards, 2);
-		print_hand("Player", player_cards, 2);
-		if (fetch(player_cards, dealer_cards, &winner) == 1)
+		print_hand("Dealer", dealer_hand);
+		print_hand("Player", player_hand);
+		if (fetch(&player_hand, &dealer_hand, &winner) == 1)
 			send_move(read_move());
 	}
 }
@@ -105,9 +105,10 @@ void logs() {
 }
 
 void client(int in_fd, int out_fd) {
+	/*
 	FILE *in = fdopen(in_fd, "r");
 	FILE *out = fdopen(out_fd, "w");
-	printf("Clienting yes %d %d\n", in_fd, out_fd);
+	*/
 	displayIntro();
 	while (1) {
 		switch (readMainMenu()) {

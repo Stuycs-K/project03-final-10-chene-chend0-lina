@@ -1,5 +1,12 @@
 #include "card.h"
 
+
+// faces array
+const char *faces[] = {"Ace","2","3","4","5","6","7","8","9","10","Jack","Queen","King"};
+
+// suits array
+const char *suits[] = {"Hearts", "Diamonds", "Clubs", "Spades"};
+
 // create individual card
 struct card_node* createCard(int face, int suit, struct card_node *next){
     struct card_node *newCard = (struct card_node*)malloc(sizeof(struct card_node));
@@ -34,7 +41,7 @@ void printCard(struct card_node *card){
 }
 
 void printDeck(struct card_node *card){
-    struct card_node *current = deck;
+    struct card_node *current = card;
     while (current){
         printCard(current);
         current = current->next;
