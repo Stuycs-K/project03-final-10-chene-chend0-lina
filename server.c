@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "server.h"
-
+/*
 void open_log() {
 	// probably match to file.h
 }
@@ -26,20 +26,24 @@ enum Move read_move() {
 int calculate_state(char player_cards[], char dealer_cards[]) {
 	return 0;
 }
-
+*/
 void server(int in_fd, int out_fd) {
 	FILE *in = fdopen(in_fd, "r");
 	FILE *out = fdopen(out_fd, "w");
 	printf("Servering yes %d %d\n", in_fd, out_fd);
 	// awaits INIT
-	char **ptr = NULL;
-	int len;
+	char *ptr = NULL;
+	size_t len;
 	do {
+		printf("got loop!\n");
 		free(ptr);
+		printf("got going!\n");
 		ptr = NULL;
-		getline(ptr, &len, in);
+		getline(&ptr, &len, in);
+		printf("got line! '%s'\n", *ptr);
 	} while (!strcmp(*ptr, "INIT"));
 	// opens log file to prevent duplicate servers
+	/*
 	open_log();
 	int winner = 0;
 	char cards[52];
@@ -66,4 +70,5 @@ void server(int in_fd, int out_fd) {
 	write_result("somebody won probably");
 	// releases semaphore
 	close_log();
+	*/
 }

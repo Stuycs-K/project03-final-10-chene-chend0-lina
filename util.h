@@ -5,5 +5,5 @@ void fatal(const char *title);
 enum Move {
 	HIT,
 	STAND
-}
+};
 #endif

@@ -1,5 +1,8 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <errno.h>
 #include "client.h"
+#include "util.h"
 
 void displayIntro() {
 	printf("\n\n****\nWIP\n****\n\n");
@@ -13,15 +16,21 @@ enum Action {
 };
 
 enum Action readMainMenu() {
-	char **ptr;
-	int size;
+	char *ptr = NULL;
+	size_t size;
 	enum Action ret = NONE;
 	while (ret == NONE) {
 		printf("\n\n(1) Play\t(2) View logs\t(3) Quit: ");
 		fflush(stdout);
 		ptr = NULL;
-		getline(ptr, &size, stdin);
-		switch (*ptr[0]) {
+		if (getline(&ptr, &size, stdin) < 0) {
+			if (errno == 0) {
+				fprintf(stderr, "client (stdin): End of file\n");
+				exit(1);
+			}
+			fatal("client (stdin)");
+		}
+		switch (ptr[0]) {
 			case '1':
 				ret = PLAY;
 				break;
@@ -36,7 +45,8 @@ enum Action readMainMenu() {
 		}
 		free(ptr);
 	}
-
+	printf("returning %d\n", ret);
+	return ret;
 }
 
 void print_hand(const char *name, char cards[], size_t n) {
@@ -50,6 +60,7 @@ int fetch(char player_cards[], char dealer_cards[], int *winner) {
 	// reads game state from server side
 	// returns 1 when is player's turn
 	// winner is 0 for no winner, -1 for dealer, 1 for player 1
+	return 1;
 }
 
 enum Move read_move() {
