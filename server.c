@@ -13,13 +13,17 @@ int main() {
 			int to_client;
 			int client_pid;
 			server_handshake(&to_client, from_client, &client_pid);
-			play();
+			while(1) {
+				play();
+			}
 		}
 	}
 }
 
 void play(int to_client, int client_pid) {
 	char client_pipe[20];
+	int card_value = 0;
+	int game_over = 0;
 	sprintf(client_pipe, "%d", client_pid);
 	strcat(client_pipe, "_fd");
 	int from_client = open(client_pipe, O_RDONLY);
@@ -27,10 +31,30 @@ void play(int to_client, int client_pid) {
 	createDeck(deck);
 	//shuffle card
 	struct card_node * current = deck;
-	while (current != NULL) {
+	int player_total = current->face;
+	current = current->next;
+	player_total += current->face;
+	printf("Player's total card sum");
+	current->next;
+	int dealer_total = current->face;
+	printf("Dealer's face up card: %d\n", dealer_total);
+	current->next;
+	dealer_total += current->next; //dealers second card
+	while (current != NULL && !game_over) {
 		if (write(to_client, current, sizeof(card_node)) == -1) {
 			perror("error writing card to deck");
+			exit(1);
 		}
+		char move;
+		if (read(from_client, &move, sizeof(move) <= 0)) {
+			perror("error reading player move to subserver");
+		}
+		if (move == "h") {
+			player_total += current->face;
+			printf("Current total: %d\n", player_total);
+		}
+		if (player_total)
+
 	}
 	//select card
 	//send card to player
