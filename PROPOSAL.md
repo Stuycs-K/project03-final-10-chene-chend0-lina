@@ -53,6 +53,19 @@ and child processes.
   dealer's face-up card).
 - Player tells the dealer their choice to either hit or stand through another pipe.
 
+### Protocol
+Client reads an int(32) and performs a specific action:
+```
+-10: read player card
+-11: read dealer card
+-12: send move
+-13: player wins
+-14: player loses
+```
+For actions -10 & -11, client reads a SINGLE struct card.
+For action -12, client sends a move ID.
+For actions -13 & -14, client prints out game results, exits.
+
 ## Processes
 
 Used to differentiate between dealer and player.
