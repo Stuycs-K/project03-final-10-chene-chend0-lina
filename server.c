@@ -18,13 +18,25 @@ int main() {
 	}
 }
 
-void play(int to_client, int from_client) {
+void play(int to_client, int client_pid) {
+	char client_pipe[20];
+	sprintf(client_pipe, "%d", client_pid);
+	strcat(client_pipe, "_fd");
+	int from_client = open(client_pipe, O_RDONLY);
 	struct card_node * deck;
 	createDeck(deck);
-
 	//shuffle card
+	struct card_node * current = deck;
+	while (current != NULL) {
+		if (write(to_client, current, sizeof(card_node)) == -1) {
+			perror("error writing card to deck");
+		}
+	}
 	//select card
 	//send card to player
+	
+	open(to_client);
+	write()
 	//wait for play response
 	//adds next player
 
