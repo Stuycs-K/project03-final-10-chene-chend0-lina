@@ -69,7 +69,43 @@ struct card_node * random_card(struct card_node *card){
   }
   int end = rand() % count;
   for (int i = 0; i < end; i++){
-    card=  card->next;
+    card = card->next;
   }
   return card;
+}
+
+struct card_node * remove_card(struct card_node *deck, int face, int suit){
+  struct card_node *current = deck;
+  struct card_node *prev = NULL;
+  while (current){
+    if (current->face == face && current->suit == suit){
+      if (prev){
+        prev->next = current->next;
+      }
+      else {
+        deck = current->next;
+      }
+      free(current);
+      return deck;
+    }
+    prev = current;
+    current = current->next;
+  }
+  return deck;
+}
+
+void free_node(struct card_node *card){
+  if (card){
+    free(card);
+  }
+}
+
+struct card_node * free_list(struct card_node *deck){
+  struct card_node *current = deck;
+  while (current){
+    struct card_node *next = current->next;
+    free_node(current);
+    current = next;
+  }
+  return NULL;
 }
