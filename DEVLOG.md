@@ -26,10 +26,13 @@ Expanded description including how much time was spent on task.
 ### 2024-01-03 - Brief description
 Expanded description including how much time was spent on task.
 
-## Abigail Lin
+## Player 3 -- Abigail Lin
 
 ### 2025-01-06 - Created linked list files, added function headers.
 Created card.c, card.h, and deck.c. Researched and referenced to past labs to create card.h headers and struct for card_node. Spent the class period.
 
 ### 2025-01-06 - Working on implementing functions in card.h.
 Implemented createCard, createDeck, printCard and printDeck. Updated card.h to include an array for the suits. Spent around 40 minutes.
+
+### 2025-01-07 - Finishing functions in card, and adding function headers for deck and hand. Starting on the functions.
+In class, implmented insert, remove and random for card (class 35~ minutes). At home, finished up remove and free functions for card. Created a new structure hand and deck function headers. (~40 minutes)
