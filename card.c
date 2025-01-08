@@ -11,25 +11,25 @@ struct card_node* createCard(int face, int suit, struct card_node *next){
 
 // create a new deck of cards
 void createDeck(struct card_node *deck){
-    struct card_node *current = deck;
-    for (int suit = 0; suit < NUM_SUITS; suit++){
-        for (int face = 0; face < NUM_FACES; face++){
-            struct card_node *newCard = createCard(face, suit, NULL);
-            if (current == NULL){
-                deck = newCard;
-                current = deck;
-            }
-            else {
-                current->next = newCard;
-                current = newCard;
-            }
-        }
-    }
+  struct card_node *current = deck;
+  for (int suit = 0; suit < NUM_SUITS; suit++){
+      for (int face = 0; face < NUM_FACES; face++){
+          struct card_node *newCard = createCard(face, suit, NULL);
+          if (current == NULL){
+              deck = newCard;
+              current = deck;
+          }
+          else {
+              current->next = newCard;
+              current = newCard;
+          }
+      }
+  }
 }
 
 void printCard(struct card_node *card){
     if (card){
-        printf("%s of %s\n",faces[card->face],suits[card->face]);
+        printf("%s of %s\n",faces[card->face],suits[card->suit]);
     }
 }
 
@@ -47,16 +47,6 @@ struct card_node* insert(struct card_node *deck, int face, int suit){
     return deck;
   }
   return newCard;
-}
-
-struct card_node * find_node(struct card_node *card, int face, int suit){
-  while (card != NULL){
-    if (card->face == face && card->suit == suit){
-      return card;
-    }
-    card = card->next;
-  }
-  return NULL;
 }
 
 struct card_node * random_card(struct card_node *card){
@@ -108,4 +98,34 @@ struct card_node * free_list(struct card_node *deck){
     current = next;
   }
   return NULL;
+}
+
+struct card_node * find_node(struct card_node *card, int face, int suit){
+  while (card != NULL){
+    if (card->face == face && card->suit == suit){
+      return card;
+    }
+    card = card->next;
+  }
+  return NULL;
+}
+
+int calcHand(struct card_node *deck){
+  int total = 0;
+  int aceCount = 0;
+  struct card_node *current = deck;
+  while (current){
+    // not ace, but keeps track
+    if (current->face == 0){
+      aceCount++;
+    }
+    else {
+      if (current->face > 9){
+        total += 10;
+      }
+      else {
+        total += current->face + 1;
+      }
+    }
+  }
 }

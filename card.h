@@ -21,7 +21,7 @@ struct card_node{
 char *faces[] = {"Ace","2","3","4","5","6","7","8","9","10","Jack","Queen","King"};
 
 // suits array
-char *suits[] = {"Hearts, Diamonds, Clubs, Spades"};
+char *suits[] = {"Hearts", "Diamonds", "Clubs", "Spades"};
 
 // card management
 void createDeck(struct card_node *deck);
@@ -34,7 +34,14 @@ struct card_node * remove_card(struct card_node *deck, int face, int suit);
 void free_node(struct card_node *card);
 struct card_node * free_list(struct card_node *deck);
 
-// needs to be implemented
+// include ace function when calculating hand
+int calcHand(struct card_node *deck);
+
+// struct hand * createHand();
+// void addTohand(struct hand *hand, struct card_node *card);
+// int calcHand(struct hand *hand);
+// void printHand(struct hand *hand);
+// void freeHand(struct hand *hand);
 
 
 // include add random number of decks function
