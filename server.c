@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "server.h"
+#include "card.h"
 
 int main() {
 	int to_client;
@@ -16,13 +17,16 @@ int main() {
 	}
 }
 
-void play() {
+void play(int to_client, int from_client) {
+	struct card_node * deck;
+	createDeck(deck);
+	
 	//shuffle card
 	//select card
 	//send card to player
 	//wait for play response
 	//adds next player
-	
+
 }
 void open_log() {
 	// probably match to file.h

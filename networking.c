@@ -56,3 +56,48 @@ int server_handshake(int *to_client, int from_client) {
     exit(1);
   }
 }
+int client_handshake(int *to_server) {
+  char private_pipe[256];
+  sprintf(private_pipe, "%d", getpid());
+
+  if (mkfifo(private_pipe, 0666) == -1) {
+    perror("error creating private pipe");
+    exit(1);
+  }
+
+  *to_server = open(WKP, O_WRONLY);
+  if (*to_server == -1) {
+    perror("error connecting to server");
+    unlink(private_pipe);
+    exit(1);
+  }
+
+  if (write(*to_server, private_pipe, sizeof(private_pipe)) == -1) {
+    perror("error sending PP name");
+    unlink(private_pipe);
+    exit(1);
+  }
+
+  int private_fd = open(private_pipe, O_RDONLY);
+  if (private_fd == -1) {
+    perror("error opening PP");
+    unlink(private_pipe);
+    exit(1);
+  }
+
+  int server_num;
+  if (read(private_fd, &server_num, sizeof(server_num)) <= 0) {
+    perror("error reading from server");
+    unlink(private_pipe);
+    close(private_fd);
+    exit(1);
+  }
+
+  int ack = server_num + 1;
+  if (write(*to_server, &ack, sizeof(ack)) == -1) {
+    perror("error sending ack to server");
+    unlink(private_pipe);
+    close(private_fd);
+    exit(1);
+  }
+}
