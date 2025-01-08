@@ -34,18 +34,29 @@ void play(int to_client, int client_pid) {
 	int player_total = current->face;
 	current = current->next;
 	player_total += current->face;
-	printf("Player's total card sum\n");
-	current->next;
+	current = current->next;
 	int dealer_total = current->face;
+	int dealer_turn = -11;
+	write(to_client, &dealer_turn, sizeof(dealer_turn) ); // knows to read dealer's card;
 	if (write(to_client, &dealer_total, sizeof(dealer_total)) == -1) {
 		perror("error sending player face up card");
-	}
 	dealer_total += current->next; //dealers second card
 	//send player total;
 	if (write(to_client, &player_total, sizeof(player_total)) == -1) {
 		perror("error sending player player total");
 	}
+	int player_turn = -10;
+	write(to_client, &player_turn, sizeof(player_turn)); // know to read client's cards;
 	while (current != NULL && !game_over) {
+		if (player_total > 21) {
+			// printf("You've bust! Turn over\n");
+			game_over = 1;
+			
+			break;
+		}
+		if (player_total == 21) {
+			break;
+		}
 		if (write(to_client, current, sizeof(card_node)) == -1) {
 			perror("error writing card to deck\n");
 			exit(1);
@@ -74,9 +85,10 @@ void play(int to_client, int client_pid) {
 		}
 		current = current->next;
 	}
+	write(to_client, &dealer_turn, sizeof(dealer_turn)); // client expects to read dealers second card;
+	
 
-	write()
-	if (!game_over && )
+	if (!game_over &&  )
 	//select card
 	//send card to player
 	
