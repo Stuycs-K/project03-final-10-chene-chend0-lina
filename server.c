@@ -34,33 +34,53 @@ void play(int to_client, int client_pid) {
 	int player_total = current->face;
 	current = current->next;
 	player_total += current->face;
-	printf("Player's total card sum");
+	printf("Player's total card sum\n");
 	current->next;
 	int dealer_total = current->face;
-	printf("Dealer's face up card: %d\n", dealer_total);
-	current->next;
+	if (write(to_client, &dealer_total, sizeof(dealer_total)) == -1) {
+		perror("error sending player face up card");
+	}
 	dealer_total += current->next; //dealers second card
+	//send player total;
+	if (write(to_client, &player_total, sizeof(player_total)) == -1) {
+		perror("error sending player player total");
+	}
 	while (current != NULL && !game_over) {
 		if (write(to_client, current, sizeof(card_node)) == -1) {
-			perror("error writing card to deck");
+			perror("error writing card to deck\n");
 			exit(1);
 		}
 		char move;
+		
 		if (read(from_client, &move, sizeof(move) <= 0)) {
-			perror("error reading player move to subserver");
+			perror("error reading player move to subserver\n");
 		}
 		if (move == "h") {
 			player_total += current->face;
-			printf("Current total: %d\n", player_total);
+			// printf("Current total: %d\n", player_total);
 		}
-		if (player_total)
-
+		else if (move == "s") {
+			// printf("Player stands with total: %d\n", player_total);
+			break;
+		}
+		if (player_total == 21) {
+			break;
+		}
+		if (player_total > 21) {
+			// printf("You've bust! Turn over\n");
+			game_over = 1;
+			
+			break;
+		}
+		current = current->next;
 	}
+
+	write()
+	if (!game_over && )
 	//select card
 	//send card to player
 	
-	open(to_client);
-	write()
+
 	//wait for play response
 	//adds next player
 
