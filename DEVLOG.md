@@ -14,9 +14,15 @@ Implemented read function with using stat, finished log.c functions (10 minutes)
 Researched SIGALRM and sigaction and implemented function to set up signals in sigs.c/h (25 minutes)
 Began implementing sighandler for SIGALRM(3 minutes)
 
-### 2024-01-03 - Brief description
+### 2024-01-07 - Brief description
 Expanded description including how much time was spent on task.
+Disccused and implemented sigaction sighandler for SIGINT(5 minutes)
+Rediscussed and reorganized server/client structure and pipe structure. (10 minutes)
+Started writing custom handshake using prior lab and started forking server (15 minutes)
+Wrote outline for play (2 minutes)
 
+Added client handshake and modified to store pid and open a new upstream private pipe(15 minutes)
+Started implementing play by adding in card decks and writing and reading player moves, and also implemented game actions for the dealer, player, and processing user input. (35 minutes)
 ## Player 2 -- David Chen
 
 ### 2024-01-06 - Beginning layouts
