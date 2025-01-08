@@ -23,13 +23,7 @@ enum Action readMainMenu() {
 		printf("\n\n(1) Play\t(2) View logs\t(3) Quit: ");
 		fflush(stdout);
 		ptr = NULL;
-		if (getline(&ptr, &size, stdin) < 0) {
-			if (errno == 0) {
-				fprintf(stderr, "client (stdin): End of file\n");
-				exit(1);
-			}
-			fatal("client (stdin)");
-		}
+		safe_getline(&ptr, &size, stdin);
 		switch (ptr[0]) {
 			case '1':
 				ret = PLAY;
@@ -45,7 +39,6 @@ enum Action readMainMenu() {
 		}
 		free(ptr);
 	}
-	printf("returning %d\n", ret);
 	return ret;
 }
 
@@ -65,6 +58,28 @@ int fetch(char player_cards[], char dealer_cards[], int *winner) {
 
 enum Move read_move() {
 	// reads move
+	enum Move ret = NO_MOVE;
+	char * ptr;
+	size_t size;
+	while (ret == NO_MOVE) {
+		printf("(H)it or (S)tand: ");
+		fflush(stdout);
+		ptr = NULL;
+		safe_getline(&ptr, &size, stdin);
+		switch (ptr[0]) {
+			case 'H':
+			case 'h':
+				ret = HIT;
+				break;
+			case 'S':
+			case 's':
+				ret = STAND;
+				break;
+			default:
+				printf("Invalid input!\n");
+		}
+		free(ptr);
+	}
 	return HIT;
 }
 void send_move(enum Move m) {
