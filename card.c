@@ -71,7 +71,6 @@ void freeHand(struct card_node *hand){
 // utility functions
 void printCard(struct card_node *card){
   if (card){
-      printf("%s of %s\n",faces[card->face],suits[card->face]);
       printf("%s of %s\n",faces[card->face],suits[card->suit]);
   }
 }
@@ -82,39 +81,4 @@ void printCard(struct card_node *card){
 //     return deck;
 //   }
 //   return newCard;
-// }
-
-// struct card_node * random_card(struct card_node *card){
-//   if (card == NULL) return NULL;
-//   int count = 0;
-//   struct card_node * temp = card;
-//   while (temp != NULL){
-//     count++;
-//     temp = temp->next;
-//   }
-//   int end = rand() % count;
-//   for (int i = 0; i < end; i++){
-//     card = card->next;
-//   }
-//   return card;
-// }
-
-// struct card_node * remove_card(struct card_node *deck, int face, int suit){
-//   struct card_node *current = deck;
-//   struct card_node *prev = NULL;
-//   while (current){
-//     if (current->face == face && current->suit == suit){
-//       if (prev){
-//         prev->next = current->next;
-//       }
-//       else {
-//         deck = current->next;
-//       }
-//       free(current);
-//       return deck;
-//     }
-//     prev = current;
-//     current = current->next;
-//   }
-//   return deck;
 // }

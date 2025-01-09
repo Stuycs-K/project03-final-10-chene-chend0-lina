@@ -16,16 +16,50 @@ struct deck *createDeck(){
     return deck;
 }
 
-void shuffleDeck(struct deck * deck);
+// void shuffleDeck(struct deck * deck){
+//     if (!deck || deck->size <= 1){
+//         return;
+//     }
+//     struct card_node **cardArray = (struct card_node**)malloc(deck->size * sizeof(struct card_node *));
+//     for (int i = 0; i < size-1; i++){
+//         int j = i + rand() / ()
+//     }
+// }
 
-struct card_node * dealCard(struct deck * deck){
+struct card_node * dealRandomCard(struct deck * deck){
     if (!deck || !deck->cards) return NULL;
-    struct card_node *top = deck->cards;
-    deck->cards = top->next;
-    top->next = NULL;
-    deck->size = deck->size - 1;
-    return top;
+    // always has 52
+    struct card_node * temp = deck->cards;
+    int end = rand() % DECK_SIZE;
+    for (int i = 0; i < end; i++){
+        temp = temp->next;
+    }
+    // removes from deck 
+    struct card_node
+
+    temp->next = NULL;
+    return temp;
 }
+
+// struct card_node * remove_card(struct card_node *deck, int face, int suit){
+//   struct card_node *current = deck;
+//   struct card_node *prev = NULL;
+//   while (current){
+//     if (current->face == face && current->suit == suit){
+//       if (prev){
+//         prev->next = current->next;
+//       }
+//       else {
+//         deck = current->next;
+//       }
+//       free(current);
+//       return deck;
+//     }
+//     prev = current;
+//     current = current->next;
+//   }
+//   return deck;
+// }
 
 void freeDeck(struct deck * deck){
     if (!deck) return;

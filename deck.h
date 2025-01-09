@@ -12,8 +12,8 @@ struct deck{
 };
 
 struct deck * init(); // 4 decks
-void shuffleDeck(struct deck * deck);
-struct card_node * dealCard(struct deck * deck);
+// void shuffleDeck(struct deck * deck);
+struct card_node * dealRandomCard(struct deck * deck);
 void freeDeck(struct deck * deck);
 
 void printDeck(struct deck * deck);

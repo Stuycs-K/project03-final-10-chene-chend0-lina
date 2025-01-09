@@ -36,7 +36,6 @@ void freeHand(struct card_node *hand);
 void printCard(struct card_node *card);
 
 // struct card_node* insert(struct card_node *deck, int face, int suit);
-// struct card_node * random_card(struct card_node *deck);
 // struct card_node * remove_card(struct card_node *deck, int face, int suit);
 
 
