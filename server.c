@@ -31,22 +31,29 @@ void play(int to_client, int client_pid) {
 	createDeck(deck);
 	//shuffle card
 	struct card_node * current = deck;
-	int player_total = current->face;
-	current = current->next;
-	player_total += current->face;
-	current = current->next;
 	int dealer_total = current->face;
 	int dealer_turn = -11;
-	write(to_client, &dealer_turn, sizeof(dealer_turn) ); // knows to read dealer's card;
-	if (write(to_client, &dealer_total, sizeof(dealer_total)) == -1) {
-		perror("error sending player face up card");
-	dealer_total += current->next; //dealers second card
-	//send player total;
-	if (write(to_client, &player_total, sizeof(player_total)) == -1) {
-		perror("error sending player player total");
-	}
 	int player_turn = -10;
+	int make_move = -12;
+	write(to_client, &dealer_turn, sizeof(dealer_turn) ); // knows to read dealer's card;
+	if (write(to_client, current, sizeof(current)) == -1) {
+		perror("error sending player face up card");
+	}
+	current = current->next;
+	struct card_node * dealer_second = current;
+	dealer_total += current->face; //dealers second card
+	current = current->next;
+	int player_total = current->face;
 	write(to_client, &player_turn, sizeof(player_turn)); // know to read client's cards;
+	if (write(to_client, current, sizeof(current)) == -1) { // sends player first card;
+		perror("error sending player first card");
+	}
+	write(to_client, &player_turn, sizeof(player_turn));
+	current = current->next;
+	player_total += current->face;
+	if (write(to_client, current, sizeof(current)) == -1) { // sends player second card;
+		perror("error sending player second card");
+	}
 	while (current != NULL && !game_over) {
 		if (player_total > 21) {
 			// printf("You've bust! Turn over\n");
@@ -57,6 +64,7 @@ void play(int to_client, int client_pid) {
 		if (player_total == 21) {
 			break;
 		}
+		write(to_client, )
 		if (write(to_client, current, sizeof(card_node)) == -1) {
 			perror("error writing card to deck\n");
 			exit(1);
@@ -68,17 +76,16 @@ void play(int to_client, int client_pid) {
 		}
 		if (move == "h") {
 			player_total += current->face;
-			// printf("Current total: %d\n", player_total);
+			
 		}
 		else if (move == "s") {
-			// printf("Player stands with total: %d\n", player_total);
 			break;
 		}
 		if (player_total == 21) {
 			break;
 		}
 		if (player_total > 21) {
-			// printf("You've bust! Turn over\n");
+			
 			game_over = 1;
 			
 			break;
