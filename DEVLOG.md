@@ -45,3 +45,5 @@ In class, implmented insert, remove and random for card (class 35~ minutes). At 
 
 ### 2025-01-08 - Restructuring card.h
 In class, worked on testing/debugging current functions. Redirecting card.h to have more blackjack specific functions. (30 minutes in class)
+
+At home, continued to clean up card.h and deck.h's functions. Finished renaming the old ones in card.c. Started working on deck.c's functions, need to figure bug with dealt cards + find out how to shuffle, esp with multiple decks. (1.5 hr)
