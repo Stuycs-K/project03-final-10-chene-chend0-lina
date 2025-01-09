@@ -35,8 +35,17 @@ void play(int to_client, int client_pid) {
 	int dealer_turn = -11;
 	int player_turn = -10;
 	int make_move = -12;
+	int win_round = -13;
+	int lose_round = -14;
+	int tie_round = -15;
+	int p1_suit;
+	int p2_suit; // need to know how suits are implemented 
+	int player_blackjack;
+	int dealer_blackjack;
+	int d1_suit;
+	int d2_suit;
 	write(to_client, &dealer_turn, sizeof(dealer_turn) ); // knows to read dealer's card;
-	if (write(to_client, current, sizeof(current)) == -1) {
+	if (write(to_client, current, sizeof(struct card_node)) == -1) {
 		perror("error sending player face up card");
 	}
 	current = current->next;
@@ -45,14 +54,18 @@ void play(int to_client, int client_pid) {
 	current = current->next;
 	int player_total = current->face;
 	write(to_client, &player_turn, sizeof(player_turn)); // know to read client's cards;
-	if (write(to_client, current, sizeof(current)) == -1) { // sends player first card;
+	if (write(to_client, current, sizeof(struct card_node)) == -1) { // sends player first card;
 		perror("error sending player first card");
 	}
 	write(to_client, &player_turn, sizeof(player_turn));
 	current = current->next;
 	player_total += current->face;
-	if (write(to_client, current, sizeof(current)) == -1) { // sends player second card;
+	if (write(to_client, current, sizeof(struct card_node)) == -1) { // sends player second card;
 		perror("error sending player second card");
+	}
+	current = current->next;
+	if (player_total == 21) { // have to figure out a way to account for player suit blackjack;
+			break;
 	}
 	while (current != NULL && !game_over) {
 		if (player_total > 21) {
@@ -61,16 +74,15 @@ void play(int to_client, int client_pid) {
 			
 			break;
 		}
-		if (player_total == 21) {
-			break;
-		}
-		write(to_client, )
+		
+		write(to_client, &make_move, sizeof(make_move)); // client knows to read card and make move
+
 		if (write(to_client, current, sizeof(card_node)) == -1) {
 			perror("error writing card to deck\n");
 			exit(1);
 		}
+
 		char move;
-		
 		if (read(from_client, &move, sizeof(move) <= 0)) {
 			perror("error reading player move to subserver\n");
 		}
@@ -92,10 +104,33 @@ void play(int to_client, int client_pid) {
 		}
 		current = current->next;
 	}
-	write(to_client, &dealer_turn, sizeof(dealer_turn)); // client expects to read dealers second card;
-	
+	if (game_over) {
+		write(to_client, &lose_round, sizeof(lose_round));
+		return;
+	}
+	write(to_client, &dealer_turn, sizeof(dealer_turn)); //get ready to read dealers second card
+	write(to_client, dealer_second, sizeof(struct card_node)); // dealers second card;
 
-	if (!game_over &&  )
+	current = current->next;
+	while (dealer_total < 17 && current != NULL) {
+		dealer_total += current->face;
+		write(to_client, &dealer_turn, sizeof(dealer_turn)); // let client know to read card for dealer;
+		write(to_client, current, sizeof(struct card_node));
+		current = current->next;
+	}
+	
+	if (dealer_total > 21) {
+		write(to_client, &win_round, sizeof(win_round));
+		return;
+	}
+	else if (player_blackjack && dealer_blackjack) {
+		write(to_client, &tie_round, sizeof(tie_round));
+		return;
+	}
+	else if ()
+	
+	
+	
 	//select card
 	//send card to player
 	
