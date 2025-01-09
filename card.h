@@ -35,10 +35,10 @@ void freeHand(struct card_node *hand);
 // utility
 void printCard(struct card_node *card);
 
+// blackjack specific
+int isBlackjack(struct card_node *hand); // return 1 if ace + 10/face
+int isBust(struct card_node *hand); // return 1 if hand > 21
+
 // struct card_node* insert(struct card_node *deck, int face, int suit);
-// struct card_node * remove_card(struct card_node *deck, int face, int suit);
-
-
-// include add random number of decks function
 
 #endif

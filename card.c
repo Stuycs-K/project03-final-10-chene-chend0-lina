@@ -75,6 +75,26 @@ void printCard(struct card_node *card){
   }
 }
 
+int isBlackjack(struct card_node *hand){
+  if (!hand || !hand-> next) return 0;
+  struct card_node *one = hand;
+  struct card_node *two = hand->next;
+  if ( (first->face == 0 && second->face >= 9) || (second->face == 0 && first->face >= 9)){
+    return 1;
+  }
+  return 0;
+}
+
+int isBust(struct card_node *hand){
+  int score = calcHand(hand);
+  if (score > 21){
+    return 1;
+  }
+  else {
+    return 0;
+  }
+}
+
 // struct card_node* insert(struct card_node *deck, int face, int suit){
 //   struct card_node* newCard = createCard(face, suit, deck);
 //   if (newCard == NULL){
