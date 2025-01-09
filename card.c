@@ -9,6 +9,38 @@ struct card_node* createCard(int face, int suit, struct card_node *next){
     return newCard;
 }
 
+void freeCard(struct card_node *card){
+  if (card){
+    free(card);
+  }
+}
+
+int calcHand(struct card_node *hand){
+  int total = 0;
+  int aceCount = 0;
+  struct card_node *current = hand;
+  while (current){
+    // not ace, but keeps track
+    if (current->face == 0){
+      aceCount++;
+    }
+    else {
+      if (current->face > 9){
+        total += 10;
+      }
+      else {
+        total += current->face + 1;
+      }
+    }
+    current = current->next;
+  }
+  while (total < 21 && aceCount > 0){
+    total += 10;
+    aceCount--;
+  }
+  return total;
+}
+
 // create a new deck of cards
 void createDeck(struct card_node *deck){
   struct card_node *current = deck;
@@ -84,12 +116,6 @@ struct card_node * remove_card(struct card_node *deck, int face, int suit){
   return deck;
 }
 
-void free_node(struct card_node *card){
-  if (card){
-    free(card);
-  }
-}
-
 struct card_node * free_list(struct card_node *deck){
   struct card_node *current = deck;
   while (current){
@@ -108,24 +134,4 @@ struct card_node * find_node(struct card_node *card, int face, int suit){
     card = card->next;
   }
   return NULL;
-}
-
-int calcHand(struct card_node *deck){
-  int total = 0;
-  int aceCount = 0;
-  struct card_node *current = deck;
-  while (current){
-    // not ace, but keeps track
-    if (current->face == 0){
-      aceCount++;
-    }
-    else {
-      if (current->face > 9){
-        total += 10;
-      }
-      else {
-        total += current->face + 1;
-      }
-    }
-  }
 }
