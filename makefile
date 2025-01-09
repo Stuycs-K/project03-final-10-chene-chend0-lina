@@ -21,4 +21,4 @@ run all: main
 	@./main
 
 clean:
-	@rm -rf *.o main
+	@rm -rf *.o main test_client

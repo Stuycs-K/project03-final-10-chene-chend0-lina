@@ -110,9 +110,10 @@ void play(int in, int out) {
 	// char as temporary type
 	struct card_node *player_hand = NULL;
 	struct card_node *dealer_hand = NULL;
+	char active = 1;
 	int buf;
 	// display
-	while (1) {
+	while (active) {
 		switch(buf = fetch_int(in)) {
 			case -10:
 				player_hand = append_card(player_hand, fetch_card(in));
@@ -126,15 +127,21 @@ void play(int in, int out) {
 				send_move(read_move());
 				break;
 			case -13:
+				active = 0;
 				printf("You win!");
-				return;
+				break;
 			case -14:
+				active = 0;
 				printf("You lose!");
-				return;
+				break;
 			default:
 				fprintf(stderr, "WARNING: UNKNOWN COMMAND ID %d (%x)\n", buf, buf);
 		}
 	}
+	/* TODO
+	free_list(player_hand);
+	free_list(dealer_hand);
+	*/
 }
 
 void logs() {
