@@ -61,6 +61,7 @@ Client reads an int(32) and performs a specific action:
 -12: send move
 -13: player wins
 -14: player loses
+-15: game is a tie
 ```
 For actions -10 & -11, client reads a SINGLE struct card.
 For action -12, client sends a move ID.
