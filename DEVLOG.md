@@ -28,6 +28,10 @@ Expanded description including how much time was spent on task.
 - Drew out program structure (subservers forking from main server, like lab15; client as independent program) with Elizabeth (30m)
 - Implemented client-side display/input interfaces using `card.h` and new shared `utils.h` function for input. (30m)
 
+### 2024-01-08 - Client/Server Protocols
+- Discussed and designed a command-based communication protocol for allowing the server to manipulate client state and activity with Elizabeth (40m)
+- Implemented client functionality according to said specification, tested with mocked server input. (40m)
+
 ### 2024-01-03 - Brief description
 Expanded description including how much time was spent on task.
 
