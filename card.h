@@ -32,13 +32,12 @@ void addCardToHand(struct card_node **hand, struct card_node *card);
 void printHand(struct card_node *hand);
 void freeHand(struct card_node *hand);
 
-// void createDeck(struct card_node *deck);
-// void printCard(struct card_node *card);
-// void printDeck(struct card_node *deck);
+// utility
+void printCard(struct card_node *card);
+
 // struct card_node* insert(struct card_node *deck, int face, int suit);
 // struct card_node * random_card(struct card_node *deck);
 // struct card_node * remove_card(struct card_node *deck, int face, int suit);
-// struct card_node * free_list(struct card_node *deck);
 
 
 // include add random number of decks function

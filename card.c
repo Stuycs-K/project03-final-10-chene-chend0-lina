@@ -34,8 +34,12 @@ int calcHand(struct card_node *hand){
     }
     current = current->next;
   }
-  while (total < 21 && aceCount > 0){
-    total += 10;
+  while (total+11 <= 21 && aceCount > 0){
+    total += 11;
+    aceCount--;
+  }
+  while (aceCount > 0){
+    total++;
     aceCount--;
   }
   return total;
@@ -50,7 +54,7 @@ void addCardToHand(struct card_node **hand, struct card_node *card){
 void printHand(struct card_node *hand){
   struct card_node *current = hand;
   while (current){
-    printf("%s of %s\n",faces[card->face],suits[card->suit]);
+    printf("%s of %s\n",faces[current->face],suits[current->suit]);
     current = current->next;
   }
 }
@@ -59,28 +63,18 @@ void freeHand(struct card_node *hand){
   struct card_node *current = hand;
   while (current){
     struct card_node *next = current->next;
-    free_node(current);
+    freeCard(current);
     current = next;
   }
 }
 
-// // create a new deck of cards
-// void createDeck(struct card_node *deck){
-//   struct card_node *current = deck;
-//   for (int suit = 0; suit < NUM_SUITS; suit++){
-//       for (int face = 0; face < NUM_FACES; face++){
-//           struct card_node *newCard = createCard(face, suit, NULL);
-//           if (current == NULL){
-//               deck = newCard;
-//               current = deck;
-//           }
-//           else {
-//               current->next = newCard;
-//               current = newCard;
-//           }
-//       }
-//   }
-// }
+// utility functions
+void printCard(struct card_node *card){
+  if (card){
+      printf("%s of %s\n",faces[card->face],suits[card->face]);
+      printf("%s of %s\n",faces[card->face],suits[card->suit]);
+  }
+}
 
 // struct card_node* insert(struct card_node *deck, int face, int suit){
 //   struct card_node* newCard = createCard(face, suit, deck);
