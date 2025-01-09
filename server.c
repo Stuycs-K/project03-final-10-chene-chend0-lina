@@ -38,12 +38,8 @@ void play(int to_client, int client_pid) {
 	int win_round = -13;
 	int lose_round = -14;
 	int tie_round = -15;
-	int p1_suit;
-	int p2_suit; // need to know how suits are implemented 
 	int player_blackjack;
 	int dealer_blackjack;
-	int d1_suit;
-	int d2_suit;
 	write(to_client, &dealer_turn, sizeof(dealer_turn) ); // knows to read dealer's card;
 	if (write(to_client, current, sizeof(struct card_node)) == -1) {
 		perror("error sending player face up card");
@@ -63,11 +59,16 @@ void play(int to_client, int client_pid) {
 	if (write(to_client, current, sizeof(struct card_node)) == -1) { // sends player second card;
 		perror("error sending player second card");
 	}
+	if (dealer_total == 21) {
+		dealer_blackjack = 1;
+	}
 	current = current->next;
 	if (player_total == 21) { // have to figure out a way to account for player suit blackjack;
-			break;
+		player_blackjack = 1;
 	}
-	while (current != NULL && !game_over) {
+	else { 
+		while (current != NULL && !game_over) {
+		
 		if (player_total > 21) {
 			// printf("You've bust! Turn over\n");
 			game_over = 1;
@@ -103,7 +104,9 @@ void play(int to_client, int client_pid) {
 			break;
 		}
 		current = current->next;
+		}	
 	}
+	
 	if (game_over) {
 		write(to_client, &lose_round, sizeof(lose_round));
 		return;
@@ -118,18 +121,36 @@ void play(int to_client, int client_pid) {
 		write(to_client, current, sizeof(struct card_node));
 		current = current->next;
 	}
-	
-	if (dealer_total > 21) {
+	// results
+	if (dealer_total > 21) [
+		write(to_client, &win_round, sizeof(win_round));
+		return;
+	]
+	if (player_total > dealer_total) {
 		write(to_client, &win_round, sizeof(win_round));
 		return;
 	}
-	else if (player_blackjack && dealer_blackjack) {
+	if (dealer_total > player_total) {
+		write(to_client, &lose_round, sizeof(lose_round));
+		return;
+	}
+	if (!player_blackjack && !dealer_blackjack && dealer_total == player_total) {
 		write(to_client, &tie_round, sizeof(tie_round));
 		return;
 	}
-	else if ()
-	
-	
+	if (!player_blackjack && dealer_blackjack) {
+		write(to_client, &lose_round, sizeof(lose_round));
+		return;
+	}
+	if (player_blackjack && !dealer_blackjack) {
+		write(to_client, &win_round, sizeof(win_round));
+		return;
+	}
+	if (player_blackjack && dealer_blackjack) {
+		write(to_client, &tie_round, sizeof(tie_round));
+		return;
+	}
+	return;
 	
 	//select card
 	//send card to player
