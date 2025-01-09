@@ -90,8 +90,17 @@ enum Move read_move() {
 	}
 	return HIT;
 }
-void send_move(enum Move m) {
-	// sends move data to server side
+void send_move(enum Move m, int out) {
+	char buf = '\0';
+	switch(m) {
+		case HIT:
+			buf = 'h';
+			break;
+		case STAND:
+			buf = 's';
+			break;
+	}
+	safe_write(out, &buf, sizeof(buf));
 }
 
 // TODO: conference with card.c
@@ -122,16 +131,21 @@ void play(int in, int out) {
 				dealer_hand = append_card(dealer_hand, fetch_card(in));
 				break;
 			case -12:
+				printf("\n");
 				print_hand("Dealer", dealer_hand);
 				print_hand("Player", player_hand);
 				send_move(read_move());
 				break;
 			case -13:
 				active = 0;
+				print_hand("Dealer", dealer_hand);
+				print_hand("Player", player_hand);
 				printf("You win!");
 				break;
 			case -14:
 				active = 0;
+				print_hand("Dealer", dealer_hand);
+				print_hand("Player", player_hand);
 				printf("You lose!");
 				break;
 			default:
