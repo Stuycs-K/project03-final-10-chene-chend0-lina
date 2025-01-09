@@ -17,3 +17,10 @@ ssize_t safe_getline(char ** lineptr, size_t * n, FILE * stream) {
 		fatal("getline");
 	}
 }
+
+ssize_t safe_read(int fd, void * buf, size_t n) {
+	ssize_t ret;
+	if ((ret = read(fd, buf, n)) <= 0)
+		fatal("read");
+	return ret;
+}
