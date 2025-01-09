@@ -42,3 +42,6 @@ Implemented createCard, createDeck, printCard and printDeck. Updated card.h to i
 
 ### 2025-01-07 - Finishing functions in card, and adding function headers for deck and hand. Starting on the functions.
 In class, implmented insert, remove and random for card (class 35~ minutes). At home, finished up remove and free functions for card. Created a new structure hand and deck function headers. (~40 minutes)
+
+### 2025-01-08 - Restructuring card.h
+In class, worked on testing/debugging current functions. Redirecting card.h to have more blackjack specific functions. (30 minutes in class)
