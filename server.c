@@ -17,6 +17,12 @@ int main() {
 				play();
 			}
 		}
+		if (pid > 0) {
+			close(from_client);
+		}
+		else {
+			perror("forking subserver error");
+		}
 	}
 }
 
@@ -40,7 +46,9 @@ void play(int to_client, int client_pid) {
 	int tie_round = -15;
 	int player_blackjack;
 	int dealer_blackjack;
-	write(to_client, &dealer_turn, sizeof(dealer_turn) ); // knows to read dealer's card;
+	if (write(to_client, &dealer_turn, sizeof(dealer_turn) ) == -1) {
+		perror("error writing dealer header");
+	} // knows to read dealer's card;
 	if (write(to_client, current, sizeof(struct card_node)) == -1) {
 		perror("error sending player face up card");
 	}
@@ -111,13 +119,17 @@ void play(int to_client, int client_pid) {
 		write(to_client, &lose_round, sizeof(lose_round));
 		return;
 	}
-	write(to_client, &dealer_turn, sizeof(dealer_turn)); //get ready to read dealers second card
+	if (write(to_client, &dealer_turn, sizeof(dealer_turn) ) == -1) {
+		perror("error writing dealer header");
+	}  //get ready to read dealers second card
 	write(to_client, dealer_second, sizeof(struct card_node)); // dealers second card;
 
 	current = current->next;
 	while (dealer_total < 17 && current != NULL) {
 		dealer_total += current->face;
-		write(to_client, &dealer_turn, sizeof(dealer_turn)); // let client know to read card for dealer;
+		if (write(to_client, &dealer_turn, sizeof(dealer_turn) ) == -1) {
+			perror("error writing dealer header");
+		} // let client know to read card for dealer;
 		write(to_client, current, sizeof(struct card_node));
 		current = current->next;
 	}
