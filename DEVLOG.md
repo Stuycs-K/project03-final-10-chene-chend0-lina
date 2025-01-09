@@ -4,7 +4,7 @@ This document must be updated daily by EACH group member.
 
 ## Player 1
 
-### 2024-01-06 - Brief description
+### 2024-01-06 - Implemented file log writing and sighandler for sigalrm
 Expanded description including how much time was spent on task.
 Discussed functionalities needed by the server and characteristics of the log .(5 minutes)
 Implemented function for creating file and first version of write function (10 minutes)
@@ -14,7 +14,7 @@ Implemented read function with using stat, finished log.c functions (10 minutes)
 Researched SIGALRM and sigaction and implemented function to set up signals in sigs.c/h (25 minutes)
 Began implementing sighandler for SIGALRM(3 minutes)
 
-### 2024-01-07 - Brief description
+### 2024-01-07 - Implemented sighandler for sigint and wrote handshake
 Expanded description including how much time was spent on task.
 Disccused and implemented sigaction sighandler for SIGINT(5 minutes)
 Rediscussed and reorganized server/client structure and pipe structure. (10 minutes)
@@ -23,6 +23,11 @@ Wrote outline for play (2 minutes)
 
 Added client handshake and modified to store pid and open a new upstream private pipe(15 minutes)
 Started implementing play by adding in card decks and writing and reading player moves, and also implemented game actions for the dealer, player, and processing user input. (35 minutes)
+
+### 2024-01-08 - Implemented headers/flags in downstream private pipe and fixed game logic
+Fixed messages on server end. (2 minutes). In class, discussed how client knows what to read and do from server, implemented pipe headers for client, and fixed logic of checking total value of player's cards. (30 minutes).
+
+At home, changed flags, client reads int instead. Updated play() to send flags when before sending cards and changed order of assigning values to be able to send card_node to client. Also fixed wrong sizeof() when card_nodes to client. Also implemented dealer hitting cards until total value reaches 17 and begain implementing results and blackjack status. (1 hour)
 ## Player 2 -- David Chen
 
 ### 2024-01-06 - Beginning layouts
