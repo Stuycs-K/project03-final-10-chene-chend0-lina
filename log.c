@@ -16,6 +16,11 @@ void create_file() {
 }
 
 void write_file(char * name, char * card, char move, int winnings ) {
+    int semd;
+    semd = semget(KEY, 1, 0);
+    if (semd == -1) {
+        perror("Failed to get semaphore");
+    }
     struct player_moves curr;
     strcpy(curr.name, name);
     strcpy(curr.card, card);

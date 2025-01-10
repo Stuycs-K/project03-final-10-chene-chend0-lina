@@ -1,14 +1,38 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+#include <sys/ipc.h>
+#include <sys/sem.h>
 #include "card.h"
 #include "deck.h"
 #include "server.h"
 #include "networking.h"
+#include "log.h"
+#include "sigs.h"
+#define KEY 102934
 
+union semun {
+   int              val;    /* Value for SETVAL */
+   struct semid_ds *buf;    /* Buffer for IPC_STAT, IPC_SET */
+   unsigned short  *array;  /* Array for GETALL, SETALL */
+   struct seminfo  *__buf;  /* Buffer for IPC_INFO (Linux-specific) */
+};
 int main() {
 	int to_client;
 	int from_client;
+	int semd;
+	union semun s;
+
+	semd = semget(KEY, 1, IPC_CREAT | IPC_EXCL | 0666);
+	if (semd == -1) {
+		perror("Failed to create semaphore");
+		return 1;
+	}
+	s.val = 1;
+	if (semctl(semd, 0, SETVAL, s) == -1) {
+		perror("Failed to set semaphore value to 1");
+		return 1;
+	}
 	while (1) {
 		from_client = server_setup();
 		int pid = fork();
