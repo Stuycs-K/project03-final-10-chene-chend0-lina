@@ -50,7 +50,12 @@ At home, changed flags, client reads int instead. Updated play() to send flags w
   - Built binaries are still in an unstable state, note that the client still uses a mocked file for testing at this time.
   - Fixed a few notable bugs (that prevented successful builds, or on first inspection might have been implemented incorrectly).
 
-### 2024-01-0X - PLACEHOLDER
+### 2025-01-10 - Post-Merge Stress
+- Reviewed the use of pipes in the server (5m).
+- Discussed next steps and extensions (5m).
+- Actually read some of the merged code, edited for SIGINT handling (25m).
+
+### 2025-01-0X - PLACEHOLDER
 
 ## Player 3 -- Abigail Lin
 
