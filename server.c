@@ -54,6 +54,8 @@ int main() {
 }
 
 void play(int to_client, int from_client) {
+	to_client_fd = to_client;
+	signal(SIGALRM, sigalrm_handler);
 	/*
 	char client_pipe[20];
 	sprintf(client_pipe, "%d", client_pid);
@@ -117,11 +119,13 @@ void play(int to_client, int from_client) {
 			perror("error writing card to deck\n");
 			exit(1);
 		}
-
+		alarm(30);
 		char move;
 		if (read(from_client, &move, sizeof(move) <= 0)) {
 			perror("error reading player move to subserver\n");
+			break;
 		}
+		alarm(0);
 		if (move == 'h') {
 			player_total += current->face;
 			

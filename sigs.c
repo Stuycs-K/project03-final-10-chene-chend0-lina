@@ -9,6 +9,7 @@
 #include <sys/sem.h>
 #define KEY 102934
 
+extern int to_client_fd; 
 void setup_sighandler() {
     struct sigaction exit;
     exit.sa_handler = sigint_handler;
@@ -39,6 +40,7 @@ static void sigint_handler(int sig) {
 }
 
 static void sigalrm_handler(int sig) {
-    printf("You didn't make a move and have been kicked!");
+    int timeout_game_over = -20;
+    write(to_client_fd, &timeout_game_over, sizeof(timeout_game_over));
     exit(0);
 }
