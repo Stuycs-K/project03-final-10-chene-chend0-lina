@@ -9,6 +9,7 @@ void write_stuff() {
 	FILE * output = fopen("/tmp/buffer", "w");
 	int buf = -10;
 	fwrite(&buf, sizeof(int), 1, output);
+	struct deck * d = initDeck(1);
 	struct card_node* card = createCard(0, 0, NULL);
 	fwrite(card, sizeof(struct card_node), 1, output);
 	buf = -12;

@@ -45,9 +45,10 @@ enum Action readMainMenu() {
 }
 
 void print_hand(const char *name, struct card_node *card) {
-	printf("%s:\n", name);
+	int score = calcHand(card);
+	printf("\n%s Score: %d\n", name, score);
 	printHand(card);
-	printf("=====\n");
+	printf("\n");
 }
 
 int fetch_int(int in) {
@@ -103,18 +104,6 @@ void send_move(enum Move m, int out) {
 	safe_write(out, &buf, sizeof(buf));
 }
 
-// TODO: conference with card.c
-struct card_node * append_card(struct card_node * original, struct card_node * end) {
-	if (!original)
-		return end;
-	struct card_node *buf = original;
-	while (buf->next)
-		buf = original->next;
-	buf->next = end;
-	end->next = NULL;   // redundant but good to be safe
-	return original;
-}
-
 void play(int in, int out) {
 	// char as temporary type
 	struct card_node *player_hand = NULL;
@@ -131,18 +120,21 @@ void play(int in, int out) {
 				dealer_hand = append_card(dealer_hand, fetch_card(in));
 				break;
 			case -12:
+				printf("\n=== BLACKJACK ===\n");
 				printf("\n");
 				print_hand("Dealer", dealer_hand);
 				print_hand("Player", player_hand);
 				send_move(read_move(), out);
 				break;
 			case -13:
+				printf("\n=== BLACKJACK ===\n");
 				active = 0;
 				print_hand("Dealer", dealer_hand);
 				print_hand("Player", player_hand);
 				printf("You win!");
 				break;
 			case -14:
+				printf("\n=== BLACKJACK ===\n");
 				active = 0;
 				print_hand("Dealer", dealer_hand);
 				print_hand("Player", player_hand);

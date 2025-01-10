@@ -51,7 +51,7 @@ void addCardToHand(struct card_node **hand, struct card_node *card){
   *hand = card;
 }
 
-void printHand(struct card_node *hand){
+void printHand(const char * name, struct card_node *hand){
   struct card_node *current = hand;
   while (current){
     printf("%s of %s\n",faces[current->face],suits[current->suit]);
@@ -93,6 +93,18 @@ int isBust(struct card_node *hand){
   else {
     return 0;
   }
+}
+
+// moved, makes more sense with card funcs
+struct card_node * append_card(struct card_node * original, struct card_node * end) {
+	if (!original)
+		return end;
+	struct card_node *buf = original;
+	while (buf->next)
+		buf = original->next;
+	buf->next = end;
+	end->next = NULL;   // redundant but good to be safe
+	return original;
 }
 
 // struct card_node* insert(struct card_node *deck, int face, int suit){
