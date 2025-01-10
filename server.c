@@ -156,46 +156,75 @@ void play(int to_client, int from_client) {
 	}
 	
 	if (game_over) {
-		write(to_client, &lose_round, sizeof(lose_round));
+		if (write(to_client, &lose_round, sizeof(lose_round)) == -1) {
+			perror("error writing lose round");
+			exit(1);
+		}
 		return;
 	}
 	if (write(to_client, &dealer_turn, sizeof(dealer_turn) ) == -1) {
 		perror("error writing dealer header");
+		exit(1);
 	}  //get ready to read dealers second card
-	write(to_client, dealer_second, sizeof(struct card_node)); // dealers second card;
+	
+	if (write(to_client, dealer_second, sizeof(struct card_node)); == -1) {
+		perror("error writing dealer's second card");
+		exit(1);
+	} // dealers second card;
 
 	current = current->next;
 	while (dealer_total < 17 && current != NULL) {
 		dealer_total += current->face;
 		if (write(to_client, &dealer_turn, sizeof(dealer_turn) ) == -1) {
 			perror("error writing dealer header");
+			exit(1);
 		} // let client know to read card for dealer;
-		write(to_client, current, sizeof(struct card_node));
+		if (write(to_client, current, sizeof(struct card_node)) == -1) {
+			perror("error writing dealer card");
+			exit(1);
+		}
 		current = current->next;
 	}
 	// results
 	if (dealer_total > 21) {
-		write(to_client, &win_round, sizeof(win_round));
+		if (write(to_client, &win_round, sizeof(win_round)) == -1) {
+			perror("error writing win to client");
+			exit(0);
+		}
 		return;
 	}
 	if (player_total > dealer_total) {
-		write(to_client, &win_round, sizeof(win_round));
+		if (write(to_client, &win_round, sizeof(win_round)) == -1) {
+			perror("error writing win to client");
+			exit(0);
+		}
 		return;
 	}
 	if (dealer_total > player_total) {
-		write(to_client, &lose_round, sizeof(lose_round));
+		if (write(to_client, &lose_round, sizeof(lose_round)) == -1) {
+			perror("error writing lose round");
+			exit(1);
+		}
 		return;
 	}
 	if (!player_blackjack && !dealer_blackjack && dealer_total == player_total) {
-		write(to_client, &tie_round, sizeof(tie_round));
+		if (write(to_client, &tie_round, sizeof(tie_round)) == -1) {
+			perror("error writing tie round");
+		}
 		return;
 	}
 	if (!player_blackjack && dealer_blackjack) {
-		write(to_client, &lose_round, sizeof(lose_round));
+		if (write(to_client, &lose_round, sizeof(lose_round)) == -1) {
+			perror("error writing lose round");
+			exit(1);
+		}
 		return;
 	}
 	if (player_blackjack && !dealer_blackjack) {
-		write(to_client, &win_round, sizeof(win_round));
+		if (write(to_client, &win_round, sizeof(win_round)) == -1) {
+			perror("error writing win to client");
+			exit(0);
+		}
 		return;
 	}
 	if (player_blackjack && dealer_blackjack) {
