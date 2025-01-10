@@ -1,7 +1,5 @@
 #include "card.h"
 #include "deck.h"
-#include "card.c"
-#include "deck.c"
 
 int main(){
     srand(time(NULL));

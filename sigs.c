@@ -20,12 +20,12 @@ void setup_sighandler() {
     sigaction(SIGALRM, &timeout, NULL);
 }
 
-void sigint_handler(int sig) {
+static void sigint_handler(int sig) {
     printf("Exiting game.")
     exit(0);
 }
 
-void sigalrm_handler(int sig) {
+static void sigalrm_handler(int sig) {
     printf("You didn't make a move and have been kicked!");
     exit(0);
 }
