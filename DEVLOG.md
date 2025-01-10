@@ -31,8 +31,17 @@ At home, changed flags, client reads int instead. Updated play() to send flags w
 ## Player 2 -- David Chen
 
 ### 2024-01-06 - Beginning layouts
-- Copied group Google Doc (for proposals), began laying out main processes.
-- Wrote pseudo-pseudocode outlines for client/server interaction at home.
+- Copied group Google Doc (for proposals), began laying out main processes. (40m)
+- Wrote pseudo-pseudocode outlines for client/server interaction at home. (1h)
+
+### 2024-01-07 - Program Structure
+- Merged existing branches so Abigail's `card.h` would be available for use in the client and server. (10m)
+- Drew out program structure (subservers forking from main server, like lab15; client as independent program) with Elizabeth (30m)
+- Implemented client-side display/input interfaces using `card.h` and new shared `utils.h` function for input. (30m)
+
+### 2024-01-08 - Client/Server Protocols
+- Discussed and designed a command-based communication protocol for allowing the server to manipulate client state and activity with Elizabeth (40m)
+- Implemented client functionality according to said specification, tested with mocked server input. (40m)
 
 ### 2024-01-03 - Brief description
 Expanded description including how much time was spent on task.
