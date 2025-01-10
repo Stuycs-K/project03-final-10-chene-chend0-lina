@@ -43,8 +43,13 @@ At home, changed flags, client reads int instead. Updated play() to send flags w
 - Discussed and designed a command-based communication protocol for allowing the server to manipulate client state and activity with Elizabeth (40m)
 - Implemented client functionality according to said specification, tested with mocked server input. (40m)
 
-### 2024-01-03 - Brief description
-Expanded description including how much time was spent on task.
+### 2024-01-09 - We Don't Know How To Play Blackjack
+- Reviewed necessary deck access features (drawing random card) with Abigail (5m)
+- Drew out possible cases for a game's outcome (e.g. hitting a 21 "blackjack" on the first round [can win, lose, tie], possibilities for player that hits/draws/busts, possibilities for dealer drawing) with Elizabeth (20m)
+- Merged all three branches with an eye towards allowing the client and server could make full use of Abigail's implemented card handling features (calculation of hand values, randomized draws, etc.), and conference on the handshake protocols. (1h)
+  - Built binaries are still in an unstable state, note that the client still uses a mocked file for testing at this time.
+
+### 2024-01-0X - PLACEHOLDER
 
 ## Player 3 -- Abigail Lin
 
