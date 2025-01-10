@@ -27,13 +27,13 @@ static void sigint_handler(int sig) {
     semd = semget(KEY, 1, 0);
     if (semd == -1) {
         perror("Failed to get semaphore");
-        return 1;
+        exit(1);
     }
 
 
     if (semctl(semd, IPC_RMID, 0) == -1) {
         perror("Failed to remove semaphore");
-        return 1;
+        exit(1);
     }
     exit(0);
 }
