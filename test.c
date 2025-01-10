@@ -1,3 +1,4 @@
+#include <time.h>
 #include "card.h"
 #include "deck.h"
 
@@ -16,7 +17,9 @@ int main(){
     printf("\ndealing cards:\n");
     struct deck * d = initDeck(1);
     printDeck(d);
-    struct card_node * dealtCard = dealRandomCard(d);
-    printf("\ndealt card: ");
-    printCard(dealtCard);
+    while (d->size) {
+        struct card_node * dealtCard = dealRandomCard(d);
+        printf("\ndealt card: ");
+        printCard(dealtCard);
+    }
 }

@@ -35,10 +35,9 @@ struct deck * initDeck(int numDecks){
 
 struct card_node * dealRandomCard(struct deck * deck){
     if (!deck || !deck->cards) return NULL;
-    // always has 52
     struct card_node * prev = NULL;
     struct card_node * temp = deck->cards;
-    int end = rand() % DECK_SIZE;
+    int end = rand() % deck->size;
     for (int i = 0; i < end; i++){
         prev = temp;
         temp = temp->next;
@@ -50,6 +49,7 @@ struct card_node * dealRandomCard(struct deck * deck){
     else {
         deck->cards = temp->next;
     }
+    deck->size--;
 
     temp->next = NULL;
     return temp;
