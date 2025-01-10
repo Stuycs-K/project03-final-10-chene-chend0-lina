@@ -28,6 +28,10 @@ Started implementing play by adding in card decks and writing and reading player
 Fixed messages on server end. (2 minutes). In class, discussed how client knows what to read and do from server, implemented pipe headers for client, and fixed logic of checking total value of player's cards. (30 minutes).
 
 At home, changed flags, client reads int instead. Updated play() to send flags when before sending cards and changed order of assigning values to be able to send card_node to client. Also fixed wrong sizeof() when card_nodes to client. Also implemented dealer hitting cards until total value reaches 17 and begain implementing results and blackjack status. (1 hour)
+
+### 2024-01-9 - Implemnted result logic
+Accounted for all of the different possible outcomes and implemented them (20 minutes). Also began writing more error messages. (5 minutes)
+At home, set up and implemented semaphores for write, fixed sigint_handler to remove semaphores (30 minutes) Also changed sigalrm_handler and set up timer in play. (15 minutes).
 ## Player 2 -- David Chen
 
 ### 2024-01-06 - Beginning layouts
