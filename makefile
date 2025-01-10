@@ -2,8 +2,8 @@
 
 compile all: client server
 
-client: test_client.o client.o card.o networking.o util.o
-	@gcc -o client test_client.o client.o card.o networking.o util.o
+client: test_client.o client.o card.o networking.o util.o sigs.o
+	@gcc -o client test_client.o client.o card.o networking.o util.o sigs.o
 server: server.o card.o deck.o networking.o
 	@gcc -o server server.o card.o deck.o networking.o
 
@@ -26,6 +26,8 @@ deck.o: deck.c deck.h card.h
 	@gcc -c deck.c
 networking.o: networking.c networking.h
 	@gcc -c networking.c
+sigs.o: sigs.c sigs.h
+	@gcc -c sigs.c
 
 clean:
 	@rm -rf *.o main test_client *.fifo

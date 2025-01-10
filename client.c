@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <signal.h>
 #include <errno.h>
 #include "card.h"
 #include "client.h"
+#include "sigs.h"
 #include "util.h"
 
 void displayIntro() {
@@ -163,6 +165,7 @@ void logs() {
 }
 
 void client(int in, int out) {
+	signal(SIGINT, sigint_client);
 	displayIntro();
 	while (1) {
 		switch (readMainMenu()) {
