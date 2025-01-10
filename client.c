@@ -46,7 +46,7 @@ enum Action readMainMenu() {
 
 void print_hand(const char *name, struct card_node *card) {
 	printf("%s:\n", name);
-	printDeck(card);
+	printHand(card);
 	printf("=====\n");
 }
 
@@ -134,7 +134,7 @@ void play(int in, int out) {
 				printf("\n");
 				print_hand("Dealer", dealer_hand);
 				print_hand("Player", player_hand);
-				send_move(read_move());
+				send_move(read_move(), out);
 				break;
 			case -13:
 				active = 0;

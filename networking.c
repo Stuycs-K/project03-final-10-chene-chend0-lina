@@ -7,7 +7,6 @@
 #include <errno.h>
 #include <sys/types.h>
 #include <time.h>
-#include <sys/time.h>
 #include <sys/wait.h>
 #include "networking.h"
 #define READ 0

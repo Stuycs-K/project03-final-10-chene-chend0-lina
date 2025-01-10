@@ -1,7 +1,10 @@
 #include <stdio.h>
 #include <string.h>
-#include "server.h"
+#include <unistd.h>
 #include "card.h"
+#include "deck.h"
+#include "server.h"
+#include "networking.h"
 
 int main() {
 	int to_client;
@@ -14,7 +17,7 @@ int main() {
 			int client_pid;
 			server_handshake(&to_client, from_client, &client_pid);
 			while(1) {
-				play();
+				play(to_client, from_client);
 			}
 		}
 		if (pid > 0) {
@@ -26,17 +29,17 @@ int main() {
 	}
 }
 
-void play(int to_client, int client_pid) {
+void play(int to_client, int from_client) {
+	/*
 	char client_pipe[20];
-	int card_value = 0;
-	int game_over = 0;
 	sprintf(client_pipe, "%d", client_pid);
 	strcat(client_pipe, "_fd");
-	int from_client = open(client_pipe, O_RDONLY);
-	struct card_node * deck;
-	createDeck(deck);
+	*/
+	int card_value = 0;
+	int game_over = 0;
+	struct deck * _deck = initDeck(1);
 	//shuffle card
-	struct card_node * current = deck;
+	struct card_node * current = _deck->cards;
 	int dealer_total = current->face;
 	int dealer_turn = -11;
 	int player_turn = -10;
@@ -86,7 +89,7 @@ void play(int to_client, int client_pid) {
 		
 		write(to_client, &make_move, sizeof(make_move)); // client knows to read card and make move
 
-		if (write(to_client, current, sizeof(card_node)) == -1) {
+		if (write(to_client, current, sizeof(struct card_node)) == -1) {
 			perror("error writing card to deck\n");
 			exit(1);
 		}
@@ -95,11 +98,11 @@ void play(int to_client, int client_pid) {
 		if (read(from_client, &move, sizeof(move) <= 0)) {
 			perror("error reading player move to subserver\n");
 		}
-		if (move == "h") {
+		if (move == 'h') {
 			player_total += current->face;
 			
 		}
-		else if (move == "s") {
+		else if (move == 's') {
 			break;
 		}
 		if (player_total == 21) {

@@ -77,8 +77,8 @@ void printCard(struct card_node *card){
 
 int isBlackjack(struct card_node *hand){
   if (!hand || !hand-> next) return 0;
-  struct card_node *one = hand;
-  struct card_node *two = hand->next;
+  struct card_node *first = hand;
+  struct card_node *second = hand->next;
   if ( (first->face == 0 && second->face >= 9) || (second->face == 0 && first->face >= 9)){
     return 1;
   }

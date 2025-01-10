@@ -25,3 +25,10 @@ ssize_t safe_read(int fd, void * buf, size_t n) {
 		fatal("read");
 	return ret;
 }
+
+ssize_t safe_write(int fd, void * buf, size_t n) {
+	ssize_t ret;
+	if ((ret = write(fd, buf, n)) <= 0)
+		fatal("write");
+	return ret;
+}

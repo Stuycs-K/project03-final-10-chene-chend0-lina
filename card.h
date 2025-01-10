@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>
+#include <sys/time.h>
 
 #define NUM_SUITS 4
 #define NUM_FACES 13
@@ -17,10 +17,10 @@ struct card_node{
 };
 
 // faces array
-char *faces[] = {"Ace","2","3","4","5","6","7","8","9","10","Jack","Queen","King"};
+static const char *faces[] = {"Ace","2","3","4","5","6","7","8","9","10","Jack","Queen","King"};
 
 // suits array
-char *suits[] = {"Hearts", "Diamonds", "Clubs", "Spades"};
+static const char *suits[] = {"Hearts", "Diamonds", "Clubs", "Spades"};
 
 // card management
 struct card_node* createCard(int face, int suit, struct card_node *next);
