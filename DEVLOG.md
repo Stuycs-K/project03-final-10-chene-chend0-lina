@@ -48,7 +48,12 @@ Implemented createCard, createDeck, printCard and printDeck. Updated card.h to i
 ### 2025-01-07 - Finishing functions in card, and adding function headers for deck and hand. Starting on the functions.
 In class, implmented insert, remove and random for card (class 35~ minutes). At home, finished up remove and free functions for card. Created a new structure hand and deck function headers. (~40 minutes)
 
-### 2025-01-08 - Restructuring card.h
+### 2025-01-08 - Restructuring card.h and deck.h
 In class, worked on testing/debugging current functions. Redirecting card.h to have more blackjack specific functions. (30 minutes in class)
 
 At home, continued to clean up card.h and deck.h's functions. Finished renaming the old ones in card.c. Started working on deck.c's functions, need to figure bug with dealt cards + find out how to shuffle, esp with multiple decks. (1.5 hr)
+
+### 2025-01-09 - Finish card and deck structures + functions
+In class, worked on dealing a random card, fixing bug with printCard double printing. Looking to more funcs to benefit server (30 min)
+
+At home, added isBlackjack and isBust to card.h. Adjusted initdeck in deck.h to take number of decks, cleaned up dealRandomCard. Thinking about adding shufledeck. (30 min)
