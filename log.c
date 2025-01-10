@@ -9,9 +9,12 @@
 #include <sys/types.h>
 #include <signal.h> 
 #include "log.h"
+#include <sys/ipc.h>
+#include <sys/sem.h>
+#define KEY 102934
 
 void create_file() {
-    int log_file = open("player_log.dat", O_WRONLY | O_CREAT);
+    int log_file = open("player_log.dat", O_WRONLY | O_APPEND | O_CREAT, 0666);
     close(log_file);
 }
 
@@ -20,6 +23,15 @@ void write_file(char * name, char * card, char move, int winnings ) {
     semd = semget(KEY, 1, 0);
     if (semd == -1) {
         perror("Failed to get semaphore");
+    }
+    struct sembuf sb;
+    sb.nem_num = 0;
+    sb.sem_op = -1;
+    sb.sem_flag = 0;
+
+    if (semop(semd, &sb, 1) == -1) {
+        perror("Failed to lock semaphore");
+        return 1;
     }
     struct player_moves curr;
     strcpy(curr.name, name);
@@ -31,7 +43,12 @@ void write_file(char * name, char * card, char move, int winnings ) {
         perror("Write to log file failed");
     }
     fclose(player_log);
-    
+    sb.sem_op = 1;
+    if (semop(semd, &sb, 1) == -1) {
+        perror("Failed to unlock semaphore");
+        return 1;
+    }
+
 
 }
 
