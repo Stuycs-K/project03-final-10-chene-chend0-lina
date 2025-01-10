@@ -1,13 +1,13 @@
 #ifndef CARD_H
 #define CARD_H
 
-#define DECK_SIZE 52
-#define NUM_SUITS 4
-#define NUM_FACES 13
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
+
+#define NUM_SUITS 4
+#define NUM_FACES 13
 
 // card structure
 struct card_node{
@@ -20,19 +20,25 @@ struct card_node{
 char *faces[] = {"Ace","2","3","4","5","6","7","8","9","10","Jack","Queen","King"};
 
 // suits array
-char *suits[] = {"Hearts, Diamonds, Clubs, Spades"};
+char *suits[] = {"Hearts", "Diamonds", "Clubs", "Spades"};
 
-void createDeck(struct card_node *deck);
-void printCard(struct card_node *card);
-void printDeck(struct card_node *card);
+// card management
 struct card_node* createCard(int face, int suit, struct card_node *next);
-struct card_node* insert(int face, int suit, struct card_node * deck);
-int compare(struct card_node * a, struct card_node * b);
-struct card_node * find_node(struct card_node *card, int face, int suit);
-struct card_node * find_face(struct card_node *card, int face);
-struct card_node * random_card(struct card_node *card);
-struct card_node * remove_card(struct card_node *card, int face, int suit);
-void free_node(struct card_node *card);
-struct card_node * free_list(struct card_node *card);
+void freeCard(struct card_node *card);
+
+// hand management
+int calcHand(struct card_node *hand); // inc ace
+void addCardToHand(struct card_node **hand, struct card_node *card);
+void printHand(struct card_node *hand);
+void freeHand(struct card_node *hand);
+
+// utility
+void printCard(struct card_node *card);
+
+// blackjack specific
+int isBlackjack(struct card_node *hand); // return 1 if ace + 10/face
+int isBust(struct card_node *hand); // return 1 if hand > 21
+
+// struct card_node* insert(struct card_node *deck, int face, int suit);
 
 #endif
