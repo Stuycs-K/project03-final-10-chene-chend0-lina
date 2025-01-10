@@ -41,7 +41,6 @@ int main() {
 			int client_pid;
 			int check_server = 0;
 			server_handshake(&to_client, from_client, &client_pid);
-			
 			if (write(to_client, &check_server, sizeof(check_server)) == -1) {
 				break;
 			}
@@ -62,11 +61,6 @@ int main() {
 void play(int to_client, int from_client) {
 	to_client_fd = to_client;
 	signal(SIGALRM, sigalrm_handler);
-	/*
-	char client_pipe[20];
-	sprintf(client_pipe, "%d", client_pid);
-	strcat(client_pipe, "_fd");
-	*/
 	int card_value = 0;
 	int game_over = 0;
 	struct deck * _deck = initDeck(1);
