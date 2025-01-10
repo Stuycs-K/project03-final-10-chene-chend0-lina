@@ -12,7 +12,7 @@
 extern int to_client_fd; 
 
 static void sigint_handler(int sig) { // on client side
-    printf("Exiting game.")
+    printf("Exiting game.\n")
     semd = semget(KEY, 1, 0);
     if (semd == -1) {
         perror("Failed to get semaphore");
