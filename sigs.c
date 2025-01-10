@@ -5,7 +5,9 @@
 #include <string.h>
 #include <sys/time.h>
 #include "sigs.h"
-
+#include <sys/ipc.h>
+#include <sys/sem.h>
+#define KEY 102934
 
 void setup_sighandler() {
     struct sigaction exit;
@@ -22,6 +24,17 @@ void setup_sighandler() {
 
 static void sigint_handler(int sig) {
     printf("Exiting game.")
+    semd = semget(KEY, 1, 0);
+    if (semd == -1) {
+        perror("Failed to get semaphore");
+        return 1;
+    }
+
+
+    if (semctl(semd, IPC_RMID, 0) == -1) {
+        perror("Failed to remove semaphore");
+        return 1;
+    }
     exit(0);
 }
 
