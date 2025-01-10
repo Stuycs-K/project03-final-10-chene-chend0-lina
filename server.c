@@ -36,7 +36,7 @@ int main() {
 	while (1) {
 		from_client = server_setup();
 		int pid = fork();
-		if (pid == 0) {
+		if (pid == 0) { 
 			int to_client;
 			int client_pid;
 			server_handshake(&to_client, from_client, &client_pid);
