@@ -11,11 +11,15 @@ struct deck{
     int size; // num cards curr in deck
 };
 
-struct deck * init(); // 4 decks
-// void shuffleDeck(struct deck * deck);
+// deck func
+struct deck * initDeck(int numDecks);
 struct card_node * dealRandomCard(struct deck * deck);
 void freeDeck(struct deck * deck);
 
+// utility func
 void printDeck(struct deck * deck);
+void addDecks(struct deck *deck, int numDecks);
+
+// void shuffleDeck(struct deck * deck);
 
 #endif

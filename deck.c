@@ -1,18 +1,25 @@
 #include "deck.h"
 
-struct deck *createDeck(){
+void addDecks(struct deck *deck, int numDecks){
+    if (!deck) return;
+    for (int i = 0; i < numDecks; i++){
+        for (int suit = 0; suit < NUM_SUITS; suit++){
+            for (int face = 0; face < NUM_FACES; face++){
+                struct card_node *newCard = createCard(face, suit, deck->cards);
+                deck->cards = newCard;
+                deck->size++;
+            }
+        }
+    }
+}
+
+struct deck * initDeck(int numDecks){
+    if (numDecks <= 0) return NULL;
     struct deck *deck = (struct deck*)malloc(sizeof(struct deck));
     deck->cards = NULL;
     deck->size = 0;
 
-    for (int suit = 0; suit < NUM_SUITS; suit++){
-        for (int face = 0; face < NUM_FACES; face++){
-            struct card_node *newCard = createCard(face, suit, deck->cards);
-            deck->cards = newCard;
-            deck->size++;
-        }
-    }
-    // need to implement shufle
+    addDecks(deck, numDecks);
     return deck;
 }
 
@@ -29,37 +36,24 @@ struct deck *createDeck(){
 struct card_node * dealRandomCard(struct deck * deck){
     if (!deck || !deck->cards) return NULL;
     // always has 52
+    struct card_node * prev = NULL;
     struct card_node * temp = deck->cards;
     int end = rand() % DECK_SIZE;
     for (int i = 0; i < end; i++){
+        prev = temp;
         temp = temp->next;
     }
     // removes from deck 
-    struct card_node
+    if (prev){
+        prev->next = temp->next;
+    }
+    else {
+        deck->cards = temp->next;
+    }
 
     temp->next = NULL;
     return temp;
 }
-
-// struct card_node * remove_card(struct card_node *deck, int face, int suit){
-//   struct card_node *current = deck;
-//   struct card_node *prev = NULL;
-//   while (current){
-//     if (current->face == face && current->suit == suit){
-//       if (prev){
-//         prev->next = current->next;
-//       }
-//       else {
-//         deck = current->next;
-//       }
-//       free(current);
-//       return deck;
-//     }
-//     prev = current;
-//     current = current->next;
-//   }
-//   return deck;
-// }
 
 void freeDeck(struct deck * deck){
     if (!deck) return;

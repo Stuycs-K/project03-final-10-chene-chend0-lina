@@ -4,6 +4,7 @@
 #include "deck.c"
 
 int main(){
+    srand(time(NULL));
     printf("adding cards to a hand\n");
     struct card_node * hand = NULL;
     addCardToHand(&hand, createCard(10,1,NULL));
@@ -15,21 +16,9 @@ int main(){
     printf("score: %d\n",score);
 
     printf("\ndealing cards:\n");
-    struct deck * d = createDeck();
+    struct deck * d = initDeck(1);
     printDeck(d);
-    struct card_node * dealtCard = dealCard(d);
-    printf("dealt card: ");
+    struct card_node * dealtCard = dealRandomCard(d);
+    printf("\ndealt card: ");
     printCard(dealtCard);
-    // createDeck(deck);
-    // printDeck(deck);
-
-    // for (int face = 0; face < NUM_FACES; face++){
-    //     for (int suit = 0; suit < NUM_SUITS; suit++){
-    //         deck = insert(deck, face, suit);
-    //     }
-    // }
-    // printf("creating five cards\n");
-    // for (int i = 0; i < 5; i++){
-    //     insert(deck, 0, 0);
-    // }
 }
