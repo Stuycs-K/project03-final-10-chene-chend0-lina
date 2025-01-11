@@ -76,3 +76,6 @@ At home, continued to clean up card.h and deck.h's functions. Finished renaming 
 In class, worked on dealing a random card, fixing bug with printCard double printing. Looking to more funcs to benefit server (30 min)
 
 At home, added isBlackjack and isBust to card.h. Adjusted initdeck in deck.h to take number of decks, cleaned up dealRandomCard. Thinking about adding shufledeck. (30 min)
+
+### 2025-01-10 - Work on replacing client functions + user interface
+In class, worked on replacing functions in client.c with functions I already made in card/deck. Working on print functions, might make a new one, to print out card versions + allow client to easily understand the game. (30 min)
