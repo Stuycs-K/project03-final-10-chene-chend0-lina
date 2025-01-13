@@ -15,6 +15,26 @@ void freeCard(struct card_node *card){
   }
 }
 
+int calcCard(struct card_node *current, int value) {
+  if (current->face == 0){
+      aceCount++;
+  }
+  else {
+    if (current->face > 9){
+      value += 10;
+    }
+    else {
+      value += current->face + 1;
+    }
+  }
+  if (value+11 <= 21 && aceCount > 0) {
+    value += 11;
+  }
+  else if (aceCount > 0){
+    value++
+  }
+  return value;
+}
 int calcHand(struct card_node *hand){
   int total = 0;
   int aceCount = 0;
