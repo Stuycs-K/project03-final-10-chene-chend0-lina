@@ -17,20 +17,24 @@ struct card_node{
 };
 
 // faces array
-static const char *faces[] = {"Ace","2","3","4","5","6","7","8","9","10","Jack","Queen","King"};
+// static const char *faces[] = {"Ace","2","3","4","5","6","7","8","9","10","Jack","Queen","King"};
+static const char *faces[] = {"A","2","3","4","5","6","7","8","9","10","J","Q","K"};
 
 // suits array
-static const char *suits[] = {"Hearts", "Diamonds", "Clubs", "Spades"};
+// static const char *suits[] = {"Hearts", "Diamonds", "Clubs", "Spades"};
+static const char *suits[] = {"♥", "♦", "♣", "♠"};
 
 // card management
 struct card_node* createCard(int face, int suit, struct card_node *next);
 void freeCard(struct card_node *card);
+struct card_node * append_card(struct card_node * original, struct card_node * end);
 
 // hand management
 int calcHand(struct card_node *hand); // inc ace
 void addCardToHand(struct card_node **hand, struct card_node *card);
 void printHand(struct card_node *hand);
 void freeHand(struct card_node *hand);
+void printTable(struct card_node *dealer_hand, struct card_node *player_hand);
 
 // utility
 void printCard(struct card_node *card);

@@ -44,13 +44,6 @@ enum Action readMainMenu() {
 	return ret;
 }
 
-void print_hand(const char *name, struct card_node *card) {
-	int score = calcHand(card);
-	printf("\n%s Score: %d\n", name, score);
-	printHand(card);
-	printf("\n");
-}
-
 int fetch_int(int in) {
 	int ret;
 	safe_read(in, &ret, sizeof(int));
@@ -120,24 +113,27 @@ void play(int in, int out) {
 				dealer_hand = append_card(dealer_hand, fetch_card(in));
 				break;
 			case -12:
-				printf("\n=== BLACKJACK ===\n");
-				printf("\n");
-				print_hand("Dealer", dealer_hand);
-				print_hand("Player", player_hand);
+				// printf("\n=== BLACKJACK ===\n");
+				// printf("\n");
+				// printTable("Dealer", dealer_hand);
+				// printTable("Player", player_hand);
+				printTable(dealer_hand, player_hand);
 				send_move(read_move(), out);
 				break;
 			case -13:
-				printf("\n=== BLACKJACK ===\n");
+				// printf("\n=== BLACKJACK ===\n");
 				active = 0;
-				print_hand("Dealer", dealer_hand);
-				print_hand("Player", player_hand);
+				// printTable("Dealer", dealer_hand);
+				// printTable("Player", player_hand);
+				printTable(dealer_hand, player_hand);
 				printf("You win!");
 				break;
 			case -14:
-				printf("\n=== BLACKJACK ===\n");
+				// printf("\n=== BLACKJACK ===\n");
 				active = 0;
-				print_hand("Dealer", dealer_hand);
-				print_hand("Player", player_hand);
+				// printTable("Dealer", dealer_hand);
+				// printTable("Player", player_hand);
+				printTable(dealer_hand, player_hand);
 				printf("You lose!");
 				break;
 			default:

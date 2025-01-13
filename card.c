@@ -51,12 +51,62 @@ void addCardToHand(struct card_node **hand, struct card_node *card){
   *hand = card;
 }
 
-void printHand(const char * name, struct card_node *hand){
+void printHand(struct card_node *hand){
   struct card_node *current = hand;
   while (current){
-    printf("%s of %s\n",faces[current->face],suits[current->suit]);
+    printf("%s%s ",faces[current->face],suits[current->suit]);
     current = current->next;
   }
+}
+
+void printHandAscii(struct card_node *hand){
+  struct card_node *current = hand;
+  while (current) { printf("┌───────┐"); current = current->next; }
+  printf("\n");
+
+  current = hand;
+  while (current) {
+    printf("│%-2s     │", faces[current->face]);
+    current = current->next;
+  }
+  printf("\n");
+
+  current = hand;
+  while (current) {
+    printf("│   %s   │", suits[current->suit]);
+    current = current->next;
+  }
+  printf("\n");
+
+  current = hand;
+  while (current) {
+    printf("│     %-2s│", faces[current->face]);
+    current = current->next;
+  }
+  printf("\n");
+
+  current = hand;
+  while (current) {
+    printf("└───────┘");
+    current = current->next;
+  }
+  printf("\n");
+}
+
+void printTable(struct card_node *dealer_hand, struct card_node *player_hand) {
+  printf("\n=== BLACKJACK ===\n");
+
+	int score = calcHand(dealer_hand);
+	printf("\nDealer Score: %d\n", score);
+	printHandAscii(dealer_hand);
+
+  printf("\n");
+
+  score = calcHand(player_hand);
+	printf("\nPlayer Score: %d\n", score);
+	printHandAscii(player_hand);
+
+	printf("\n\n");
 }
 
 void freeHand(struct card_node *hand){

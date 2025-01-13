@@ -9,11 +9,22 @@ void write_stuff() {
 	FILE * output = fopen("/tmp/buffer", "w");
 	int buf = -10;
 	fwrite(&buf, sizeof(int), 1, output);
-	struct deck * d = initDeck(1);
-	struct card_node* card = createCard(0, 0, NULL);
+	struct card_node* card = createCard(0, 1, NULL);
 	fwrite(card, sizeof(struct card_node), 1, output);
+
+	buf = -10;
+	fwrite(&buf, sizeof(int), 1, output);
+	struct card_node* card1 = createCard(10, 2, NULL);
+	fwrite(card1, sizeof(struct card_node), 1, output);
+
+	buf = -11;
+	fwrite(&buf, sizeof(int), 1, output);
+	struct card_node* card2 = createCard(11, 0, NULL);
+	fwrite(card2, sizeof(struct card_node), 1, output);
+
 	buf = -12;
 	fwrite(&buf, sizeof(int), 1, output);
+
 	buf = -13;
 	fwrite(&buf, sizeof(int), 1, output);
 	fclose(output);
