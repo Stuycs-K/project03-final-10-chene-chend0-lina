@@ -15,7 +15,9 @@ void freeCard(struct card_node *card){
   }
 }
 
-int calcCard(struct card_node *current, int value) {
+int calcCard(struct card_node *current) {
+  int value = 0;
+  int aceCount = 0;
   if (current->face == 0){
       aceCount++;
   }
@@ -31,7 +33,7 @@ int calcCard(struct card_node *current, int value) {
     value += 11;
   }
   else if (aceCount > 0){
-    value++
+    value++;
   }
   return value;
 }
