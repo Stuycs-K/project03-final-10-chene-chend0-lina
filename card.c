@@ -15,27 +15,35 @@ void freeCard(struct card_node *card){
   }
 }
 
-int calcCard(struct card_node *current) {
-  int value = 0;
+
+int calcHand(struct card_node *hand){
+  int total = 0;
   int aceCount = 0;
-  if (current->face == 0){
+  struct card_node *current = hand;
+  while (current){
+    // not ace, but keeps track
+    if (current->face == 0){
       aceCount++;
-  }
-  else {
-    if (current->face > 9){
-      value += 10;
     }
     else {
-      value += current->face + 1;
+      if (current->face > 9){
+        total += 10;
+      }
+      else {
+        total += current->face + 1;
+      }
     }
+    current = current->next;
   }
-  if (value+11 <= 21 && aceCount > 0) {
-    value += 11;
+  while (total+11 <= 21 && aceCount > 0){
+    total += 11;
+    aceCount--;
   }
-  else if (aceCount > 0){
-    value++;
+  while (aceCount > 0){
+    total++;
+    aceCount--;
   }
-  return value;
+  return total;
 }
 
 void addCardToHand(struct card_node **hand, struct card_node *card){
