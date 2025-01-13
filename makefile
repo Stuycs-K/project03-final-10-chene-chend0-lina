@@ -1,4 +1,4 @@
-.PHONY: compile all clean serve connect
+.PHONY: compile all clean serve connect run
 
 compile all: client server
 
@@ -7,6 +7,8 @@ client: test_client.o client.o card.o networking.o util.o sigs.o
 server: server.o card.o deck.o networking.o
 	@gcc -o server server.o card.o deck.o networking.o
 
+run:
+	@printf "Please run \`make serve\` and \`make connect\`.\n"
 connect: client
 	@./client
 serve: server
