@@ -88,3 +88,6 @@ In class, worked on replacing functions in client.c with functions I already mad
 
 ### 2025-01-12 - ASCII Cards, End Game Status
 Worked on the printing functions, including printing the hands for the cards. If too much, can be switched out. Also, printed out game status at the end. Starting on betting (maybe). (1 hour)
+
+### 2025-01-13 - Update README + card.h (needs to be commited)
+In class, computer almost died, so will update card.h at home. Updated README with instructions on current code, need to update current WIP.
