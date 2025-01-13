@@ -79,3 +79,6 @@ At home, added isBlackjack and isBust to card.h. Adjusted initdeck in deck.h to 
 
 ### 2025-01-10 - Work on replacing client functions + user interface
 In class, worked on replacing functions in client.c with functions I already made in card/deck. Working on print functions, might make a new one, to print out card versions + allow client to easily understand the game. (30 min)
+
+### 2025-01-12 - ASCII Cards, End Game Status
+Worked on the printing functions, including printing the hands for the cards. If too much, can be switched out. Also, printed out game status at the end. Starting on betting (maybe). (1 hour)
