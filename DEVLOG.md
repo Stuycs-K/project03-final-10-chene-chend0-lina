@@ -32,6 +32,10 @@ At home, changed flags, client reads int instead. Updated play() to send flags w
 ### 2024-01-9 - Implemnted result logic
 Accounted for all of the different possible outcomes and implemented them (20 minutes). Also began writing more error messages. (5 minutes)
 At home, set up and implemented semaphores for write, fixed sigint_handler to remove semaphores (30 minutes) Also changed sigalrm_handler and set up timer in play. (15 minutes).
+
+### 2024-01-10
+In class, made the server into a persistent server by setting up new header and also checked networking.c code for right to_client (15 minutes). Changed all return values for exit values and added error messages through out the code (10 minutes).
+
 ## Player 2 -- David Chen
 
 ### 2024-01-06 - Beginning layouts
