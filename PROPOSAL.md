@@ -56,6 +56,7 @@ and child processes.
 ### Protocol
 Client reads an int(32) and performs a specific action:
 ```
+  0: no-op
 -10: read player card
 -11: read dealer card
 -12: send move
@@ -65,36 +66,33 @@ Client reads an int(32) and performs a specific action:
 ```
 For actions -10 & -11, client reads a SINGLE struct card.
 For action -12, client sends a move ID.
-For actions -13 & -14, client prints out game results, exits.
+For actions -15 through -13, client prints out game results, exits.
 
 ## Processes
 
-Used to differentiate between dealer and player.
+Used by the server for per-player subservers.
 
-Dealer (parent) will have the functions to shuffle the deck, setup starting cards for players.
+Dealer (parent) will randomly draw cards, providing setup starting cards for players.
 
 The dealer uses linked lists for shuffling, potentially with multiple decks (dynamically allocated).
 
-Player (child) will have the functions to view game state, send decisions.
+Player (child) will have the functions to view game state, send decisions, based on commands from the server.
 
 ## Signals
 
-Used for user timeouts and exits.
+Used for user-invoked exit.
 
-- `SIGINT` to save game state, and allow for another player to enter the game
-- `SIGALRM` for a time limit on players, to which they will be warned before being kicked from the game.
+- `SIGINT` to cleanly exit the game, for both client and server.
 
 
 # Intended pacing:
 
 A timeline with expected completion dates of parts of the project.
 
-1. Finish simple blackjack, mostly dealer things. Deck shuffling, distributing cards. (1/9)
-2. Finish forking and processes and pipes (1/14)
-3. Finish semaphores (1/14)
-4. Finish signals (1/15)
-5. Single-player is done (logs, pipes, signals)
-6. Extend to multiple client programs (1/17)
-7. Finish recording presentation, finalize README (1/20)
+1. Design protocol (processes, pipes, commands), blackjack logic (mostly dealer things). Deck shuffling, distributing cards. (1/9)
+2. Client and server should be usable for a randomized game. (1/14)
+3. Debug, with special attention to signals and semaphores; document functions, test multi-client operation. (1/15)
+4. Record first footage for presentation videos. (1/16)
+5. Finalize and upload recording, update final README. (1/17)
 
 (1/21) All projects due. Final commits 8am including links to your presentation.
