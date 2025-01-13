@@ -55,6 +55,20 @@ At home, changed flags, client reads int instead. Updated play() to send flags w
 - Discussed next steps and extensions (5m).
 - Actually read some of the merged code, edited for SIGINT handling (25m).
 
+### 2025-01-13
+- Oops 2AM me didn't push after resolving various merge/build conflicts
+- Outlined video format (10m)
+  - (1) Standard playthrough of a single game
+     - Discuss underlying card data structure and randomization procedure
+     - Discuss the command-based communications protocol
+       - Discuss the handshaking mechanisms
+       - Discuss the command code structure
+  - (2) Simultaneous playthrough of multiple games
+     - Discuss forking of processes
+  - (3) Display of logs
+     - Discuss datastructure of logged events
+
+
 ### 2025-01-0X - PLACEHOLDER
 
 ## Player 3 -- Abigail Lin
