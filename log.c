@@ -25,9 +25,9 @@ void write_file(char * name, char * card, char move, int winnings ) {
         perror("Failed to get semaphore");
     }
     struct sembuf sb;
-    sb.nem_num = 0;
+    sb.sem_num = 0;
     sb.sem_op = -1;
-    sb.sem_flag = 0;
+    sb.sem_flg = 0;
 
     if (semop(semd, &sb, 1) == -1) {
         perror("Failed to lock semaphore");
@@ -37,7 +37,7 @@ void write_file(char * name, char * card, char move, int winnings ) {
     strcpy(curr.name, name);
     strcpy(curr.card, card);
     curr.move = move;
-    curr.winning = winnings;
+    curr.winnings = winnings;
     FILE *player_log = fopen("player_log.dat", "a+");
     if (fwrite(&player_log, sizeof(struct player_moves), 1, player_log) == -1) {
         perror("Write to log file failed");
@@ -55,7 +55,7 @@ void write_file(char * name, char * card, char move, int winnings ) {
 
 void read_file() {
     struct stat buff;
-    if (stat("player_log.dat, &buff") == -1) err();
+    if (stat("player_log.dat", &buff) == -1) err();
     off_t file_size = buff.st_size;
     int num = file_size / sizeof(struct player_moves);
     struct player_moves data[num];
@@ -65,7 +65,7 @@ void read_file() {
         printf("Player: %s\n", data[i].name);
         printf("Card: %s\n", data[i].card);
         printf("Move: %c\n", data[i].move);
-        printf("Winnings: %d\n\n", data[i].winning);
+        printf("Winnings: %d\n\n", data[i].winnings);
     }
     close(player_log_dat);
 }

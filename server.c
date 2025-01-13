@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <sys/ipc.h>
 #include <sys/sem.h>
+#include <signal.h>
 #include "card.h"
 #include "deck.h"
 #include "server.h"
@@ -17,6 +18,30 @@ union semun {
    unsigned short  *array;  /* Array for GETALL, SETALL */
    struct seminfo  *__buf;  /* Buffer for IPC_INFO (Linux-specific) */
 };
+
+static int to_client_fd;
+
+static void sigint_handler(int sig) {
+    printf("Exiting game.\n");
+    int semd = semget(KEY, 1, 0);
+    if (semd == -1) {
+        perror("Failed to get semaphore");
+        exit(1);
+    }
+
+    if (semctl(semd, IPC_RMID, 0) == -1) {
+        perror("Failed to remove semaphore");
+        exit(1);
+    }
+    exit(0);
+}
+
+static void sigalrm_handler(int sig) {
+    int timeout_game_over = -20;
+    write(to_client_fd, &timeout_game_over, sizeof(timeout_game_over));
+    exit(0);
+}
+
 int main() {
 	int to_client;
 	int from_client;
@@ -167,7 +192,7 @@ void play(int to_client, int from_client) {
 		exit(1);
 	}  //get ready to read dealers second card
 	
-	if (write(to_client, dealer_second, sizeof(struct card_node)); == -1) {
+	if (write(to_client, dealer_second, sizeof(struct card_node)) == -1) {
 		perror("error writing dealer's second card");
 		exit(1);
 	} // dealers second card;
