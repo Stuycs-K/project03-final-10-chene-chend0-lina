@@ -22,7 +22,7 @@ int main() {
 	int from_client;
 	int semd;
 	union semun s;
-
+	create_file();
 	semd = semget(KEY, 1, IPC_CREAT | IPC_EXCL | 0666);
 	if (semd == -1) {
 		perror("Failed to create semaphore");
@@ -39,16 +39,21 @@ int main() {
 		if (pid == 0) { 
 			int to_client;
 			int client_pid;
+			int check_server = 0;
 			server_handshake(&to_client, from_client, &client_pid);
+			if (write(to_client, &check_server, sizeof(check_server)) == -1) {
+				break;
+			}
 			while(1) {
 				play(to_client, from_client);
 			}
 		}
-		if (pid > 0) {
+		else if (pid > 0) {
 			close(from_client);
 		}
 		else {
 			perror("forking subserver error");
+			exit(1);
 		}
 	}
 }
@@ -56,11 +61,6 @@ int main() {
 void play(int to_client, int from_client) {
 	to_client_fd = to_client;
 	signal(SIGALRM, sigalrm_handler);
-	/*
-	char client_pipe[20];
-	sprintf(client_pipe, "%d", client_pid);
-	strcat(client_pipe, "_fd");
-	*/
 	int card_value = 0;
 	int game_over = 0;
 	struct deck * _deck = initDeck(1);
@@ -77,6 +77,7 @@ void play(int to_client, int from_client) {
 	int dealer_blackjack;
 	if (write(to_client, &dealer_turn, sizeof(dealer_turn) ) == -1) {
 		perror("error writing dealer header");
+		exit(1);
 	} // knows to read dealer's card;
 	if (write(to_client, current, sizeof(struct card_node)) == -1) {
 		perror("error sending player face up card");
@@ -86,15 +87,23 @@ void play(int to_client, int from_client) {
 	dealer_total += current->face; //dealers second card
 	current = current->next;
 	int player_total = current->face;
-	write(to_client, &player_turn, sizeof(player_turn)); // know to read client's cards;
+	if (write(to_client, &player_turn, sizeof(player_turn)) == -1) {
+		perror("error sending player header");
+		exit(1);
+	} // know to read client's cards;
 	if (write(to_client, current, sizeof(struct card_node)) == -1) { // sends player first card;
 		perror("error sending player first card");
+		exit(1);
 	}
-	write(to_client, &player_turn, sizeof(player_turn));
+	if (write(to_client, &player_turn, sizeof(player_turn)) == -1) {
+		perror("error sending player header");
+		exit(1);
+	}
 	current = current->next;
 	player_total += current->face;
 	if (write(to_client, current, sizeof(struct card_node)) == -1) { // sends player second card;
 		perror("error sending player second card");
+		exit(1);
 	}
 	if (dealer_total == 21) {
 		dealer_blackjack = 1;
@@ -147,46 +156,75 @@ void play(int to_client, int from_client) {
 	}
 	
 	if (game_over) {
-		write(to_client, &lose_round, sizeof(lose_round));
+		if (write(to_client, &lose_round, sizeof(lose_round)) == -1) {
+			perror("error writing lose round");
+			exit(1);
+		}
 		return;
 	}
 	if (write(to_client, &dealer_turn, sizeof(dealer_turn) ) == -1) {
 		perror("error writing dealer header");
+		exit(1);
 	}  //get ready to read dealers second card
-	write(to_client, dealer_second, sizeof(struct card_node)); // dealers second card;
+	
+	if (write(to_client, dealer_second, sizeof(struct card_node)); == -1) {
+		perror("error writing dealer's second card");
+		exit(1);
+	} // dealers second card;
 
 	current = current->next;
 	while (dealer_total < 17 && current != NULL) {
 		dealer_total += current->face;
 		if (write(to_client, &dealer_turn, sizeof(dealer_turn) ) == -1) {
 			perror("error writing dealer header");
+			exit(1);
 		} // let client know to read card for dealer;
-		write(to_client, current, sizeof(struct card_node));
+		if (write(to_client, current, sizeof(struct card_node)) == -1) {
+			perror("error writing dealer card");
+			exit(1);
+		}
 		current = current->next;
 	}
 	// results
 	if (dealer_total > 21) {
-		write(to_client, &win_round, sizeof(win_round));
+		if (write(to_client, &win_round, sizeof(win_round)) == -1) {
+			perror("error writing win to client");
+			exit(0);
+		}
 		return;
 	}
 	if (player_total > dealer_total) {
-		write(to_client, &win_round, sizeof(win_round));
+		if (write(to_client, &win_round, sizeof(win_round)) == -1) {
+			perror("error writing win to client");
+			exit(0);
+		}
 		return;
 	}
 	if (dealer_total > player_total) {
-		write(to_client, &lose_round, sizeof(lose_round));
+		if (write(to_client, &lose_round, sizeof(lose_round)) == -1) {
+			perror("error writing lose round");
+			exit(1);
+		}
 		return;
 	}
 	if (!player_blackjack && !dealer_blackjack && dealer_total == player_total) {
-		write(to_client, &tie_round, sizeof(tie_round));
+		if (write(to_client, &tie_round, sizeof(tie_round)) == -1) {
+			perror("error writing tie round");
+		}
 		return;
 	}
 	if (!player_blackjack && dealer_blackjack) {
-		write(to_client, &lose_round, sizeof(lose_round));
+		if (write(to_client, &lose_round, sizeof(lose_round)) == -1) {
+			perror("error writing lose round");
+			exit(1);
+		}
 		return;
 	}
 	if (player_blackjack && !dealer_blackjack) {
-		write(to_client, &win_round, sizeof(win_round));
+		if (write(to_client, &win_round, sizeof(win_round)) == -1) {
+			perror("error writing win to client");
+			exit(0);
+		}
 		return;
 	}
 	if (player_blackjack && dealer_blackjack) {

@@ -31,7 +31,7 @@ void write_file(char * name, char * card, char move, int winnings ) {
 
     if (semop(semd, &sb, 1) == -1) {
         perror("Failed to lock semaphore");
-        return 1;
+        exit(1);
     }
     struct player_moves curr;
     strcpy(curr.name, name);
@@ -41,12 +41,13 @@ void write_file(char * name, char * card, char move, int winnings ) {
     FILE *player_log = fopen("player_log.dat", "a+");
     if (fwrite(&player_log, sizeof(struct player_moves), 1, player_log) == -1) {
         perror("Write to log file failed");
+        exit(1);
     }
     fclose(player_log);
     sb.sem_op = 1;
     if (semop(semd, &sb, 1) == -1) {
         perror("Failed to unlock semaphore");
-        return 1;
+        exit(1);
     }
 
 

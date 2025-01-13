@@ -9,11 +9,10 @@
 #include <sys/sem.h>
 #define KEY 102934
 
-/*
 extern int to_client_fd; 
 
-static void sigint_handler(int sig) { // on server side?
-    printf("Exiting game.");
+static void sigint_handler(int sig) { // on client side
+    printf("Exiting game.\n");
     int semd = semget(KEY, 1, 0);
     if (semd == -1) {
         perror("Failed to get semaphore");
@@ -32,7 +31,6 @@ static void sigalrm_handler(int sig) {
     write(to_client_fd, &timeout_game_over, sizeof(timeout_game_over));
     exit(0);
 }
-*/
 
 void sigint_client(int sig) {
 	if (sig != SIGINT) {

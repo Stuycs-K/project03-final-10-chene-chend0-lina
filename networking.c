@@ -7,6 +7,7 @@
 #include <errno.h>
 #include <sys/types.h>
 #include <time.h>
+#include <sys/time.h>
 #include <sys/wait.h>
 #include "networking.h"
 #define READ 0
@@ -27,7 +28,7 @@ int server_setup() {
   return from_client;
 }
 
-int server_handshake(int *to_client, int from_client, int * client_pid) {
+int server_handshake(int *to_client, int from_client, int* client_pid) {
   char client_pipe[256];
   if (read(from_client, client_pipe, sizeof(client_pipe)) <= 0) {
     perror("error reading client pipe name");
@@ -35,7 +36,7 @@ int server_handshake(int *to_client, int from_client, int * client_pid) {
     exit(1);
   }
 
-   *client_pid = atoi(client_pipe); 
+  *client_pid = atoi(client_pipe);
 
   *to_client = open(client_pipe, O_WRONLY);
   if (*to_client == -1) {
