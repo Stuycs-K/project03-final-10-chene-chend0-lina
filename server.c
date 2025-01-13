@@ -7,8 +7,10 @@
 #include "deck.h"
 #include "server.h"
 #include "networking.h"
+#include <signal.h>
 #include "log.h"
 #include "sigs.h"
+#include <errno.h>
 #define KEY 102934
 
 union semun {
@@ -17,6 +19,14 @@ union semun {
    unsigned short  *array;  /* Array for GETALL, SETALL */
    struct seminfo  *__buf;  /* Buffer for IPC_INFO (Linux-specific) */
 };
+int to_client_fd;
+
+static void sigalrm_handler(int sig) {
+    int timeout_game_over = -20;
+    write(to_client_fd, &timeout_game_over, sizeof(timeout_game_over));
+    exit(0);
+}
+
 int main() {
 	int to_client;
 	int from_client;
@@ -25,8 +35,17 @@ int main() {
 	create_file();
 	semd = semget(KEY, 1, IPC_CREAT | IPC_EXCL | 0666);
 	if (semd == -1) {
-		perror("Failed to create semaphore");
-		return 1;
+		if (errno == EEXIST) {
+			semd = semget(KEY, 1, 0);
+			if (semd != -1) {
+				semctl(semd, 0, IPC_RMID);
+			}
+			semd = semget(KEY, 1, IPC_CREAT | IPC_EXCL | 0666);
+			if (semd == -1) {
+				perror("Failed to recreate semaphore");
+				return 1;
+			}
+		}
 	}
 	s.val = 1;
 	if (semctl(semd, 0, SETVAL, s) == -1) {
@@ -66,7 +85,7 @@ void play(int to_client, int from_client) {
 	struct deck * _deck = initDeck(1);
 	//shuffle card
 	struct card_node * current = _deck->cards;
-	int dealer_total = current->face;
+	int dealer_total = calcCard(current);;
 	int dealer_turn = -11;
 	int player_turn = -10;
 	int make_move = -12;
@@ -84,9 +103,9 @@ void play(int to_client, int from_client) {
 	}
 	current = current->next;
 	struct card_node * dealer_second = current;
-	dealer_total += current->face; //dealers second card
+	dealer_total += calcCard(current); //dealers second card
 	current = current->next;
-	int player_total = current->face;
+	int player_total = calcCard(current);
 	if (write(to_client, &player_turn, sizeof(player_turn)) == -1) {
 		perror("error sending player header");
 		exit(1);
@@ -100,7 +119,7 @@ void play(int to_client, int from_client) {
 		exit(1);
 	}
 	current = current->next;
-	player_total += current->face;
+	player_total += calcCard(current);
 	if (write(to_client, current, sizeof(struct card_node)) == -1) { // sends player second card;
 		perror("error sending player second card");
 		exit(1);
@@ -136,7 +155,7 @@ void play(int to_client, int from_client) {
 		}
 		alarm(0);
 		if (move == 'h') {
-			player_total += current->face;
+			player_total += calcCard(current);
 			
 		}
 		else if (move == 's') {
@@ -167,14 +186,14 @@ void play(int to_client, int from_client) {
 		exit(1);
 	}  //get ready to read dealers second card
 	
-	if (write(to_client, dealer_second, sizeof(struct card_node)); == -1) {
+	if (write(to_client, dealer_second, sizeof(struct card_node)) == -1) {
 		perror("error writing dealer's second card");
 		exit(1);
 	} // dealers second card;
 
 	current = current->next;
 	while (dealer_total < 17 && current != NULL) {
-		dealer_total += current->face;
+		dealer_total += calcCard(current);
 		if (write(to_client, &dealer_turn, sizeof(dealer_turn) ) == -1) {
 			perror("error writing dealer header");
 			exit(1);

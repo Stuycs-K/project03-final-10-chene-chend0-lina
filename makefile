@@ -4,14 +4,16 @@ compile all: client server
 
 client: test_client.o client.o card.o networking.o util.o
 	@gcc -o client test_client.o client.o card.o networking.o util.o
-server: server.o card.o deck.o networking.o
-	@gcc -o server server.o card.o deck.o networking.o
+server: server.o card.o deck.o networking.o log.o
+	@gcc -o server server.o card.o deck.o networking.o log.o
 
 connect: client
 	@./client
 serve: server
 	@./server
 
+log.o: log.c log.h
+	@gcc -c log.c
 test_client.o: test_client.c client.h card.h
 	@gcc -c test_client.c
 client.o: client.c client.h card.h util.h
