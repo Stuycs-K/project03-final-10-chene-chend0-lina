@@ -25,7 +25,7 @@ void write_stuff() {
 	buf = -12;
 	fwrite(&buf, sizeof(int), 1, output);
 
-	buf = -13;
+	buf = -14;
 	fwrite(&buf, sizeof(int), 1, output);
 	fclose(output);
 }

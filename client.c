@@ -58,6 +58,31 @@ struct card_node * fetch_card(int in) {
 	return ret;
 }
 
+void endResults(struct card_node *dealer_hand, struct card_node *player_hand){
+	int dealer_score = calcHand(dealer_hand);
+	int player_score = calcHand(player_hand);
+
+	printf("\n=== END RESULTS ===\n");
+	printf("\n Dealer's Score: %d\n",dealer_score);
+	printHandAscii(dealer_hand);
+	printf("\n Player's Score: %d\n",player_score);
+	printHandAscii(player_hand);
+	
+	if (isBust(player_hand)){
+		printf("\nYou busted! Dealer wins.\n");
+	}
+	else if (dealer_score > 21 || player_score > dealer_score){
+		printf("\nYou win!\n");
+	}
+	else if (dealer_score > player_score){
+		printf("\nDealer wins!\n");
+	}
+	else {
+		printf("\nDraw!\n");
+	}
+
+}
+
 enum Move read_move() {
 	// reads move
 	enum Move ret = NO_MOVE;
@@ -102,6 +127,7 @@ void play(int in, int out) {
 	struct card_node *player_hand = NULL;
 	struct card_node *dealer_hand = NULL;
 	char active = 1;
+	int reveal_dealer = 0; // 1 if yes
 	int buf;
 	// display
 	while (active) {
@@ -113,37 +139,28 @@ void play(int in, int out) {
 				dealer_hand = append_card(dealer_hand, fetch_card(in));
 				break;
 			case -12:
-				// printf("\n=== BLACKJACK ===\n");
-				// printf("\n");
-				// printTable("Dealer", dealer_hand);
-				// printTable("Player", player_hand);
-				printTable(dealer_hand, player_hand);
+				reveal_dealer = 1;
+				printTable(dealer_hand, player_hand,reveal_dealer);
 				send_move(read_move(), out);
 				break;
 			case -13:
-				// printf("\n=== BLACKJACK ===\n");
 				active = 0;
-				// printTable("Dealer", dealer_hand);
-				// printTable("Player", player_hand);
-				printTable(dealer_hand, player_hand);
-				printf("You win!");
+				printTable(dealer_hand, player_hand,reveal_dealer);
+				// printf("You win!");
+				endResults(dealer_hand, player_hand);
 				break;
 			case -14:
-				// printf("\n=== BLACKJACK ===\n");
 				active = 0;
-				// printTable("Dealer", dealer_hand);
-				// printTable("Player", player_hand);
-				printTable(dealer_hand, player_hand);
-				printf("You lose!");
+				printTable(dealer_hand, player_hand,reveal_dealer);
+				// printf("You lose!");
+				endResults(dealer_hand, player_hand);
 				break;
 			default:
 				fprintf(stderr, "WARNING: UNKNOWN COMMAND ID %d (%x)\n", buf, buf);
 		}
 	}
-	/* TODO
-	free_list(player_hand);
-	free_list(dealer_hand);
-	*/
+	freeHand(player_hand);
+	freeHand(dealer_hand);
 }
 
 void logs() {

@@ -33,8 +33,9 @@ struct card_node * append_card(struct card_node * original, struct card_node * e
 int calcHand(struct card_node *hand); // inc ace
 void addCardToHand(struct card_node **hand, struct card_node *card);
 void printHand(struct card_node *hand);
+void printHandAscii(struct card_node *hand);
 void freeHand(struct card_node *hand);
-void printTable(struct card_node *dealer_hand, struct card_node *player_hand);
+void printTable(struct card_node *dealer_hand, struct card_node *player_hand, int reveal_dealer);
 
 // utility
 void printCard(struct card_node *card);
@@ -42,7 +43,5 @@ void printCard(struct card_node *card);
 // blackjack specific
 int isBlackjack(struct card_node *hand); // return 1 if ace + 10/face
 int isBust(struct card_node *hand); // return 1 if hand > 21
-
-// struct card_node* insert(struct card_node *deck, int face, int suit);
 
 #endif
