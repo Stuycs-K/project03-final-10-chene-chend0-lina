@@ -2,7 +2,7 @@
 
 This document must be updated daily by EACH group member.
 
-## Player 1
+## Player 1 -- Elizabeth Chen
 
 ### 2024-01-06 - Implemented file log writing and sighandler for sigalrm
 Expanded description including how much time was spent on task.
