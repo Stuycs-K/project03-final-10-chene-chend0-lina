@@ -2,8 +2,8 @@
 
 compile all: client server
 
-client: test_client.o client.o card.o networking.o util.o sigs.o
-	@gcc -o client test_client.o client.o card.o networking.o util.o sigs.o
+client: client.o card.o log.o networking.o util.o sigs.o
+	@gcc -o client client.o card.o log.o networking.o util.o sigs.o
 server: server.o card.o deck.o log.o networking.o
 	@gcc -o server server.o card.o deck.o log.o networking.o
 

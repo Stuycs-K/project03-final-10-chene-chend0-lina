@@ -5,11 +5,13 @@
 #include <errno.h>
 #include "card.h"
 #include "client.h"
+#include "log.h"
+#include "networking.h"
 #include "sigs.h"
 #include "util.h"
 
 void displayIntro() {
-	printf("\n\n****\nWIP\n****\n\n");
+	printf("\n\n****\nBlackjack\n\nTry to get a score of 21, but no higher!\nFace cards are worth 10 points, and the Ace is worth 1 or 11 depending on what benefits you.\nHit to draw a new card, Stand to let the dealer draw.\n****\n\n");
 }
 
 enum Action {
@@ -134,6 +136,8 @@ void play(int in, int out) {
 	// display
 	while (active) {
 		switch(buf = fetch_int(in)) {
+			case 0:
+				break;
 			case -10:
 				player_hand = append_card(player_hand, fetch_card(in));
 				break;
@@ -166,7 +170,7 @@ void play(int in, int out) {
 }
 
 void logs() {
-	printf("<effectively cats the results file... tempted to actually just cat it>\n");
+	read_file();
 }
 
 void client(int in, int out) {
@@ -184,4 +188,12 @@ void client(int in, int out) {
 				return;
 		}
 	}
+}
+
+int main(void) {
+	int out = -1;
+	// "online-only DRM"
+	printf("Connecting to server...\n");
+	int in = client_handshake(&out);
+	client(in, out);
 }

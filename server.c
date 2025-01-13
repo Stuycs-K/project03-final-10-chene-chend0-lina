@@ -4,6 +4,7 @@
 #include <sys/ipc.h>
 #include <sys/sem.h>
 #include <signal.h>
+#include <errno.h>
 #include "card.h"
 #include "deck.h"
 #include "server.h"
@@ -22,7 +23,8 @@ union semun {
 static int to_client_fd;
 
 static void sigint_handler(int sig) {
-    printf("Exiting game.\n");
+    printf("Exiting game server.\n");
+    remove(WKP);
     int semd = semget(KEY, 1, 0);
     if (semd == -1) {
         perror("Failed to get semaphore");
@@ -43,13 +45,14 @@ static void sigalrm_handler(int sig) {
 }
 
 int main() {
+	signal(SIGINT, sigint_handler);
 	int to_client;
 	int from_client;
 	int semd;
 	union semun s;
 	create_file();
 	semd = semget(KEY, 1, IPC_CREAT | IPC_EXCL | 0666);
-	if (semd == -1) {
+	if (semd == -1 && errno != EEXIST) {
 		perror("Failed to create semaphore");
 		return 1;
 	}
@@ -67,6 +70,7 @@ int main() {
 			int check_server = 0;
 			server_handshake(&to_client, from_client, &client_pid);
 			if (write(to_client, &check_server, sizeof(check_server)) == -1) {
+				perror("NO-OP failed");
 				break;
 			}
 			while(1) {
