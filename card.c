@@ -37,35 +37,6 @@ int calcCard(struct card_node *current) {
   }
   return value;
 }
-int calcHand(struct card_node *hand){
-  int total = 0;
-  int aceCount = 0;
-  struct card_node *current = hand;
-  while (current){
-    // not ace, but keeps track
-    if (current->face == 0){
-      aceCount++;
-    }
-    else {
-      if (current->face > 9){
-        total += 10;
-      }
-      else {
-        total += current->face + 1;
-      }
-    }
-    current = current->next;
-  }
-  while (total+11 <= 21 && aceCount > 0){
-    total += 11;
-    aceCount--;
-  }
-  while (aceCount > 0){
-    total++;
-    aceCount--;
-  }
-  return total;
-}
 
 void addCardToHand(struct card_node **hand, struct card_node *card){
   if (!card) return;
