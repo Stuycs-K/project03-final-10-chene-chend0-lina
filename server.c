@@ -84,8 +84,10 @@ void play(int to_client, int from_client) {
 	int game_over = 0;
 	struct deck * _deck = initDeck(1);
 	//shuffle card
-	struct card_node * current = _deck->cards;
-	int dealer_total = calcCard(current);;
+	struct card_node * dealer_hand;
+	struct card_node * player_hand;
+	struct card_node * current = dealRandomCard(_deck); 
+	addCardToHand(dealer_hand, current);
 	int dealer_turn = -11;
 	int player_turn = -10;
 	int make_move = -12;
@@ -101,11 +103,11 @@ void play(int to_client, int from_client) {
 	if (write(to_client, current, sizeof(struct card_node)) == -1) {
 		perror("error sending player face up card");
 	}
-	current = current->next;
-	struct card_node * dealer_second = current;
-	dealer_total += calcCard(current); //dealers second card
-	current = current->next;
-	int player_total = calcCard(current);
+	
+	struct card_node * dealer_second = dealRandomCard(_deck); // keep track second card
+	addCardToHand(dealer_hand, dealer_second); //dealers second card
+	current = dealRandomCard(_deck);
+	addCardToHand(player_hand, current);
 	if (write(to_client, &player_turn, sizeof(player_turn)) == -1) {
 		perror("error sending player header");
 		exit(1);
@@ -118,59 +120,60 @@ void play(int to_client, int from_client) {
 		perror("error sending player header");
 		exit(1);
 	}
-	current = current->next;
-	player_total += calcCard(current);
+	current = dealRandomCard(_deck);
+	addCardToHand(player_hand, current);
 	if (write(to_client, current, sizeof(struct card_node)) == -1) { // sends player second card;
 		perror("error sending player second card");
 		exit(1);
 	}
+	int dealer_total = calcHand(dealer_hand);
+	int player_total = calcHand(player_hand);
 	if (dealer_total == 21) {
 		dealer_blackjack = 1;
 	}
-	current = current->next;
 	if (player_total == 21) { // have to figure out a way to account for player suit blackjack;
 		player_blackjack = 1;
 	}
 	else { 
+		current = dealRandomCard(_deck);
 		while (current != NULL && !game_over) {
-		
-		if (player_total > 21) {
-			// printf("You've bust! Turn over\n");
-			game_over = 1;
+			if (player_total > 21) {
+				// printf("You've bust! Turn over\n");
+				game_over = 1;
+				break;
+			}
 			
-			break;
-		}
-		
-		write(to_client, &make_move, sizeof(make_move)); // client knows to read card and make move
+			write(to_client, &make_move, sizeof(make_move)); // client knows to read card and make move
 
-		if (write(to_client, current, sizeof(struct card_node)) == -1) {
-			perror("error writing card to deck\n");
-			exit(1);
-		}
-		alarm(30);
-		char move;
-		if (read(from_client, &move, sizeof(move) <= 0)) {
-			perror("error reading player move to subserver\n");
-			break;
-		}
-		alarm(0);
-		if (move == 'h') {
-			player_total += calcCard(current);
-			
-		}
-		else if (move == 's') {
-			break;
-		}
-		if (player_total == 21) {
-			break;
-		}
-		if (player_total > 21) {
-			
-			game_over = 1;
-			
-			break;
-		}
-		current = current->next;
+			if (write(to_client, current, sizeof(struct card_node)) == -1) {
+				perror("error writing card to deck\n");
+				exit(1);
+			}
+			alarm(30);
+			char move;
+			if (read(from_client, &move, sizeof(move) <= 0)) {
+				perror("error reading player move to subserver\n");
+				break;
+			}
+			alarm(0);
+			if (move == 'h') {
+				addCardToHand(player_hand, current);
+				player_total = calcHand(player_hand);
+				
+			}
+			else if (move == 's') {
+				break;
+			}
+			if (player_total == 21) {
+				break;
+			}
+			if (player_total > 21) {
+				
+				game_over = 1;
+				
+				break;
+			}
+			current = dealRandomCard(_deck);
 		}	
 	}
 	
@@ -191,9 +194,9 @@ void play(int to_client, int from_client) {
 		exit(1);
 	} // dealers second card;
 
-	current = current->next;
+	current = dealRandomCard(_deck);
 	while (dealer_total < 17 && current != NULL) {
-		dealer_total += calcCard(current);
+		addCardToHand(dealer_hand, current);
 		if (write(to_client, &dealer_turn, sizeof(dealer_turn) ) == -1) {
 			perror("error writing dealer header");
 			exit(1);
@@ -202,7 +205,7 @@ void play(int to_client, int from_client) {
 			perror("error writing dealer card");
 			exit(1);
 		}
-		current = current->next;
+		dealer_total = calcHand(dealer_hand);
 	}
 	// results
 	if (dealer_total > 21) {
