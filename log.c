@@ -13,6 +13,12 @@
 #include <sys/sem.h>
 #define KEY 102934
 
+int err() {
+    printf("errno %d\n", errno);
+    printf("%s\n", strerror(errno));
+    exit(1);
+}
+
 void create_file() {
     int log_file = open("player_log.dat", O_WRONLY | O_APPEND | O_CREAT, 0666);
     close(log_file);

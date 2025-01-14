@@ -15,6 +15,7 @@ void freeCard(struct card_node *card){
   }
 }
 
+
 int calcHand(struct card_node *hand){
   int total = 0;
   int aceCount = 0;

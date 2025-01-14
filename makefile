@@ -2,10 +2,10 @@
 
 compile all: client server
 
-client: client.o card.o log.o networking.o util.o sigs.o
-	@gcc -o client client.o card.o log.o networking.o util.o sigs.o
-server: server.o card.o deck.o log.o networking.o
-	@gcc -o server server.o card.o deck.o log.o networking.o
+client: test_client.o client.o card.o networking.o util.o sigs.o
+	@gcc -o client test_client.o client.o card.o networking.o util.o sigs.o
+server: server.o card.o deck.o networking.o log.o
+	@gcc -o server server.o card.o deck.o networking.o log.o
 
 run:
 	@printf "Please run \`make serve\` and \`make connect\`.\n"
@@ -14,6 +14,8 @@ connect: client
 serve: server
 	@./server
 
+log.o: log.c log.h
+	@gcc -c log.c
 test_client.o: test_client.c client.h card.h
 	@gcc -c test_client.c
 client.o: client.c client.h card.h util.h
