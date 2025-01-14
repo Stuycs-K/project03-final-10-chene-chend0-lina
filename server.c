@@ -176,7 +176,9 @@ void play(int to_client, int from_client) {
 				break;
 			}
 			
-			write(to_client, &make_move, sizeof(make_move)); // client knows to make move
+			if (write(to_client, &make_move, sizeof(make_move)) == -1) {
+				perror("error sending player move header");
+			} // client knows to make move
 
 			/*
 			if (write(to_client, current, sizeof(struct card_node)) == -1) {
