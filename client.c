@@ -5,11 +5,13 @@
 #include <errno.h>
 #include "card.h"
 #include "client.h"
+#include "log.h"
+#include "networking.h"
 #include "sigs.h"
 #include "util.h"
 
 void displayIntro() {
-	printf("\n\n****\nWIP\n****\n\n");
+	printf("\n\n****\nBlackjack\n\nTry to get a score of 21, but no higher!\nFace cards are worth 10 points, and the Ace is worth 1 or 11 depending on what benefits you.\nHit to draw a new card, Stand to let the dealer draw.\n****\n\n");
 }
 
 enum Action {
@@ -46,12 +48,6 @@ enum Action readMainMenu() {
 	return ret;
 }
 
-void print_hand(const char *name, struct card_node *card) {
-	printf("%s:\n", name);
-	printHand(card);
-	printf("=====\n");
-}
-
 int fetch_int(int in) {
 	int ret;
 	safe_read(in, &ret, sizeof(int));
@@ -64,6 +60,31 @@ struct card_node * fetch_card(int in) {
 	safe_read(in, ret, sizeof(struct card_node));
 	ret->next = NULL;  // should not dereference arbitrary pointers!
 	return ret;
+}
+
+void endResults(struct card_node *dealer_hand, struct card_node *player_hand){
+	int dealer_score = calcHand(dealer_hand);
+	int player_score = calcHand(player_hand);
+
+	printf("\n=== END RESULTS ===\n");
+	printf("\n Dealer's Score: %d\n",dealer_score);
+	printHandAscii(dealer_hand);
+	printf("\n Player's Score: %d\n",player_score);
+	printHandAscii(player_hand);
+	
+	if (isBust(player_hand)){
+		printf("\nYou busted! Dealer wins.\n");
+	}
+	else if (dealer_score > 21 || player_score > dealer_score){
+		printf("\nYou win!\n");
+	}
+	else if (dealer_score > player_score){
+		printf("\nDealer wins!\n");
+	}
+	else {
+		printf("\nDraw!\n");
+	}
+
 }
 
 enum Move read_move() {
@@ -105,27 +126,18 @@ void send_move(enum Move m, int out) {
 	safe_write(out, &buf, sizeof(buf));
 }
 
-// TODO: conference with card.c
-struct card_node * append_card(struct card_node * original, struct card_node * end) {
-	if (!original)
-		return end;
-	struct card_node *buf = original;
-	while (buf->next)
-		buf = original->next;
-	buf->next = end;
-	end->next = NULL;   // redundant but good to be safe
-	return original;
-}
-
 void play(int in, int out) {
 	// char as temporary type
 	struct card_node *player_hand = NULL;
 	struct card_node *dealer_hand = NULL;
 	char active = 1;
+	int reveal_dealer = 0; // 1 if yes
 	int buf;
 	// display
 	while (active) {
 		switch(buf = fetch_int(in)) {
+			case 0:
+				break;
 			case -10:
 				player_hand = append_card(player_hand, fetch_card(in));
 				break;
@@ -133,35 +145,32 @@ void play(int in, int out) {
 				dealer_hand = append_card(dealer_hand, fetch_card(in));
 				break;
 			case -12:
-				printf("\n");
-				print_hand("Dealer", dealer_hand);
-				print_hand("Player", player_hand);
+				reveal_dealer = 1;
+				printTable(dealer_hand, player_hand,reveal_dealer);
 				send_move(read_move(), out);
 				break;
 			case -13:
 				active = 0;
-				print_hand("Dealer", dealer_hand);
-				print_hand("Player", player_hand);
-				printf("You win!");
+				printTable(dealer_hand, player_hand,reveal_dealer);
+				// printf("You win!");
+				endResults(dealer_hand, player_hand);
 				break;
 			case -14:
 				active = 0;
-				print_hand("Dealer", dealer_hand);
-				print_hand("Player", player_hand);
-				printf("You lose!");
+				printTable(dealer_hand, player_hand,reveal_dealer);
+				// printf("You lose!");
+				endResults(dealer_hand, player_hand);
 				break;
 			default:
 				fprintf(stderr, "WARNING: UNKNOWN COMMAND ID %d (%x)\n", buf, buf);
 		}
 	}
-	/* TODO
-	free_list(player_hand);
-	free_list(dealer_hand);
-	*/
+	freeHand(player_hand);
+	freeHand(dealer_hand);
 }
 
 void logs() {
-	printf("<effectively cats the results file... tempted to actually just cat it>\n");
+	read_file();
 }
 
 void client(int in, int out) {
@@ -179,4 +188,12 @@ void client(int in, int out) {
 				return;
 		}
 	}
+}
+
+int main(void) {
+	int out = -1;
+	// "online-only DRM"
+	printf("Connecting to server...\n");
+	int in = client_handshake(&out);
+	client(in, out);
 }
