@@ -13,6 +13,7 @@
 #include "log.h"
 #include "sigs.h"
 #include <errno.h>
+#include "util.h"
 #define KEY 102934
 
 union semun {
@@ -84,8 +85,10 @@ int main() {
 				perror("NO-OP failed");
 				break;
 			}
+			char name[50];
+			safe_read(from_client, name, sizeof(name));
 			while(1) {
-				play(to_client, from_client);
+				play(to_client, from_client, char * name);
 			}
 		}
 		else if (pid > 0) {
@@ -111,7 +114,7 @@ void send_card(int to_client, struct card_node *current) {
 	}
 }
 
-void play(int to_client, int from_client) {
+void play(int to_client, int from_client, char * name) {
 	to_client_fd = to_client;
 	signal(SIGALRM, sigalrm_handler);
 	int card_value = 0;
