@@ -168,13 +168,26 @@ void logs() {
 	read_file();
 }
 
+char * readName() {
+	char *name = NULL;
+	size_t size;
+	printf("\nEnter your name: ");
+	fflush(stdout);
+	safe_getline(&name, &size, stdin);
+	if (size > 49)
+		printf("Warning: cutoff");
+	name[49] = '\0';
+	return name;
+}
+
 void client(int in, int out) {
 	signal(SIGINT, sigint_client);
 	displayIntro();
+	char * name = readName();
 	while (1) {
 		switch (readMainMenu()) {
 			case PLAY:
-				play(in, out);
+				play(in, out, name);
 				break;
 			case LOGS:
 				logs();
@@ -183,6 +196,8 @@ void client(int in, int out) {
 				return;
 		}
 	}
+	// will never actually run but hey might as well
+	free(name);
 }
 
 int main(void) {
