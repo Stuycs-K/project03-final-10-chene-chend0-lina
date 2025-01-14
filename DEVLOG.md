@@ -120,3 +120,6 @@ Worked on the printing functions, including printing the hands for the cards. If
 In class, computer almost died, so will update card.h at home. Updated README with instructions on current code, need to update current WIP.
 
 At home, reviewed David's updated code, and worked on implementing the log for player. Fixed minor bugs in log.c, and worked on creating a reset log function.
+
+### 2025-01-13 - Reworking Logs
+In class, worked on re-adding yesterday's log code after the revert to previous commit. Decided to change log to represent game wins only, not cards. Updated writefile and other log functions to match new function.
