@@ -24,7 +24,7 @@ void create_file() {
     close(log_file);
 }
 
-void write_file(char * name, char * card, char move, int winnings ) {
+void write_file(char * name, char * result) {
     int semd;
     semd = semget(KEY, 1, 0);
     if (semd == -1) {
@@ -41,9 +41,7 @@ void write_file(char * name, char * card, char move, int winnings ) {
     }
     struct player_moves curr;
     strcpy(curr.name, name);
-    strcpy(curr.card, card);
-    curr.move = move;
-    curr.winnings = winnings;
+    strcpy(curr.result, result);
     FILE *player_log = fopen("player_log.dat", "a+");
     if (fwrite(&curr, sizeof(struct player_moves), 1, player_log) == -1) {
         perror("Write to log file failed");
@@ -68,10 +66,8 @@ void read_file() {
     int player_log_dat = open("./player_log.dat", O_RDONLY, 0);
     for (int i = 0; i < num; i++) {
         if (read(player_log_dat, &data[i], sizeof(struct player_moves)) == -1) err();
-        printf("Player: %s\n", data[i].name);
-        printf("Card: %s\n", data[i].card);
-        printf("Move: %c\n", data[i].move);
-        printf("Winnings: %d\n\n", data[i].winnings);
+        // change to [player name] won/lost
+        printf("Player: %s %s\n", data[i].name, data[i].result);
     }
     close(player_log_dat);
 }
