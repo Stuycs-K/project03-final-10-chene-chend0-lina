@@ -45,7 +45,7 @@ void write_file(char * name, char * card, char move, int winnings ) {
     curr.move = move;
     curr.winnings = winnings;
     FILE *player_log = fopen("player_log.dat", "a+");
-    if (fwrite(&player_log, sizeof(struct player_moves), 1, player_log) == -1) {
+    if (fwrite(&curr, sizeof(struct player_moves), 1, player_log) == -1) {
         perror("Write to log file failed");
         exit(1);
     }
@@ -74,4 +74,13 @@ void read_file() {
         printf("Winnings: %d\n\n", data[i].winnings);
     }
     close(player_log_dat);
+}
+
+void reset_log_file(){
+    int log_file = open("player_log.dat", O_WRONLY | O_TRUNC, 0666);
+    if (log_file == 1){
+        perror("could not truncate log file");
+        exit(1);
+    }
+    close(log_file);
 }
