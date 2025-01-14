@@ -15,28 +15,7 @@ void freeCard(struct card_node *card){
   }
 }
 
-int calcCard(struct card_node *current) {
-  int value = 0;
-  int aceCount = 0;
-  if (current->face == 0){
-      aceCount++;
-  }
-  else {
-    if (current->face > 9){
-      value += 10;
-    }
-    else {
-      value += current->face + 1;
-    }
-  }
-  if (value+11 <= 21 && aceCount > 0) {
-    value += 11;
-  }
-  else if (aceCount > 0){
-    value++;
-  }
-  return value;
-}
+
 int calcHand(struct card_node *hand){
   int total = 0;
   int aceCount = 0;
@@ -76,9 +55,70 @@ void addCardToHand(struct card_node **hand, struct card_node *card){
 void printHand(struct card_node *hand){
   struct card_node *current = hand;
   while (current){
-    printf("%s of %s\n",faces[current->face],suits[current->suit]);
+    printf("%s%s ",faces[current->face],suits[current->suit]);
     current = current->next;
   }
+}
+
+void printHandAscii(struct card_node *hand){
+  struct card_node *current = hand;
+  while (current) { printf("┌───────┐"); current = current->next; }
+  printf("\n");
+
+  current = hand;
+  while (current) {
+    printf("│%-2s     │", faces[current->face]);
+    current = current->next;
+  }
+  printf("\n");
+
+  current = hand;
+  while (current) {
+    printf("│   %s   │", suits[current->suit]);
+    current = current->next;
+  }
+  printf("\n");
+
+  current = hand;
+  while (current) {
+    printf("│     %-2s│", faces[current->face]);
+    current = current->next;
+  }
+  printf("\n");
+
+  current = hand;
+  while (current) {
+    printf("└───────┘");
+    current = current->next;
+  }
+  printf("\n");
+}
+
+void printTable(struct card_node *dealer_hand, struct card_node *player_hand, int reveal_dealer) {
+  printf("\n=== BLACKJACK ===\n");
+
+  int score = calcHand(dealer_hand);
+  if (reveal_dealer == 1){
+    printf("\nDealer Score: ???\n");
+    printf("┌───────┐ ┌───────┐\n");
+    printf("│%-2s     │ │░░░░░░░│\n", faces[dealer_hand->face]);
+    printf("│   %s   │ │░░░░░░░│\n", suits[dealer_hand->suit]);
+    printf("│     %-2s│ │░░░░░░░│\n", faces[dealer_hand->face]);
+    printf("└───────┘ └───────┘\n");
+  }
+  else {
+    printf("\nDealer Score: %d\n", score);
+    printHandAscii(dealer_hand);
+  }
+
+
+  printf("\n");
+
+  score = calcHand(player_hand);
+	printf("\nPlayer Score: %d\n", score);
+	printHandAscii(player_hand);
+
+	printf("\n\n");
 }
 
 void freeHand(struct card_node *hand){
@@ -117,10 +157,14 @@ int isBust(struct card_node *hand){
   }
 }
 
-// struct card_node* insert(struct card_node *deck, int face, int suit){
-//   struct card_node* newCard = createCard(face, suit, deck);
-//   if (newCard == NULL){
-//     return deck;
-//   }
-//   return newCard;
-// }
+// moved, makes more sense with card funcs
+struct card_node * append_card(struct card_node * original, struct card_node * end) {
+	if (!original)
+		return end;
+	struct card_node *buf = original;
+	while (buf->next)
+		buf = buf->next;
+	buf->next = end;
+	end->next = NULL;   // redundant but good to be safe
+	return original;
+}

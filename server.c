@@ -3,6 +3,8 @@
 #include <unistd.h>
 #include <sys/ipc.h>
 #include <sys/sem.h>
+#include <signal.h>
+#include <errno.h>
 #include "card.h"
 #include "deck.h"
 #include "server.h"
@@ -19,7 +21,24 @@ union semun {
    unsigned short  *array;  /* Array for GETALL, SETALL */
    struct seminfo  *__buf;  /* Buffer for IPC_INFO (Linux-specific) */
 };
-int to_client_fd;
+
+static int to_client_fd;
+
+static void sigint_handler(int sig) {
+    printf("Exiting game server.\n");
+    remove(WKP);
+    int semd = semget(KEY, 1, 0);
+    if (semd == -1) {
+        perror("Failed to get semaphore");
+        exit(1);
+    }
+
+    if (semctl(semd, IPC_RMID, 0) == -1) {
+        perror("Failed to remove semaphore");
+        exit(1);
+    }
+    exit(0);
+}
 
 static void sigalrm_handler(int sig) {
     int timeout_game_over = -20;
@@ -28,6 +47,7 @@ static void sigalrm_handler(int sig) {
 }
 
 int main() {
+	signal(SIGINT, sigint_handler);
 	int to_client;
 	int from_client;
 	int semd;
@@ -61,6 +81,7 @@ int main() {
 			int check_server = 0;
 			server_handshake(&to_client, from_client, &client_pid);
 			if (write(to_client, &check_server, sizeof(check_server)) == -1) {
+				perror("NO-OP failed");
 				break;
 			}
 			while(1) {
@@ -77,6 +98,19 @@ int main() {
 	}
 }
 
+void send_card(int to_client, struct card_node *current) {
+	const int player_turn = -10;
+	if (write(to_client, &player_turn, sizeof(player_turn)) == -1) {
+		perror("error sending player header");
+		exit(1);
+	}
+	if (write(to_client, current, sizeof(struct card_node)) == -1) {
+		perror("error sending player card:");
+		printCard(current);
+		exit(1);
+	}
+}
+
 void play(int to_client, int from_client) {
 	to_client_fd = to_client;
 	signal(SIGALRM, sigalrm_handler);
@@ -84,16 +118,18 @@ void play(int to_client, int from_client) {
 	int game_over = 0;
 	struct deck * _deck = initDeck(1);
 	//shuffle card
-	struct card_node * current = _deck->cards;
-	int dealer_total = calcCard(current);;
+	struct card_node * dealer_hand = NULL;
+	struct card_node * player_hand = NULL;
+	struct card_node * current = dealRandomCard(_deck); 
+	addCardToHand(&dealer_hand, current);
 	int dealer_turn = -11;
 	int player_turn = -10;
 	int make_move = -12;
 	int win_round = -13;
 	int lose_round = -14;
 	int tie_round = -15;
-	int player_blackjack;
-	int dealer_blackjack;
+	int player_blackjack = 0;
+	int dealer_blackjack = 0;
 	if (write(to_client, &dealer_turn, sizeof(dealer_turn) ) == -1) {
 		perror("error writing dealer header");
 		exit(1);
@@ -101,11 +137,11 @@ void play(int to_client, int from_client) {
 	if (write(to_client, current, sizeof(struct card_node)) == -1) {
 		perror("error sending player face up card");
 	}
-	current = current->next;
-	struct card_node * dealer_second = current;
-	dealer_total += calcCard(current); //dealers second card
-	current = current->next;
-	int player_total = calcCard(current);
+	
+	struct card_node * dealer_second = dealRandomCard(_deck); // keep track second card
+	addCardToHand(&dealer_hand, dealer_second); //dealers second card
+	current = dealRandomCard(_deck);
+	addCardToHand(&player_hand, current);
 	if (write(to_client, &player_turn, sizeof(player_turn)) == -1) {
 		perror("error sending player header");
 		exit(1);
@@ -118,68 +154,60 @@ void play(int to_client, int from_client) {
 		perror("error sending player header");
 		exit(1);
 	}
-	current = current->next;
-	player_total += calcCard(current);
+	current = dealRandomCard(_deck);
+	addCardToHand(&player_hand, current);
 	if (write(to_client, current, sizeof(struct card_node)) == -1) { // sends player second card;
 		perror("error sending player second card");
 		exit(1);
 	}
+	int dealer_total = calcHand(dealer_hand);
+	int player_total = calcHand(player_hand);
 	if (dealer_total == 21) {
 		dealer_blackjack = 1;
 	}
-	current = current->next;
 	if (player_total == 21) { // have to figure out a way to account for player suit blackjack;
 		player_blackjack = 1;
 	}
-	else { 
+	else if (!dealer_blackjack) {
+		current = dealRandomCard(_deck);
 		while (current != NULL && !game_over) {
-		
-		if (player_total > 21) {
-			// printf("You've bust! Turn over\n");
-			game_over = 1;
+			if (player_total > 21) {
+				game_over = 1;
+				break;
+			}
 			
-			break;
-		}
-		
-		write(to_client, &make_move, sizeof(make_move)); // client knows to read card and make move
+			write(to_client, &make_move, sizeof(make_move)); // client knows to make move
 
-		if (write(to_client, current, sizeof(struct card_node)) == -1) {
-			perror("error writing card to deck\n");
-			exit(1);
+			/*
+			if (write(to_client, current, sizeof(struct card_node)) == -1) {
+				perror("error writing card to deck\n");
+				exit(1);
+			}
+			*/
+			alarm(30);
+			char move;
+			if (read(from_client, &move, sizeof(move)) <= 0) {
+				perror("error reading player move to subserver\n");
+				break;
+			}
+			alarm(0);
+			if (move == 'h') {
+				addCardToHand(&player_hand, current);
+				player_total = calcHand(player_hand);
+				send_card(to_client, current);
+			}
+			else if (move == 's') {
+				break;
+			}
+			if (player_total == 21) {
+				break;
+			}
+			if (player_total > 21) {
+				game_over = 1;
+				break;
+			}
+			current = dealRandomCard(_deck);
 		}
-		alarm(30);
-		char move;
-		if (read(from_client, &move, sizeof(move) <= 0)) {
-			perror("error reading player move to subserver\n");
-			break;
-		}
-		alarm(0);
-		if (move == 'h') {
-			player_total += calcCard(current);
-			
-		}
-		else if (move == 's') {
-			break;
-		}
-		if (player_total == 21) {
-			break;
-		}
-		if (player_total > 21) {
-			
-			game_over = 1;
-			
-			break;
-		}
-		current = current->next;
-		}	
-	}
-	
-	if (game_over) {
-		if (write(to_client, &lose_round, sizeof(lose_round)) == -1) {
-			perror("error writing lose round");
-			exit(1);
-		}
-		return;
 	}
 	if (write(to_client, &dealer_turn, sizeof(dealer_turn) ) == -1) {
 		perror("error writing dealer header");
@@ -190,19 +218,29 @@ void play(int to_client, int from_client) {
 		perror("error writing dealer's second card");
 		exit(1);
 	} // dealers second card;
-
-	current = current->next;
-	while (dealer_total < 17 && current != NULL) {
-		dealer_total += calcCard(current);
-		if (write(to_client, &dealer_turn, sizeof(dealer_turn) ) == -1) {
-			perror("error writing dealer header");
-			exit(1);
-		} // let client know to read card for dealer;
-		if (write(to_client, current, sizeof(struct card_node)) == -1) {
-			perror("error writing dealer card");
+	if (game_over) {
+		if (write(to_client, &lose_round, sizeof(lose_round)) == -1) {
+			perror("error writing lose round");
 			exit(1);
 		}
-		current = current->next;
+		return;
+	}
+
+	if (!(player_blackjack || dealer_blackjack)) {
+		current = dealRandomCard(_deck);
+		while (dealer_total < 17 && dealer_total <= player_total && current != NULL) {
+			addCardToHand(&dealer_hand, current);
+			if (write(to_client, &dealer_turn, sizeof(dealer_turn) ) == -1) {
+				perror("error writing dealer header");
+				exit(1);
+			} // let client know to read card for dealer;
+			if (write(to_client, current, sizeof(struct card_node)) == -1) {
+				perror("error writing dealer card");
+				exit(1);
+			}
+			dealer_total = calcHand(dealer_hand);
+			current = dealRandomCard(_deck);
+		}
 	}
 	// results
 	if (dealer_total > 21) {

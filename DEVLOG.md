@@ -60,7 +60,28 @@ Added calcCard to calculate the specific value of card with aces (1 or 11). Fixe
   - Built binaries are still in an unstable state, note that the client still uses a mocked file for testing at this time.
   - Fixed a few notable bugs (that prevented successful builds, or on first inspection might have been implemented incorrectly).
 
-### 2024-01-0X - PLACEHOLDER
+### 2025-01-10 - Post-Merge Stress
+- Reviewed the use of pipes in the server (5m).
+- Discussed next steps and extensions (5m).
+- Actually read some of the merged code, edited for SIGINT handling (25m).
+
+### 2025-01-13
+- Oops 2AM me didn't push after resolving various merge/build conflicts (edit: merged stuff!)
+  - Did another merge, read through everyone's code to get a sense for how things go together, began hooking things up (30m, it was after midnight so sure close enough).
+- Outlined video format (10m)
+  - (1) Standard playthrough of a single game
+     - Discuss underlying card data structure and randomization procedure
+     - Discuss the command-based communications protocol
+       - Discuss the handshaking mechanisms
+       - Discuss the command code structure
+  - (2) Simultaneous playthrough of multiple games
+     - Discuss forking of processes
+  - (3) Display of logs
+     - Discuss datastructure of logged events
+- Connected client to non-mocked server with actual random cards/outcomes, diagnosed and fixed misimplementations that impeded gameplay. (1 hr)
+
+
+### 2025-01-0X - PLACEHOLDER
 
 ## Player 3 -- Abigail Lin
 
