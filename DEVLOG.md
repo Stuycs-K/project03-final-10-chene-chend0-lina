@@ -38,6 +38,9 @@ In class, made the server into a persistent server by setting up new header and 
 
 ### 2024-01-12
 Added calcCard to calculate the specific value of card with aces (1 or 11). Fixed server to use calcCard to add card value. Debugged syntax errors and moved sigalrm_handler to server because of extern issue. Server also now removes semaphore if cannot get semaphore due to sigint on server(will probably need to do sigint handler) (1 hour)
+
+### 2024-01-13
+In class, rewrote server using methods from card.c and deck.c. (Class period) At home, fixed logic for calcCard, updated user interface with results, and modified data struct for log. (30 minutes)
 ## Player 2 -- David Chen
 
 ### 2024-01-06 - Beginning layouts
