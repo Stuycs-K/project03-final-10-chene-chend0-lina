@@ -54,11 +54,6 @@ int main() {
 	union semun s;
 	create_file();
 	semd = semget(KEY, 1, IPC_CREAT | IPC_EXCL | 0666);
-<<<<<<< HEAD
-	if (semd == -1 && errno != EEXIST) {
-		perror("Failed to create semaphore");
-		return 1;
-=======
 	if (semd == -1) {
 		if (errno == EEXIST) {
 			semd = semget(KEY, 1, 0);
@@ -71,7 +66,6 @@ int main() {
 				return 1;
 			}
 		}
->>>>>>> elizabeth
 	}
 	s.val = 1;
 	if (semctl(semd, 0, SETVAL, s) == -1) {
@@ -114,7 +108,7 @@ void play(int to_client, int from_client) {
 	struct card_node * dealer_hand;
 	struct card_node * player_hand;
 	struct card_node * current = dealRandomCard(_deck); 
-	addCardToHand(dealer_hand, current);
+	addCardToHand(&dealer_hand, current);
 	int dealer_turn = -11;
 	int player_turn = -10;
 	int make_move = -12;
@@ -132,9 +126,9 @@ void play(int to_client, int from_client) {
 	}
 	
 	struct card_node * dealer_second = dealRandomCard(_deck); // keep track second card
-	addCardToHand(dealer_hand, dealer_second); //dealers second card
+	addCardToHand(&dealer_hand, dealer_second); //dealers second card
 	current = dealRandomCard(_deck);
-	addCardToHand(player_hand, current);
+	addCardToHand(&player_hand, current);
 	if (write(to_client, &player_turn, sizeof(player_turn)) == -1) {
 		perror("error sending player header");
 		exit(1);
@@ -148,7 +142,7 @@ void play(int to_client, int from_client) {
 		exit(1);
 	}
 	current = dealRandomCard(_deck);
-	addCardToHand(player_hand, current);
+	addCardToHand(&player_hand, current);
 	if (write(to_client, current, sizeof(struct card_node)) == -1) { // sends player second card;
 		perror("error sending player second card");
 		exit(1);
@@ -184,7 +178,7 @@ void play(int to_client, int from_client) {
 			}
 			alarm(0);
 			if (move == 'h') {
-				addCardToHand(player_hand, current);
+				addCardToHand(&player_hand, current);
 				player_total = calcHand(player_hand);
 				
 			}
@@ -223,7 +217,7 @@ void play(int to_client, int from_client) {
 
 	current = dealRandomCard(_deck);
 	while (dealer_total < 17 && current != NULL) {
-		addCardToHand(dealer_hand, current);
+		addCardToHand(&dealer_hand, current);
 		if (write(to_client, &dealer_turn, sizeof(dealer_turn) ) == -1) {
 			perror("error writing dealer header");
 			exit(1);
