@@ -52,5 +52,8 @@ Mkfile.old
 dkms.conf
 
 main
+server
+client
 test_*
 *.fifo
+*.dat
