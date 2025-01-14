@@ -111,7 +111,7 @@ enum Move read_move() {
 		}
 		free(ptr);
 	}
-	return HIT;
+	return ret;
 }
 void send_move(enum Move m, int out) {
 	char buf = '\0';
@@ -150,15 +150,10 @@ void play(int in, int out) {
 				send_move(read_move(), out);
 				break;
 			case -13:
-				active = 0;
-				printTable(dealer_hand, player_hand,reveal_dealer);
-				// printf("You win!");
-				endResults(dealer_hand, player_hand);
-				break;
 			case -14:
+			case -15:
 				active = 0;
 				printTable(dealer_hand, player_hand,reveal_dealer);
-				// printf("You lose!");
 				endResults(dealer_hand, player_hand);
 				break;
 			default:

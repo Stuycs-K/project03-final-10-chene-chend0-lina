@@ -163,7 +163,7 @@ struct card_node * append_card(struct card_node * original, struct card_node * e
 		return end;
 	struct card_node *buf = original;
 	while (buf->next)
-		buf = original->next;
+		buf = buf->next;
 	buf->next = end;
 	end->next = NULL;   // redundant but good to be safe
 	return original;
