@@ -83,6 +83,9 @@ In class, rewrote server using methods from card.c and deck.c. (Class period) At
      - Discuss datastructure of logged events
 - Connected client to non-mocked server with actual random cards/outcomes, diagnosed and fixed misimplementations that impeded gameplay. (1 hr)
 
+### 2025-01-14
+- Oopsies someone committed to main and broke builds... cherry-picking the good commits to excise the bad one, then having everyone recreate/update their branches as needed. (15m)
+- Discussed the scope and design of the log file, modified protocol to support user name entry from the client (for use in the logs). (25m)
 
 ### 2025-01-0X - PLACEHOLDER
 
