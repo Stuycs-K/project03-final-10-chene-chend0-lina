@@ -14,13 +14,6 @@ void displayIntro() {
 	printf("\n\n****\nBlackjack\n\nTry to get a score of 21, but no higher!\nFace cards are worth 10 points, and the Ace is worth 1 or 11 depending on what benefits you.\nHit to draw a new card, Stand to let the dealer draw.\n****\n\n");
 }
 
-enum Action {
-	NONE,
-	PLAY,
-	LOGS,
-	QUIT
-};
-
 enum Action readMainMenu() {
 	char *ptr = NULL;
 	size_t size;
@@ -48,19 +41,22 @@ enum Action readMainMenu() {
 	return ret;
 }
 
+// ========
+// fetch relevant datatypes from the server
 int fetch_int(int in) {
 	int ret;
 	safe_read(in, &ret, sizeof(int));
 	return ret;
 }
 
+// WARNING: mallocs a buffer for the card
 struct card_node * fetch_card(int in) {
-	// WARNING: mallocs a buffer for the card
 	struct card_node * ret = malloc(sizeof(struct card_node));
 	safe_read(in, ret, sizeof(struct card_node));
 	ret->next = NULL;  // should not dereference arbitrary pointers!
 	return ret;
 }
+// ========
 
 void endResults(struct card_node *dealer_hand, struct card_node *player_hand){
 	int dealer_score = calcHand(dealer_hand);
@@ -87,8 +83,7 @@ void endResults(struct card_node *dealer_hand, struct card_node *player_hand){
 
 }
 
-enum Move read_move() {
-	// reads move
+enum Move read_move() {  // from stdin
 	enum Move ret = NO_MOVE;
 	char * ptr;
 	size_t size;
@@ -98,12 +93,15 @@ enum Move read_move() {
 		ptr = NULL;
 		safe_getline(&ptr, &size, stdin);
 		switch (ptr[0]) {
+			// allow aliases for case-insensitivity/intuitive features
 			case 'H':
 			case 'h':
+			case '1':
 				ret = HIT;
 				break;
 			case 'S':
 			case 's':
+			case '2':
 				ret = STAND;
 				break;
 			default:
@@ -113,9 +111,11 @@ enum Move read_move() {
 	}
 	return ret;
 }
-void send_move(enum Move m, int out) {
+
+void send_move(enum Move m, int out) {  // to server
 	char buf = '\0';
 	switch(m) {
+		// map moves to server-side chars
 		case HIT:
 			buf = 'h';
 			break;
@@ -126,31 +126,36 @@ void send_move(enum Move m, int out) {
 	safe_write(out, &buf, sizeof(buf));
 }
 
+// implementation of core gameplay loop
 void play(int in, int out) {
 	// char as temporary type
 	struct card_node *player_hand = NULL;
 	struct card_node *dealer_hand = NULL;
+
+	// booleans
 	char active = 1;
-	int reveal_dealer = 0; // 1 if yes
+	int reveal_dealer = 0;
+
 	int buf = 21;
 	// start game
 	safe_write(out, &buf, sizeof(buf));
 	// display
 	while (active) {
 		switch(buf = fetch_int(in)) {
-			case 0:
+			case 0:  // no-op, used for heartbeat pings
 				break;
-			case -10:
+			case -10:  // read player card
 				player_hand = append_card(player_hand, fetch_card(in));
 				break;
-			case -11:
+			case -11:  // read dealer card
 				dealer_hand = append_card(dealer_hand, fetch_card(in));
 				break;
-			case -12:
+			case -12:  // send player move
 				reveal_dealer = 1;
 				printTable(dealer_hand, player_hand,reveal_dealer);
 				send_move(read_move(), out);
 				break;
+			// win/lose/tie cases
 			case -13:
 			case -14:
 			case -15:
@@ -166,10 +171,7 @@ void play(int in, int out) {
 	freeHand(dealer_hand);
 }
 
-void logs() {
-	read_file();
-}
-
+// WARNING: mallocs a buffer (>= 50 chars, as it can be realloc()d by getline())
 void setName(int out) {
 	char *name = malloc(50*(sizeof(char)));
 	size_t size;
@@ -193,7 +195,7 @@ void client(int in, int out) {
 				play(in, out);
 				break;
 			case LOGS:
-				logs();
+				read_file();
 				break;
 			case QUIT:
 				return;
