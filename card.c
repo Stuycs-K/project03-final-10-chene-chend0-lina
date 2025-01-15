@@ -62,33 +62,33 @@ void printHand(struct card_node *hand){
 
 void printHandAscii(struct card_node *hand){
   struct card_node *current = hand;
-  while (current) { printf("┌───────┐"); current = current->next; }
+  while (current) { printf("┌─────┐"); current = current->next; }
   printf("\n");
 
   current = hand;
   while (current) {
-    printf("│%-2s     │", faces[current->face]);
+    printf("│%-2s   │", faces[current->face]);
     current = current->next;
   }
   printf("\n");
 
   current = hand;
   while (current) {
-    printf("│   %s   │", suits[current->suit]);
+    printf("│  %s  │", suits[current->suit]);
     current = current->next;
   }
   printf("\n");
 
   current = hand;
   while (current) {
-    printf("│     %-2s│", faces[current->face]);
+    printf("│   %-2s│", faces[current->face]);
     current = current->next;
   }
   printf("\n");
 
   current = hand;
   while (current) {
-    printf("└───────┘");
+    printf("└─────┘");
     current = current->next;
   }
   printf("\n");
@@ -100,11 +100,11 @@ void printTable(struct card_node *dealer_hand, struct card_node *player_hand, in
   int score = calcHand(dealer_hand);
   if (reveal_dealer == 1){
     printf("\nDealer Score: ???\n");
-    printf("┌───────┐ ┌───────┐\n");
-    printf("│%-2s     │ │░░░░░░░│\n", faces[dealer_hand->face]);
-    printf("│   %s   │ │░░░░░░░│\n", suits[dealer_hand->suit]);
-    printf("│     %-2s│ │░░░░░░░│\n", faces[dealer_hand->face]);
-    printf("└───────┘ └───────┘\n");
+    printf("┌─────┐ ┌─────┐\n");
+    printf("│%-2s   │ │░░░░░│\n", faces[dealer_hand->face]);
+    printf("│  %s  │ │░░░░░│\n", suits[dealer_hand->suit]);
+    printf("│   %-2s│ │░░░░░│\n", faces[dealer_hand->face]);
+    printf("└─────┘ └─────┘\n");
   }
   else {
     printf("\nDealer Score: %d\n", score);

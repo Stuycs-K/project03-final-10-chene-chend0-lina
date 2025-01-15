@@ -58,6 +58,8 @@ Server reads a 50-byte string from the user for the user name, then begins the g
 
 Client reads a name from stdin, sends to the server, then begins the game loop.
 
+The game loop begins with the server waiting for the client to send a value of `21` to start the game.
+
 In the game loop, the client reads an int(32) and performs a specific action:
 ```
   0: no-op

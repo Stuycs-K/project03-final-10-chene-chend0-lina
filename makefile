@@ -4,8 +4,8 @@ compile all: client server
 
 client: client.o card.o log.o networking.o util.o sigs.o
 	@gcc -o client client.o card.o log.o networking.o util.o sigs.o
-server: server.o card.o deck.o networking.o log.o
-	@gcc -o server server.o card.o deck.o networking.o log.o
+server: server.o card.o deck.o networking.o log.o util.o
+	@gcc -o server server.o card.o deck.o networking.o log.o util.o
 
 run:
 	@printf "Please run \`make serve\` and \`make connect\`.\n"

@@ -132,7 +132,9 @@ void play(int in, int out) {
 	struct card_node *dealer_hand = NULL;
 	char active = 1;
 	int reveal_dealer = 0; // 1 if yes
-	int buf;
+	int buf = 21;
+	// start game
+	safe_write(out, &buf, sizeof(buf));
 	// display
 	while (active) {
 		switch(buf = fetch_int(in)) {
@@ -168,9 +170,23 @@ void logs() {
 	read_file();
 }
 
+void setName(int out) {
+	char *name = malloc(50*(sizeof(char)));
+	size_t size;
+	printf("\nEnter your name: ");
+	fflush(stdout);
+	if (safe_getline(&name, &size, stdin) > 50)
+		printf("Warning: truncating name for display...");
+	name[49] = '\0';
+	name = strsep(&name, "\r\n");
+	safe_write(out, name, 50*(sizeof(char)));
+	free(name);
+}
+
 void client(int in, int out) {
 	signal(SIGINT, sigint_client);
 	displayIntro();
+	setName(out);
 	while (1) {
 		switch (readMainMenu()) {
 			case PLAY:
