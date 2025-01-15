@@ -14,7 +14,10 @@ void sigint_client(int sig) {
 		fprintf(stderr, "Invalid signal #%d\n", sig);
 		return;
 	}
-	printf("\nInterrupted, exiting game...");
+	printf("\nInterrupted, exiting game...\n");
+	char pipe_name[32];
+	sprintf(pipe_name, "%d.fifo", getpid());
+	unlink(pipe_name);
 	exit(0);
 }
 
