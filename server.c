@@ -44,6 +44,17 @@ static void sigint_handler(int sig) {
 static void sigalrm_handler(int sig) {
     int timeout_game_over = -20;
     write(to_client_fd, &timeout_game_over, sizeof(timeout_game_over));
+	remove(WKP);
+	 int semd = semget(KEY, 1, 0);
+    if (semd == -1) {
+        perror("Failed to get semaphore");
+        exit(1);
+    }
+
+    if (semctl(semd, IPC_RMID, 0) == -1) {
+        perror("Failed to remove semaphore");
+        exit(1);
+    }
     exit(0);
 }
 
