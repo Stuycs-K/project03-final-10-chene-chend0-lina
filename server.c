@@ -44,6 +44,17 @@ static void sigint_handler(int sig) {
 static void sigalrm_handler(int sig) {
     int timeout_game_over = -20;
     write(to_client_fd, &timeout_game_over, sizeof(timeout_game_over));
+	remove(WKP);
+	 int semd = semget(KEY, 1, 0);
+    if (semd == -1) {
+        perror("Failed to get semaphore");
+        exit(1);
+    }
+
+    if (semctl(semd, IPC_RMID, 0) == -1) {
+        perror("Failed to remove semaphore");
+        exit(1);
+    }
     exit(0);
 }
 
@@ -121,7 +132,8 @@ void send_card(int to_client, struct card_node *current) {
 		exit(1);
 	}
 }
-
+// play() simulates the blackjack game. It follows the blackjack process and sends the cards
+// to client. It then calculates the results, sends the result, and logs it.
 void play(int to_client, int from_client, char * name) {
 	to_client_fd = to_client;
 	signal(SIGALRM, sigalrm_handler);
