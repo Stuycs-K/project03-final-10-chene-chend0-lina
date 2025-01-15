@@ -53,6 +53,8 @@ and child processes.
   dealer's face-up card).
 - Player tells the dealer their choice to either hit or stand through another pipe.
 
+# Breaking It Down
+We are breaking it down into three main parts: the server, client, and card/deck functionalities. Elizabeth is responsible for the server, which includes setting up handshakes and the game proccess, a. David is responsible for the client, which includes reading game data from the server and the UI. Abigail is responsible for the card functionalities (random cards, printing cards, etc) and the result log.
 ### Protocol
 Server reads a 50-byte string from the user for the user name, then begins the game loop.
 
@@ -104,3 +106,6 @@ A timeline with expected completion dates of parts of the project.
 5. Finalize and upload recording, update final README. (1/17)
 
 (1/21) All projects due. Final commits 8am including links to your presentation.
+
+# Data structures and Algorithms
+We will be using structs to store the game data. Struct card_node and Struct deck are nodes and linked list respectively to hold card data and simulate cards following each other in a deck.We will also use a union semun to set semaphores.
