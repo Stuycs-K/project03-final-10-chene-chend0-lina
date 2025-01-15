@@ -94,7 +94,12 @@ In class, fixing branch (15 min). Testing blackjack simulation (5 min). Discusse
 - Tested gameplay, fixed bug with premature blackjacks being visible through the log (added feature for server to block until the client called for a game) (5m).
 - Updated the makefile to support the addition of `-g` for debug builds, used Valgrind to hunt down memory leaks and fix them (45m).
 
-### 2025-01-0X - PLACEHOLDER
+### 2025-01-15
+- Merged overnight changes (1m)
+- Read through server and client code for vestigial code, annotated client with expository comments (35m)
+- Tested changes, fixed mostly harmless dealer bug (5m)
+- Read through remaining code files, removed more unused code and sprinkled light comments (15m)
+- Added remove() call to client SIGINT, add flavor text (30m).
 
 ## Player 3 -- Abigail Lin
 
@@ -124,11 +129,14 @@ In class, worked on replacing functions in client.c with functions I already mad
 Worked on the printing functions, including printing the hands for the cards. If too much, can be switched out. Also, printed out game status at the end. Starting on betting (maybe). (1 hour)
 
 ### 2025-01-13 - Update README + logs
-In class, computer almost died, so will update card.h at home. Updated README with instructions on current code, need to update current WIP.
+In class, computer almost died, so will update card.h at home. Updated README with instructions on current code, need to update current WIP. (30 minutes)
 
-At home, reviewed David's updated code, and worked on implementing the log for player. Fixed minor bugs in log.c, and worked on creating a reset log function.
+At home, reviewed David's updated code, and worked on implementing the log for player. Fixed minor bugs in log.c, and worked on creating a reset log function. (30 minutes)
 
 ### 2025-01-14 - Reworking Logs
-In class, worked on re-adding yesterday's log code after the revert to previous commit. Decided to change log to represent game wins only, not cards. Updated writefile and other log functions to match new function.
+In class, worked on re-adding yesterday's log code after the revert to previous commit. Decided to change log to represent game wins only, not cards. Updated writefile and other log functions to match new function. (40 minutes)
 
-At home, finished log code (waiting on David's player username input + Elizabeth's server). Updated log to include both player and dealer score. Moved stuff around while debugging.
+At home, finished log code (waiting on David's player username input + Elizabeth's server). Updated log to include both player and dealer score. Moved stuff around while debugging. (30 minutes)
+
+### 2025-01-14 - Debugging, adding blackjack check, function headers
+In class, added blackjack check in end result. Started working on function headers, finished card.c, going to work on deck.c (30 minutes)

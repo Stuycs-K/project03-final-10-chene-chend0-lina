@@ -7,13 +7,41 @@
 #include "client.h"
 #include "log.h"
 #include "networking.h"
-#include "sigs.h"
 #include "util.h"
+
+void sigint_client(int sig) {
+	if (sig != SIGINT) {
+		fprintf(stderr, "Invalid signal #%d\n", sig);
+		return;
+	}
+	printf("\nInterrupted, exiting game...\n");
+	char pipe_name[32];
+	sprintf(pipe_name, "%d.fifo", getpid());
+	unlink(pipe_name);
+	exit(0);
+}
 
 void displayIntro() {
 	printf("\n\n****\nBlackjack\n\nTry to get a score of 21, but no higher!\nFace cards are worth 10 points, and the Ace is worth 1 or 11 depending on what benefits you.\nHit to draw a new card, Stand to let the dealer draw.\n****\n\n");
 }
 
+const char * eggs[] = {
+	"vanilla",
+	"chocolatey",
+	"minty",
+	"cookiesandcreamy",
+	"strawberry",
+	NULL
+};
+// https://en.wikipedia.org/wiki/ANSI_escape_code#8-bit
+const char * sgge[] = {
+	"\033[m",
+	"\033[m\033[38;5;130m",
+	"\033[m\033[38;5;86m",
+	"\033[m\033[38;5;0m\033[48;5;15m\033[1m",
+	"\033[m\033[38;5;213m",
+	NULL
+};
 enum Action readMainMenu() {
 	char *ptr = NULL;
 	size_t size;
@@ -23,6 +51,17 @@ enum Action readMainMenu() {
 		fflush(stdout);
 		ptr = NULL;
 		safe_getline(&ptr, &size, stdin);
+		const char ** egg = eggs;
+		const char ** gge = sgge;
+		while (*egg && *gge) {
+			if (!strncasecmp(ptr, *egg, strlen(*egg))) {
+				printf("%s", *gge);
+				break;
+			}
+			egg++;
+			gge++;
+		}
+		if (*egg) continue;
 		switch (ptr[0]) {
 			case '1':
 				ret = PLAY;

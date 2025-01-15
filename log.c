@@ -44,7 +44,6 @@ void write_file(char * name, char * result, int player_score, int dealer_score) 
     strcpy(curr.result, result);
     curr.playerscore = player_score;
     curr.dealerscore = dealer_score;
-    // printf("Player: %s | Result: %s | Player Score: %d | Dealer Score: %d\n", curr.name, curr.result, curr.playerscore, curr.dealerscore);
     FILE *player_log = fopen("player_log.dat", "a+");
     if (fwrite(&curr, sizeof(struct player_moves), 1, player_log) == -1) {
         perror("Write to log file failed");

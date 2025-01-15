@@ -29,14 +29,13 @@ int server_setup() {
 }
 // full handshake sets up upstream and downstream pipes.
 int server_handshake(int *to_client, int from_client, int* client_pid) {
-  char client_pipe[256];
-  if (read(from_client, client_pipe, sizeof(client_pipe)) <= 0) {
+  if (read(from_client, client_pid, sizeof(int)) < sizeof(int)) {
     perror("error reading client pipe name");
     unlink(WKP);
     exit(1);
   }
-
-  *client_pid = atoi(client_pipe); //PP pid name turned into number
+  char client_pipe[32];
+  sprintf(client_pipe, "%d.fifo", *client_pid);
 
   *to_client = open(client_pipe, O_WRONLY);
   if (*to_client == -1) {
@@ -59,8 +58,9 @@ int server_handshake(int *to_client, int from_client, int* client_pid) {
     return from_client;
 }
 int client_handshake(int *to_server) {
-  char private_pipe[256];
-  sprintf(private_pipe, "%d", getpid());
+  int pid = getpid();
+  char private_pipe[32];
+  sprintf(private_pipe, "%d.fifo", pid);
 
   if (mkfifo(private_pipe, 0666) == -1) {
     perror("error creating private pipe");
@@ -74,7 +74,7 @@ int client_handshake(int *to_server) {
     exit(1);
   }
 
-  if (write(*to_server, private_pipe, sizeof(private_pipe)) == -1) {
+  if (write(*to_server, &pid, sizeof(int)) == -1) {
     perror("error sending PP name");
     unlink(private_pipe);
     exit(1);
