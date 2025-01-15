@@ -87,8 +87,16 @@ int main() {
 			}
 			char name[50];
 			safe_read(from_client, name, sizeof(name));
+			int cmd;
 			while(1) {
-				play(to_client, from_client, char * name);
+				safe_read(from_client, &cmd, sizeof(cmd));
+				switch (cmd) {
+					case 21:
+						play(to_client, from_client, name);
+						break;
+					default:
+						fprintf(stderr, "Warning: invalid play command from client\n");
+				}
 			}
 		}
 		else if (pid > 0) {
@@ -192,8 +200,8 @@ void play(int to_client, int from_client, char * name) {
 			alarm(30);
 			char move;
 			if (read(from_client, &move, sizeof(move)) <= 0) {
-				perror("error reading player move to subserver\n");
-				break;
+				fprintf(stderr, "Exiting on client pipe disconnect (code: %d)\n", errno);
+				exit(errno);
 			}
 			alarm(0);
 			if (move == 'h') {
@@ -225,10 +233,9 @@ void play(int to_client, int from_client, char * name) {
 	} // dealers second card;
 	if (game_over) {
 		if (write(to_client, &lose_round, sizeof(lose_round)) == -1) {
-			write_file(name, "LOSE");
 			exit(1);
 		}
-		write_file(name, "LOSE");
+		write_file(name, "LOSE", player_total, dealer_total);
 		return;
 	}
 
@@ -254,7 +261,7 @@ void play(int to_client, int from_client, char * name) {
 			perror("error writing win to client");
 			exit(1);
 		}
-		write_file(name, "WIN");
+		write_file(name,"WIN", player_total, dealer_total);
 		return;
 	}
 	if (player_total > dealer_total) {
@@ -262,7 +269,7 @@ void play(int to_client, int from_client, char * name) {
 			perror("error writing win to client");
 			exit(1);
 		}
-		write_file(name, "WIN");
+		write_file(name,"WIN", player_total, dealer_total);
 		return;
 	}
 	if (dealer_total > player_total) {
@@ -270,7 +277,7 @@ void play(int to_client, int from_client, char * name) {
 			perror("error writing lose round");
 			exit(1);
 		}
-		write_file(name, "LOSE");
+		write_file(name,"LOSE", player_total, dealer_total);
 		return;
 	}
 	if (!player_blackjack && !dealer_blackjack && dealer_total == player_total) {
@@ -278,23 +285,23 @@ void play(int to_client, int from_client, char * name) {
 			perror("error writing tie round");
 			exit(1);
 		}
-		write_file(name, "TIE");
+		write_file(name,"TIE", player_total, dealer_total);
 		return;
 	}
 	if (!player_blackjack && dealer_blackjack) {
+		write_file(name,"LOSE", player_total, dealer_total);
 		if (write(to_client, &lose_round, sizeof(lose_round)) == -1) {
 			perror("error writing lose round");
 			exit(1);
 		}
-		write_file(name, "LOSE");
 		return;
 	}
 	if (player_blackjack && !dealer_blackjack) {
+		write_file(name,"WIN", player_total, dealer_total);
 		if (write(to_client, &win_round, sizeof(win_round)) == -1) {
 			perror("error writing win to client");
 			exit(1);
 		}
-		write_file(name, "WIN");
 		return;
 	}
 	if (player_blackjack && dealer_blackjack) {
@@ -302,7 +309,7 @@ void play(int to_client, int from_client, char * name) {
 			perror("error writing tie to client");
 			exit(1);
 		}
-		write_file(name, "TIE");
+		write_file(name,"TIE", player_total, dealer_total);
 		return;
 	}
 	return;

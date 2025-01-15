@@ -5,7 +5,8 @@
 #include "util.h"
 
 void fatal(const char *title) {
-	perror(title);
+	if (errno)
+		perror(title);
 	exit(errno);
 }
 

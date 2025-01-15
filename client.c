@@ -74,19 +74,15 @@ void endResults(struct card_node *dealer_hand, struct card_node *player_hand){
 	
 	if (isBust(player_hand)){
 		printf("\nYou busted! Dealer wins.\n");
-		write_file("Player","lost", player_score, dealer_score);
 	}
 	else if (dealer_score > 21 || player_score > dealer_score){
 		printf("\nYou win!\n");
-		write_file("Player","win", player_score, dealer_score);
 	}
 	else if (dealer_score > player_score){
 		printf("\nDealer wins!\n");
-		write_file("Player","lost", player_score, dealer_score);
 	}
 	else {
 		printf("\nDraw!\n");
-		write_file("Player","tie", player_score, dealer_score);
 	}
 
 }
@@ -136,7 +132,9 @@ void play(int in, int out) {
 	struct card_node *dealer_hand = NULL;
 	char active = 1;
 	int reveal_dealer = 0; // 1 if yes
-	int buf;
+	int buf = 21;
+	// start game
+	safe_write(out, &buf, sizeof(buf));
 	// display
 	while (active) {
 		switch(buf = fetch_int(in)) {
@@ -177,10 +175,10 @@ void setName(int out) {
 	size_t size;
 	printf("\nEnter your name: ");
 	fflush(stdout);
-	safe_getline(&name, &size, stdin);
-	if (size > 50)
+	if (safe_getline(&name, &size, stdin) > 50)
 		printf("Warning: truncating name for display...");
 	name[49] = '\0';
+	name = strsep(&name, "\r\n");
 	safe_write(out, name, 50*(sizeof(char)));
 	free(name);
 }
