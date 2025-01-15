@@ -7,8 +7,16 @@
 #include "client.h"
 #include "log.h"
 #include "networking.h"
-#include "sigs.h"
 #include "util.h"
+
+void sigint_client(int sig) {
+	if (sig != SIGINT) {
+		fprintf(stderr, "Invalid signal #%d\n", sig);
+		return;
+	}
+	printf("\nInterrupted, exiting game...");
+	exit(0);
+}
 
 void displayIntro() {
 	printf("\n\n****\nBlackjack\n\nTry to get a score of 21, but no higher!\nFace cards are worth 10 points, and the Ace is worth 1 or 11 depending on what benefits you.\nHit to draw a new card, Stand to let the dealer draw.\n****\n\n");
