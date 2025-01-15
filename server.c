@@ -11,7 +11,6 @@
 #include "networking.h"
 #include <signal.h>
 #include "log.h"
-#include "sigs.h"
 #include <errno.h>
 #include "util.h"
 #define KEY 102934
@@ -23,29 +22,10 @@ union semun {
    struct seminfo  *__buf;  /* Buffer for IPC_INFO (Linux-specific) */
 };
 
-static int to_client_fd;
-
 static void sigint_handler(int sig) {
     printf("Exiting game server.\n");
     remove(WKP);
     int semd = semget(KEY, 1, 0);
-    if (semd == -1) {
-        perror("Failed to get semaphore");
-        exit(1);
-    }
-
-    if (semctl(semd, IPC_RMID, 0) == -1) {
-        perror("Failed to remove semaphore");
-        exit(1);
-    }
-    exit(0);
-}
-
-static void sigalrm_handler(int sig) {
-    int timeout_game_over = -20;
-    write(to_client_fd, &timeout_game_over, sizeof(timeout_game_over));
-	remove(WKP);
-	 int semd = semget(KEY, 1, 0);
     if (semd == -1) {
         perror("Failed to get semaphore");
         exit(1);
@@ -135,8 +115,6 @@ void send_card(int to_client, struct card_node *current) {
 // play() simulates the blackjack game. It follows the blackjack process and sends the cards
 // to client. It then calculates the results, sends the result, and logs it.
 void play(int to_client, int from_client, char * name) {
-	to_client_fd = to_client;
-	signal(SIGALRM, sigalrm_handler);
 	int card_value = 0;
 	int game_over = 0;
 	struct deck * _deck = initDeck(1);
@@ -145,12 +123,12 @@ void play(int to_client, int from_client, char * name) {
 	struct card_node * player_hand = NULL;
 	struct card_node * current = dealRandomCard(_deck); 
 	addCardToHand(&dealer_hand, current);
-	int dealer_turn = -11;
-	int player_turn = -10;
-	int make_move = -12;
-	int win_round = -13;
-	int lose_round = -14;
-	int tie_round = -15;
+	const int dealer_turn = -11;
+	const int player_turn = -10;
+	const int make_move = -12;
+	const int win_round = -13;
+	const int lose_round = -14;
+	const int tie_round = -15;
 	int player_blackjack = 0;
 	int dealer_blackjack = 0;
 	if (write(to_client, &dealer_turn, sizeof(dealer_turn) ) == -1) {
@@ -202,13 +180,11 @@ void play(int to_client, int from_client, char * name) {
 				perror("error sending player move header");
 			} // client knows to make move
 
-			alarm(30);
 			char move;
 			if (read(from_client, &move, sizeof(move)) <= 0) {
 				fprintf(stderr, "Exiting on client pipe disconnect (code: %d)\n", errno);
 				exit(errno);
 			}
-			alarm(0);
 			if (move == 'h') {
 				current = dealRandomCard(_deck);
 				addCardToHand(&player_hand, current);
