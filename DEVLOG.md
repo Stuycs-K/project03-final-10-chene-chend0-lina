@@ -33,14 +33,18 @@ At home, changed flags, client reads int instead. Updated play() to send flags w
 Accounted for all of the different possible outcomes and implemented them (20 minutes). Also began writing more error messages. (5 minutes)
 At home, set up and implemented semaphores for write, fixed sigint_handler to remove semaphores (30 minutes) Also changed sigalrm_handler and set up timer in play. (15 minutes).
 
-### 2024-01-10
-In class, made the server into a persistent server by setting up new header and also checked networking.c code for right to_client (15 minutes). Changed all return values for exit values and added error messages through out the code (10 minutes).
+### 2024-01-10 - Persistent Server and forgot own code???
+In class, made the server into a persistent server by setting up new header and also checked networking.c code for write to_client (15 minutes). Changed all return values for exit values and added error messages through out the code (10 minutes). A
 
-### 2024-01-12
-Added calcCard to calculate the specific value of card with aces (1 or 11). Fixed server to use calcCard to add card value. Debugged syntax errors and moved sigalrm_handler to server because of extern issue. Server also now removes semaphore if cannot get semaphore due to sigint on server(will probably need to do sigint handler) (1 hour)
+### 2024-01-12 -- At home for 1/10
+Added calcCard to calculate the specific value of card with aces (1 or 11). Fixed server to use calcCard to add card value. Debugged syntax errors and moved sigalrm_handler to server because of extern issue. At hom, server also now removes semaphore if cannot get semaphore due to sigint on server(will probably need to do sigint handler) (1 hour)
 
 ### 2024-01-13
 In class, rewrote server using methods from card.c and deck.c. (Class period) At home, fixed logic for calcCard, updated user interface with results, and modified data struct for log. (30 minutes)
+
+### 2024-01-14
+In class, fixing branch (15 min). Testing blackjack simulation (5 min). Discussed data structures for log and result and decided to store name (5 min). Updated methods in server to reflect changes in log and result (10 min). At home, tried to get sigalrm working, failed. Fixed removing wkp and semaphore in sigalrm_handler. Also updated documentation to clarify methods. (30 minutes)
+
 ## Player 2 -- David Chen
 
 ### 2024-01-06 - Beginning layouts
