@@ -191,12 +191,6 @@ void play(int to_client, int from_client, char * name) {
 				perror("error sending player move header");
 			} // client knows to make move
 
-			/*
-			if (write(to_client, current, sizeof(struct card_node)) == -1) {
-				perror("error writing card to deck\n");
-				exit(1);
-			}
-			*/
 			alarm(30);
 			char move;
 			if (read(from_client, &move, sizeof(move)) <= 0) {
@@ -236,6 +230,7 @@ void play(int to_client, int from_client, char * name) {
 			exit(1);
 		}
 		write_file(name, "LOSE", player_total, dealer_total);
+		freeDeck(_deck);
 		return;
 	}
 
@@ -256,6 +251,7 @@ void play(int to_client, int from_client, char * name) {
 		}
 	}
 	// results
+	freeDeck(_deck);
 	if (dealer_total > 21) {
 		if (write(to_client, &win_round, sizeof(win_round)) == -1) {
 			perror("error writing win to client");
@@ -312,13 +308,6 @@ void play(int to_client, int from_client, char * name) {
 		write_file(name,"TIE", player_total, dealer_total);
 		return;
 	}
+	fprintf(stderr, "WARNING: Reached end of play() without a game outcome (this should never happen!)\n");
 	return;
-	
-	//select card
-	//send card to player
-	
-
-	//wait for play response
-	//adds next player
-
 }

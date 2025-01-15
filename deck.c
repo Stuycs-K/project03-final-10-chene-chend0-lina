@@ -13,6 +13,7 @@ void addDecks(struct deck *deck, int numDecks){
     }
 }
 
+// WARNING: mallocs the deck struct and the corresponding linked-list of cards; be sure to freeDeck()
 struct deck * initDeck(int numDecks){
     if (numDecks <= 0) return NULL;
     struct deck *deck = (struct deck*)malloc(sizeof(struct deck));
@@ -23,16 +24,7 @@ struct deck * initDeck(int numDecks){
     return deck;
 }
 
-// void shuffleDeck(struct deck * deck){
-//     if (!deck || deck->size <= 1){
-//         return;
-//     }
-//     struct card_node **cardArray = (struct card_node**)malloc(deck->size * sizeof(struct card_node *));
-//     for (int i = 0; i < size-1; i++){
-//         int j = i + rand() / ()
-//     }
-// }
-
+// WARNING: dealt cards will NOT be free()d  in freeDeck()
 struct card_node * dealRandomCard(struct deck * deck){
     if (!deck || !deck->cards) return NULL;
     struct card_node * prev = NULL;
