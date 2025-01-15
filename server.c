@@ -236,8 +236,8 @@ void play(int to_client, int from_client, char * name) {
 	}
 
 	if (!(player_blackjack || dealer_blackjack)) {
-		current = dealRandomCard(_deck);
-		while (dealer_total < 17 && dealer_total <= player_total && current != NULL) {
+		while (dealer_total < 17 && dealer_total <= player_total && _deck->size > 0) {
+			current = dealRandomCard(_deck);
 			addCardToHand(&dealer_hand, current);
 			if (write(to_client, &dealer_turn, sizeof(dealer_turn) ) == -1) {
 				perror("error writing dealer header");
@@ -248,7 +248,6 @@ void play(int to_client, int from_client, char * name) {
 				exit(1);
 			}
 			dealer_total = calcHand(dealer_hand);
-			current = dealRandomCard(_deck);
 		}
 	}
 	// results

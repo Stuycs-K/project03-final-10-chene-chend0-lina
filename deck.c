@@ -24,7 +24,7 @@ struct deck * initDeck(int numDecks){
     return deck;
 }
 
-// WARNING: dealt cards will NOT be free()d  in freeDeck()
+// WARNING: dealt cards will NOT be free()d  in freeDeck(), it is recommended that ALL drawn cards be in a hand (card linked-list) that is freed
 struct card_node * dealRandomCard(struct deck * deck){
     if (!deck || !deck->cards) return NULL;
     struct card_node * prev = NULL;
