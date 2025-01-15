@@ -26,13 +26,13 @@ moves/results.
 # Technical Details:
 
 A description of your technical design. This should include:
-   
+
 How you will be using the topics covered in class in the project.
-     
+
 How you are breaking down the project and who is responsible for which parts.
-  
+
 What data structures you will be using and how.
-     
+
 What algorithms and /or data structures you will be using, and how.
 
 ## Files
@@ -54,7 +54,11 @@ and child processes.
 - Player tells the dealer their choice to either hit or stand through another pipe.
 
 ### Protocol
-Client reads an int(32) and performs a specific action:
+Server reads a 50-byte string from the user for the user name, then begins the game loop.
+
+Client reads a name from stdin, sends to the server, then begins the game loop.
+
+In the game loop, the client reads an int(32) and performs a specific action:
 ```
   0: no-op
 -10: read player card
@@ -67,6 +71,8 @@ Client reads an int(32) and performs a specific action:
 For actions -10 & -11, client reads a SINGLE struct card.
 For action -12, client sends a move ID.
 For actions -15 through -13, client prints out game results, exits.
+
+The server handles validation of game status.
 
 ## Processes
 
