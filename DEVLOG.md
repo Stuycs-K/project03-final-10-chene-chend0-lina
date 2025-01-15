@@ -121,5 +121,7 @@ In class, computer almost died, so will update card.h at home. Updated README wi
 
 At home, reviewed David's updated code, and worked on implementing the log for player. Fixed minor bugs in log.c, and worked on creating a reset log function.
 
-### 2025-01-13 - Reworking Logs
+### 2025-01-14 - Reworking Logs
 In class, worked on re-adding yesterday's log code after the revert to previous commit. Decided to change log to represent game wins only, not cards. Updated writefile and other log functions to match new function.
+
+At home, finished log code (waiting on David's player username input + Elizabeth's server). Updated log to include both player and dealer score. Moved stuff around while debugging.
