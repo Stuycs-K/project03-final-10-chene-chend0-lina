@@ -98,6 +98,7 @@ In class, fixing branch (15 min). Testing blackjack simulation (5 min). Discusse
 - Merged overnight changes (1m)
 - Read through server and client code for vestigial code, annotated client with expository comments (35m)
 - Tested changes, fixed mostly harmless dealer bug (5m)
+- Read through remaining code files, removed more unused code and sprinkled light comments (15m)
 
 ## Player 3 -- Abigail Lin
 
