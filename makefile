@@ -2,10 +2,11 @@
 
 compile all: client server
 
+# set FLAGS=-g for Valgrind-able builds
 client: client.o card.o log.o networking.o util.o sigs.o
-	@gcc -o client client.o card.o log.o networking.o util.o sigs.o
+	@gcc $(FLAGS) -o client client.o card.o log.o networking.o util.o sigs.o
 server: server.o card.o deck.o networking.o log.o util.o
-	@gcc -o server server.o card.o deck.o networking.o log.o util.o
+	@gcc $(FLAGS) -o server server.o card.o deck.o networking.o log.o util.o
 
 run:
 	@printf "Please run \`make serve\` and \`make connect\`.\n"
@@ -34,4 +35,4 @@ log.o: log.c log.h
 	@gcc -c log.c
 
 clean:
-	@rm -rf *.o main client server test_client *.fifo *.out
+	@rm -rf *.o main client server test_client *.fifo *.out *.dat
