@@ -74,19 +74,19 @@ void endResults(struct card_node *dealer_hand, struct card_node *player_hand){
 	
 	if (isBust(player_hand)){
 		printf("\nYou busted! Dealer wins.\n");
-		write_file("Player","win");
+		write_file("Player","lost", player_score, dealer_score);
 	}
 	else if (dealer_score > 21 || player_score > dealer_score){
 		printf("\nYou win!\n");
-		write_file("Player","win");
+		write_file("Player","win", player_score, dealer_score);
 	}
 	else if (dealer_score > player_score){
 		printf("\nDealer wins!\n");
-		write_file("Player","lost");
+		write_file("Player","lost", player_score, dealer_score);
 	}
 	else {
 		printf("\nDraw!\n");
-		write_file("Player","tie");
+		write_file("Player","tie", player_score, dealer_score);
 	}
 
 }
