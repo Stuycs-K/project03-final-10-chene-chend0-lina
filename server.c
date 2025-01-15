@@ -230,7 +230,7 @@ void play(int to_client, int from_client, char * name) {
 		return;
 	}
 
-	if (!(player_blackjack || dealer_blackjack)) {
+	if (!(player_blackjack || dealer_blackjack) && player_total < 21) {
 		while (dealer_total < 17 && dealer_total <= player_total && _deck->size > 0) {
 			current = dealRandomCard(_deck);
 			addCardToHand(&dealer_hand, current);
