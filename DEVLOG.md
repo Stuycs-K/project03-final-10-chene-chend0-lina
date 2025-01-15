@@ -88,6 +88,7 @@ In class, rewrote server using methods from card.c and deck.c. (Class period) At
 - Discussed the scope and design of the log file, modified protocol to support user name entry from the client (for use in the logs). (25m)
 - Merged group's work on the log file into one build, fixed implementation bugs (stripping newlines, updated function calls to fit latest prototypes) (20m).
 - Tested gameplay, fixed bug with premature blackjacks being visible through the log (added feature for server to block until the client called for a game) (5m).
+- Updated the makefile to support the addition of `-g` for debug builds, used Valgrind to hunt down memory leaks and fix them (45m).
 
 ### 2025-01-0X - PLACEHOLDER
 
