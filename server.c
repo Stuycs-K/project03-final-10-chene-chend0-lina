@@ -180,8 +180,7 @@ void play(int to_client, int from_client, char * name) {
 		player_blackjack = 1;
 	}
 	else if (!dealer_blackjack) {
-		current = dealRandomCard(_deck);
-		while (current != NULL && !game_over) {
+		while (_deck->size > 0 && !game_over) {
 			if (player_total > 21) {
 				game_over = 1;
 				break;
@@ -199,6 +198,7 @@ void play(int to_client, int from_client, char * name) {
 			}
 			alarm(0);
 			if (move == 'h') {
+				current = dealRandomCard(_deck);
 				addCardToHand(&player_hand, current);
 				player_total = calcHand(player_hand);
 				send_card(to_client, current);
@@ -213,7 +213,6 @@ void play(int to_client, int from_client, char * name) {
 				game_over = 1;
 				break;
 			}
-			current = dealRandomCard(_deck);
 		}
 	}
 	if (write(to_client, &dealer_turn, sizeof(dealer_turn) ) == -1) {
@@ -230,6 +229,8 @@ void play(int to_client, int from_client, char * name) {
 			exit(1);
 		}
 		write_file(name, "LOSE", player_total, dealer_total);
+		freeHand(player_hand);
+		freeHand(dealer_hand);
 		freeDeck(_deck);
 		return;
 	}
@@ -251,6 +252,8 @@ void play(int to_client, int from_client, char * name) {
 		}
 	}
 	// results
+	freeHand(player_hand);
+	freeHand(dealer_hand);
 	freeDeck(_deck);
 	if (dealer_total > 21) {
 		if (write(to_client, &win_round, sizeof(win_round)) == -1) {
