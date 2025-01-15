@@ -12,7 +12,7 @@
 #include "networking.h"
 #define READ 0
 #define WRITE 1
-
+// half handshake
 int server_setup() {
   if (mkfifo(WKP, 0666) == -1) {
     perror("error creating WKP");
@@ -27,7 +27,7 @@ int server_setup() {
   unlink(WKP);
   return from_client;
 }
-
+// full handshake sets up upstream and downstream pipes.
 int server_handshake(int *to_client, int from_client, int* client_pid) {
   char client_pipe[256];
   if (read(from_client, client_pipe, sizeof(client_pipe)) <= 0) {
@@ -36,7 +36,7 @@ int server_handshake(int *to_client, int from_client, int* client_pid) {
     exit(1);
   }
 
-  *client_pid = atoi(client_pipe);
+  *client_pid = atoi(client_pipe); //PP pid name turned into number
 
   *to_client = open(client_pipe, O_WRONLY);
   if (*to_client == -1) {

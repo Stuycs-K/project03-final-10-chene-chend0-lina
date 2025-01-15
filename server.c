@@ -132,7 +132,8 @@ void send_card(int to_client, struct card_node *current) {
 		exit(1);
 	}
 }
-
+// play() simulates the blackjack game. It follows the blackjack process and sends the cards
+// to client. It then calculates the results, sends the result, and logs it.
 void play(int to_client, int from_client, char * name) {
 	to_client_fd = to_client;
 	signal(SIGALRM, sigalrm_handler);
