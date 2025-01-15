@@ -94,7 +94,10 @@ In class, fixing branch (15 min). Testing blackjack simulation (5 min). Discusse
 - Tested gameplay, fixed bug with premature blackjacks being visible through the log (added feature for server to block until the client called for a game) (5m).
 - Updated the makefile to support the addition of `-g` for debug builds, used Valgrind to hunt down memory leaks and fix them (45m).
 
-### 2025-01-0X - PLACEHOLDER
+### 2025-01-15
+- Merged overnight changes (1m)
+- Read through server and client code for vestigial code, annotated client with expository comments (35m)
+- Tested changes, fixed mostly harmless dealer bug (5m)
 
 ## Player 3 -- Abigail Lin
 
