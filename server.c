@@ -22,6 +22,8 @@ union semun {
    struct seminfo  *__buf;  /* Buffer for IPC_INFO (Linux-specific) */
 };
 
+// sigint_handler(int sig) handles a sigint on the server side
+// and removes the WKP and semaphore
 static void sigint_handler(int sig) {
     printf("Exiting game server.\n");
     remove(WKP);
@@ -38,6 +40,10 @@ static void sigint_handler(int sig) {
     exit(0);
 }
 
+// main creates the log file, gets the semaphore, and continuously waits for a client connection.
+// When it gets a connection, it forks and passes off client to subserver and subserver finishes
+// handshake and runs play
+// tl;dr persistent server that runs blackjack
 int main() {
 	signal(SIGINT, sigint_handler);
 	int to_client;
@@ -113,7 +119,8 @@ void send_card(int to_client, struct card_node *current) {
 	}
 }
 // play() simulates the blackjack game. It follows the blackjack process and sends the cards
-// to client. It then calculates the results, sends the result, and logs it.
+// to client. It first writes a header number telling the client what they should expect to recieve, and then it sends the data.
+// It computes the results and sends them to client and writes to the log file.
 void play(int to_client, int from_client, char * name) {
 	int card_value = 0;
 	int game_over = 0;
