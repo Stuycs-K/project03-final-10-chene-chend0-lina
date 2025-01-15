@@ -4,12 +4,15 @@
 #include <errno.h>
 #include "util.h"
 
+// simple perror/exit wrapper
 void fatal(const char *title) {
 	if (errno)
 		perror(title);
 	exit(errno);
 }
 
+
+// wrappers around I/O functions with error checking
 ssize_t safe_getline(char ** lineptr, size_t * n, FILE * stream) {
 	if (getline(lineptr, n, stream) < 0) {
 		if (errno == 0) {

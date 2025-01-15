@@ -15,8 +15,6 @@ connect: client
 serve: server
 	@./server
 
-test_client.o: test_client.c client.h card.h
-	@gcc -c test_client.c
 client.o: client.c client.h card.h util.h
 	@gcc -c client.c
 server.o: server.c server.h
