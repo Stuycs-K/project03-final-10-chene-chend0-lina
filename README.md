@@ -1,7 +1,7 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/Vh67aNdh)
 # Blackjack Final Project
 
-### GROUP NAME: 2Chenz & Lin-dacris
+### GROUP NAME: 2Chenz & Lin-dacris [27]
 Created by Elizabeth Chen, David Chen (0), Abigail Lin
        
 ### Project Description:
