@@ -107,5 +107,27 @@ A timeline with expected completion dates of parts of the project.
 
 (1/21) All projects due. Final commits 8am including links to your presentation.
 
-# Data structures and Algorithms
-We will be using structs to store the game data. Struct card_node and Struct deck are nodes and linked list respectively to hold card data and simulate cards following each other in a deck.We will also use a union semun to set semaphores.
+# Data Structures
+We will be using structs to store and manage game states.
+
+`struct card_node`
+- Contains card information
+  - Face (0-12): Ace, 2..10, Jack, Queen, King
+  - Suit (0-3): Hearts, Diamonds, Clubs, Spades
+- Singly-linked list node via the `next` pointer
+- A NULL-terminated linked list of `card_node`s represents a hand of cards, and we can calculate the cards' total value (which must be dynamic, as Aces can be worth 1 or 11 based on which benefits the player most).
+
+
+`struct deck`
+- Wrapper to a linked list of `card_node`, which has an `int size` carrying the length.
+- `dealRandomCard(struct deck *)` depends on the `size` to efficiently draw a random card.
+  - We generate a random index from 0 to the `size` of the linked list.
+  - We access and remove that element from the linked list, and decrement `size`.
+    - By using a linked list, we avoid the need to resize/shift the array when excising a drawn card.
+
+`struct player_moves`
+- Encodes the results of a game, including
+  - User name (50-char string)
+  - Win/Loss/Tie (10-char string)
+  - Card value of the player's hand
+  - Card value of the dealer's hand
