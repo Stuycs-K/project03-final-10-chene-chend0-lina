@@ -19,6 +19,7 @@ int server_setup() {
     remove(WKP);
     exit(1);
   }
+  chmod(WKP, 0666);
   int from_client = open(WKP, O_RDONLY);
   if (from_client == -1) {
     perror("error opening WKP");
@@ -66,6 +67,7 @@ int client_handshake(int *to_server) {
     perror("error creating private pipe");
     exit(1);
   }
+  chmod(private_pipe, 0666);
 
   *to_server = open(WKP, O_WRONLY);
   if (*to_server == -1) {
