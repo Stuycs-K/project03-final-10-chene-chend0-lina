@@ -46,7 +46,7 @@ In class, rewrote server using methods from card.c and deck.c. (Class period) At
 In class, fixing branch (15 min). Testing blackjack simulation (5 min). Discussed data structures for log and result and decided to store name (5 min). Updated methods in server to reflect changes in log and result (10 min). At home, tried to get sigalrm working, failed. Fixed removing wkp and semaphore in sigalrm_handler. Also updated documentation to clarify methods. (30 minutes)
 
 ### 2024-01-15
-In class, deleted unnecessary/unused functions (10 min). Writing function descriptions (15 minutes). Discussed fun features. (5 mins).
+In class, deleted unnecessary/unused functions (10 min). Writing function descriptions (15 minutes). Discussed fun features. (5 mins). At home, reformated WIN/LOSS/TIE so lines up. (5 minutes)
 ## Player 2 -- David Chen
 
 ### 2024-01-06 - Beginning layouts
