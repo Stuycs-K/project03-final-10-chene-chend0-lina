@@ -97,6 +97,7 @@ struct card_node * fetch_card(int in) {
 }
 // ========
 
+// prints end results depending on player/dealer end score
 void endResults(struct card_node *dealer_hand, struct card_node *player_hand){
 	int dealer_score = calcHand(dealer_hand);
 	int player_score = calcHand(player_hand);
