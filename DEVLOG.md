@@ -138,5 +138,7 @@ In class, worked on re-adding yesterday's log code after the revert to previous 
 
 At home, finished log code (waiting on David's player username input + Elizabeth's server). Updated log to include both player and dealer score. Moved stuff around while debugging. (30 minutes)
 
-### 2025-01-14 - Debugging, adding blackjack check, function headers
-In class, added blackjack check in end result. Started working on function headers, finished card.c, going to work on deck.c (30 minutes)
+### 2025-01-14 - Debugging, adding blackjack check, function descriptions
+In class, added blackjack check in end result. Started working on function descriptions, finished card.c, going to work on deck.c (30 minutes)
+
+At home, finished adding all function descriptions to functions made. (30 minutes)
