@@ -254,7 +254,7 @@ void play(int to_client, int from_client, char * name) {
 			perror("error writing win to client");
 			exit(1);
 		}
-		write_file(name,"WIN", player_total, dealer_total);
+		write_file(name,"WIN ", player_total, dealer_total);
 		return;
 	}
 	if (player_total > dealer_total) {
@@ -262,7 +262,7 @@ void play(int to_client, int from_client, char * name) {
 			perror("error writing win to client");
 			exit(1);
 		}
-		write_file(name,"WIN", player_total, dealer_total);
+		write_file(name,"WIN ", player_total, dealer_total);
 		return;
 	}
 	if (dealer_total > player_total) {
@@ -278,7 +278,7 @@ void play(int to_client, int from_client, char * name) {
 			perror("error writing tie round");
 			exit(1);
 		}
-		write_file(name,"TIE", player_total, dealer_total);
+		write_file(name,"TIE ", player_total, dealer_total);
 		return;
 	}
 	if (!player_blackjack && dealer_blackjack) {
@@ -290,7 +290,7 @@ void play(int to_client, int from_client, char * name) {
 		return;
 	}
 	if (player_blackjack && !dealer_blackjack) {
-		write_file(name,"WIN", player_total, dealer_total);
+		write_file(name,"WIN ", player_total, dealer_total);
 		if (write(to_client, &win_round, sizeof(win_round)) == -1) {
 			perror("error writing win to client");
 			exit(1);
@@ -302,7 +302,7 @@ void play(int to_client, int from_client, char * name) {
 			perror("error writing tie to client");
 			exit(1);
 		}
-		write_file(name,"TIE", player_total, dealer_total);
+		write_file(name,"TIE ", player_total, dealer_total);
 		return;
 	}
 	fprintf(stderr, "WARNING: Reached end of play() without a game outcome (this should never happen!)\n");
