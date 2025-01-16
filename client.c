@@ -108,6 +108,9 @@ void endResults(struct card_node *dealer_hand, struct card_node *player_hand){
 	printf("\n Player's Score: %d\n",player_score);
 	printHandAscii(player_hand);
 	
+	if (isBlackjack(player_hand)){
+		printf("\nBLACKJACK! You win!\n");
+	}
 	if (isBust(player_hand)){
 		printf("\nYou busted! Dealer wins.\n");
 	}
