@@ -1,8 +1,7 @@
 #include "card.h"
 
-// takes face, suit, and pointer of the next card
-// creates a card
-// returns a card_node* to the new card
+// creates a new card with face, suit, and pointer of the next card
+// returns a pointer to the new card
 struct card_node* createCard(int face, int suit, struct card_node *next){
     struct card_node *newCard = (struct card_node*)malloc(sizeof(struct card_node));
     newCard->face = face;
@@ -11,7 +10,6 @@ struct card_node* createCard(int face, int suit, struct card_node *next){
     return newCard;
 }
 
-// takes card_node* of card
 // frees card
 void freeCard(struct card_node *card){
   if (card){
@@ -19,7 +17,6 @@ void freeCard(struct card_node *card){
   }
 }
 
-// takes card_node* of start of hand
 // calculates hand, including ace if not over 21
 // returns hand value
 int calcHand(struct card_node *hand){
@@ -52,16 +49,14 @@ int calcHand(struct card_node *hand){
   return total;
 }
 
-// takes a chard_node **hand, and card to add
-// adds the new card to the hand
+// adds a card to the start of hand (linked list)
 void addCardToHand(struct card_node **hand, struct card_node *card){
   if (!card) return;
   card->next = *hand;
   *hand = card;
 }
 
-// takes a card_node *hand
-// prints the hand
+// prints hand in word format
 void printHand(struct card_node *hand){
   struct card_node *current = hand;
   while (current){
@@ -70,7 +65,6 @@ void printHand(struct card_node *hand){
   }
 }
 
-// takes a card_node *hand
 // prints the hand with ASCII characters
 void printHandAscii(struct card_node *hand){
   struct card_node *current = hand;
@@ -106,8 +100,7 @@ void printHandAscii(struct card_node *hand){
   printf("\n");
 }
 
-// takes pointer to dealer_hand, player_hand, and if dealer should reveal cards (player stands)
-// returns table with ASCII table
+// print game table with dealer/player hands, hiding one of the dealer's card at the start
 void printTable(struct card_node *dealer_hand, struct card_node *player_hand, int reveal_dealer) {
   printf("\n=== BLACKJACK ===\n");
 
@@ -135,7 +128,6 @@ void printTable(struct card_node *dealer_hand, struct card_node *player_hand, in
 	printf("\n\n");
 }
 
-// takes hand pointer
 // frees all cards in hand
 void freeHand(struct card_node *hand){
   struct card_node *current = hand;
@@ -146,7 +138,6 @@ void freeHand(struct card_node *hand){
   }
 }
 
-// takes card_node *card
 // prints regular card
 void printCard(struct card_node *card){
   if (card){
@@ -154,7 +145,6 @@ void printCard(struct card_node *card){
   }
 }
 
-// takes hand to check
 // returns 1 if blackjack found, 0 if not found
 int isBlackjack(struct card_node *hand){
   if (!hand || !hand-> next) return 0;
@@ -166,7 +156,6 @@ int isBlackjack(struct card_node *hand){
   return 0;
 }
 
-// takes hand to check
 // returns 1 if hand is over 21 (bust), 0 if hand is under 21
 int isBust(struct card_node *hand){
   int score = calcHand(hand);
@@ -178,8 +167,8 @@ int isBust(struct card_node *hand){
   }
 }
 
-// takes pointer to hand, and pointer of end card
-// returns pointer to start of hand
+// appends card to the end of hand
+// returns pointer to updated hand (start of hand)
 struct card_node * append_card(struct card_node * original, struct card_node * end) {
 	if (!original)
 		return end;

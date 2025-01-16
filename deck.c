@@ -1,5 +1,6 @@
 #include "deck.h"
 
+// adds a n amount of decks to curr deck
 void addDecks(struct deck *deck, int numDecks){
     if (!deck) return;
     for (int i = 0; i < numDecks; i++){
@@ -13,6 +14,7 @@ void addDecks(struct deck *deck, int numDecks){
     }
 }
 
+// initalizes a new deck with n amount of decks
 // WARNING: mallocs the deck struct and the corresponding linked-list of cards; be sure to freeDeck()
 struct deck * initDeck(int numDecks){
     if (numDecks <= 0) return NULL;
@@ -24,6 +26,7 @@ struct deck * initDeck(int numDecks){
     return deck;
 }
 
+// returns a random card from the deck, removes from deck
 // WARNING: dealt cards will NOT be free()d  in freeDeck(), it is recommended that ALL drawn cards be in a hand (card linked-list) that is freed
 struct card_node * dealRandomCard(struct deck * deck){
     if (!deck || !deck->cards) return NULL;
@@ -47,12 +50,14 @@ struct card_node * dealRandomCard(struct deck * deck){
     return temp;
 }
 
+// frees cards in deck
 void freeDeck(struct deck * deck){
     if (!deck) return;
     freeHand(deck->cards);
     free(deck);
 }
 
+// prints cards in deck + size (utility)
 void printDeck(struct deck * deck){
     if (!deck){
         printf("Empty Deck\n");
