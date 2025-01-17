@@ -103,6 +103,10 @@ In class, deleted unnecessary/unused functions (10 min). Writing function descri
 - Read through remaining code files, removed more unused code and sprinkled light comments (15m)
 - Added remove() call to client SIGINT, add flavor text (30m).
 
+### 2025-01-16
+- Updated documentation on structures and algorithms (40m)
+- Worked with rest of team on script, rehearsed over Zoom (1hr).
+
 ## Player 3 -- Abigail Lin
 
 ### 2025-01-06 - Created linked list files, added function headers.
