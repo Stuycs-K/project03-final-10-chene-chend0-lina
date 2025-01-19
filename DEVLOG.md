@@ -103,6 +103,10 @@ In class, deleted unnecessary/unused functions (10 min). Writing function descri
 - Read through remaining code files, removed more unused code and sprinkled light comments (15m)
 - Added remove() call to client SIGINT, add flavor text (30m).
 
+### 2025-01-16
+- Updated documentation on structures and algorithms (40m)
+- Worked with rest of team on script, rehearsed over Zoom (1hr).
+
 ## Player 3 -- Abigail Lin
 
 ### 2025-01-06 - Created linked list files, added function headers.
@@ -140,10 +144,12 @@ In class, worked on re-adding yesterday's log code after the revert to previous 
 
 At home, finished log code (waiting on David's player username input + Elizabeth's server). Updated log to include both player and dealer score. Moved stuff around while debugging. (30 minutes)
 
-### 2025-01-14 - Debugging, adding blackjack check, function descriptions
+### 2025-01-15 - Debugging, adding blackjack check, function descriptions
 In class, added blackjack check in end result. Started working on function descriptions, finished card.c, going to work on deck.c (30 minutes)
 
 At home, finished adding all function descriptions to functions made. (30 minutes)
 
-### 2025-01-14 - Script Writing
+### 2025-01-16 - Script Writing
 In class, working on writing card and log script for the video. (30 minutes)
+
+At home, worked with David and Elizabeth on script (google docs), and rehearsed over Zoom. Going to rehearse again with demo (1 hour)
