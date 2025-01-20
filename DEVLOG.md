@@ -36,17 +36,19 @@ At home, set up and implemented semaphores for write, fixed sigint_handler to re
 ### 2024-01-10 - Persistent Server and forgot own code???
 In class, made the server into a persistent server by setting up new header and also checked networking.c code for write to_client (15 minutes). Changed all return values for exit values and added error messages through out the code (10 minutes). A
 
-### 2024-01-12 -- At home for 1/10
+### 2024-01-12 - Fixed syntax and semaphore errors--t home for 1/10
 Added calcCard to calculate the specific value of card with aces (1 or 11). Fixed server to use calcCard to add card value. Debugged syntax errors and moved sigalrm_handler to server because of extern issue. At hom, server also now removes semaphore if cannot get semaphore due to sigint on server(will probably need to do sigint handler) (1 hour)
 
-### 2024-01-13
+### 2024-01-13 - Integrated card logic into server
 In class, rewrote server using methods from card.c and deck.c. (Class period) At home, fixed logic for calcCard, updated user interface with results, and modified data struct for log. (30 minutes)
 
-### 2024-01-14
+### 2024-01-14 - Merging issue, testing, and trying to fix SIGALRM
 In class, fixing branch (15 min). Testing blackjack simulation (5 min). Discussed data structures for log and result and decided to store name (5 min). Updated methods in server to reflect changes in log and result (10 min). At home, tried to get sigalrm working, failed. Fixed removing wkp and semaphore in sigalrm_handler. Also updated documentation to clarify methods. (30 minutes)
 
-### 2024-01-15
+### 2024-01-15 - Cleaned code up and documentation
 In class, deleted unnecessary/unused functions (10 min). Writing function descriptions (15 minutes). Discussed fun features. (5 mins). At home, reformated WIN/LOSS/TIE so lines up. (5 minutes)
+### 2024-01-16-Script Writing and rehearsal
+Wrote script in class (30 minutes), rehearsed at home (1 hour)
 ## Player 2 -- David Chen
 
 ### 2024-01-06 - Beginning layouts
