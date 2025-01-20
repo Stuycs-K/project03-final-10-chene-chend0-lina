@@ -3,7 +3,10 @@
 
 ### GROUP NAME: 2Chenz & Lin-dacris [27]
 Created by Elizabeth Chen, David Chen (0), Abigail Lin
-       
+
+### Demonstration
+https://youtu.be/V4PMrKBjyds
+
 ### Project Description:
 
 Blackjack is a one-on-one card game against the dealer. Players receive all cards face up and the dealer’s first card is face up and the second is face down. The object of the game is to get closer to 21 than the dealer without going over 21. If a hand goes over 21, it is called a “bust” and the game is lost. Jacks, Queens, Kings and 10s count as 10. An Ace may be played as a one or an 11. All other cards are played at face value.
