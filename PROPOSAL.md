@@ -34,18 +34,33 @@ What data structures you will be using and how.
 
 What algorithms and /or data structures you will be using, and how.
 
+## Processes
+
+Used by the server for per-player subservers.
+
+Dealer (parent) will randomly draw cards, providing setup starting cards for players.
+
+The dealer uses linked lists for shuffling, potentially with multiple decks (dynamically allocated).
+
+Player (child) will have the functions to view game state, send decisions, based on commands from the server.
+
+## Signals
+
+Used for user-invoked exit.
+
+- `SIGINT` to cleanly exit the game, for both client and server.
+  
 ## Files
 Used for a public log of player actions and game results. The central server
 process writes to the log, and all clients can read from it.
 
 The log file is protected by a semaphore to prevent simultaneous writes.
 
-### Semaphores
+## Semaphores
 
 Used to protect the log file and to manage queueing for a game.
 
 ## Pipes
-
 Used to communicate between the dealer and player, which are respectively parent
 and child processes.
 - The dealer sends the game state to the player. (Example: The value of the
@@ -53,7 +68,7 @@ and child processes.
 - Player tells the dealer their choice to either hit or stand through another pipe.
 
 # Breaking It Down
-We are breaking it down into three main parts: the server, client, and card/deck functionalities. Elizabeth is responsible for the server, which includes setting up handshakes and the game proccess, a. David is responsible for the client, which includes reading game data from the server and the UI. Abigail is responsible for the card functionalities (random cards, printing cards, etc) and the result log.
+We are breaking it down into three main parts: the server, client, and card/deck functionalities. Elizabeth is responsible for the server, which includes setting up handshakes/pipes and the game proccess. David is responsible for the client, which includes reading game data from the server and the UI. Abigail is responsible for the card functionalities (random cards, printing cards, etc) and the result log.
 ### Protocol
 Server reads a 50-byte string from the user for the user name, then begins the game loop.
 
@@ -77,21 +92,7 @@ For actions -15 through -13, client prints out game results, exits.
 
 The server handles validation of game status.
 
-## Processes
 
-Used by the server for per-player subservers.
-
-Dealer (parent) will randomly draw cards, providing setup starting cards for players.
-
-The dealer uses linked lists for shuffling, potentially with multiple decks (dynamically allocated).
-
-Player (child) will have the functions to view game state, send decisions, based on commands from the server.
-
-## Signals
-
-Used for user-invoked exit.
-
-- `SIGINT` to cleanly exit the game, for both client and server.
 
 
 # Intended pacing:
