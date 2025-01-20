@@ -16,8 +16,7 @@ multiplayer later), which will simulate a game between a dealer and player
 Our UI will have an introduction screen with rules and controls that the player
 needs to follow. During the game, the player will be able to see the visible
 card in the dealer’s hand, and their own. They will be prompted to hit/stand
-with a text prompt. The screen will constantly refresh to count down their time.
-Screen will refresh upon the player's choice to hit/stand. At the end of the
+with a text prompt. Screen will refresh upon the player's choice to hit/stand. At the end of the
 game, show a win/loss screen with the results of both dealer and player’s hands.
 Outside of a round of blackjack, a player client may read the public log of game
 moves/results.
