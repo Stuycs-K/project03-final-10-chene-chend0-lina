@@ -23,12 +23,12 @@ On another terminal, run client:
 make client
 ```
 
-Upon connecting as a client, you will be greeted by a welcome message with rules and keyboard options.
+Upon connecting as a client, you will be greeted by a welcome message with rules and keyboard options. Enter the number that corresponds with your choice.
 ```sh
 (1) Play              (2) View Logs              (3) Quit
 ```
 
 In game, you will have the option to hit (toggled by h) or stand (toggled by s).
 ```sh
-(H)it or (Stand):
+(H)it or (S)tand:
 ```
