@@ -28,7 +28,7 @@ Upon connecting as a client, you will be greeted by a welcome message with rules
 (1) Play              (2) View Logs              (3) Quit
 ```
 
-In game, you will have the option to hit (toggled by s) or stand (toggled by s).
+In game, you will have the option to hit (toggled by h) or stand (toggled by s).
 ```sh
 (H)it or (Stand):
 ```
