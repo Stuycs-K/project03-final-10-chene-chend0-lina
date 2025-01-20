@@ -4,7 +4,7 @@ This document must be updated daily by EACH group member.
 
 ## Player 1 -- Elizabeth Chen
 
-### 2024-01-06 - Implemented file log writing and sighandler for sigalrm
+### 2025-01-06 - Implemented file log writing and sighandler for sigalrm
 Expanded description including how much time was spent on task.
 Discussed functionalities needed by the server and characteristics of the log .(5 minutes)
 Implemented function for creating file and first version of write function (10 minutes)
@@ -14,7 +14,7 @@ Implemented read function with using stat, finished log.c functions (10 minutes)
 Researched SIGALRM and sigaction and implemented function to set up signals in sigs.c/h (25 minutes)
 Began implementing sighandler for SIGALRM(3 minutes)
 
-### 2024-01-07 - Implemented sighandler for sigint and wrote handshake
+### 2025-01-07 - Implemented sighandler for sigint and wrote handshake
 Expanded description including how much time was spent on task.
 Disccused and implemented sigaction sighandler for SIGINT(5 minutes)
 Rediscussed and reorganized server/client structure and pipe structure. (10 minutes)
@@ -24,30 +24,30 @@ Wrote outline for play (2 minutes)
 Added client handshake and modified to store pid and open a new upstream private pipe(15 minutes)
 Started implementing play by adding in card decks and writing and reading player moves, and also implemented game actions for the dealer, player, and processing user input. (35 minutes)
 
-### 2024-01-08 - Implemented headers/flags in downstream private pipe and fixed game logic
+### 2025-01-08 - Implemented headers/flags in downstream private pipe and fixed game logic
 Fixed messages on server end. (2 minutes). In class, discussed how client knows what to read and do from server, implemented pipe headers for client, and fixed logic of checking total value of player's cards. (30 minutes).
 
 At home, changed flags, client reads int instead. Updated play() to send flags when before sending cards and changed order of assigning values to be able to send card_node to client. Also fixed wrong sizeof() when card_nodes to client. Also implemented dealer hitting cards until total value reaches 17 and begain implementing results and blackjack status. (1 hour)
 
-### 2024-01-9 - Implemnted result logic
+### 2025-01-9 - Implemnted result logic
 Accounted for all of the different possible outcomes and implemented them (20 minutes). Also began writing more error messages. (5 minutes)
 At home, set up and implemented semaphores for write, fixed sigint_handler to remove semaphores (30 minutes) Also changed sigalrm_handler and set up timer in play. (15 minutes).
 
-### 2024-01-10 - Persistent Server and forgot own code???
+### 2025-01-10 - Persistent Server and forgot own code???
 In class, made the server into a persistent server by setting up new header and also checked networking.c code for write to_client (15 minutes). Changed all return values for exit values and added error messages through out the code (10 minutes). A
 
-### 2024-01-12 - Fixed syntax and semaphore errors--t home for 1/10
+### 2025-01-12 - Fixed syntax and semaphore errors--t home for 1/10
 Added calcCard to calculate the specific value of card with aces (1 or 11). Fixed server to use calcCard to add card value. Debugged syntax errors and moved sigalrm_handler to server because of extern issue. At hom, server also now removes semaphore if cannot get semaphore due to sigint on server(will probably need to do sigint handler) (1 hour)
 
-### 2024-01-13 - Integrated card logic into server
+### 2025-01-13 - Integrated card logic into server
 In class, rewrote server using methods from card.c and deck.c. (Class period) At home, fixed logic for calcCard, updated user interface with results, and modified data struct for log. (30 minutes)
 
-### 2024-01-14 - Merging issue, testing, and trying to fix SIGALRM
+### 2025-01-14 - Merging issue, testing, and trying to fix SIGALRM
 In class, fixing branch (15 min). Testing blackjack simulation (5 min). Discussed data structures for log and result and decided to store name (5 min). Updated methods in server to reflect changes in log and result (10 min). At home, tried to get sigalrm working, failed. Fixed removing wkp and semaphore in sigalrm_handler. Also updated documentation to clarify methods. (30 minutes)
 
-### 2024-01-15 - Cleaned code up and documentation
+### 2025-01-15 - Cleaned code up and documentation
 In class, deleted unnecessary/unused functions (10 min). Writing function descriptions (15 minutes). Discussed fun features. (5 mins). At home, reformated WIN/LOSS/TIE so lines up. (5 minutes)
-### 2024-01-16-Script Writing and rehearsal
+### 2025-01-16-Script Writing and rehearsal
 Wrote script in class (30 minutes), rehearsed at home (1 hour)
 ## Player 2 -- David Chen
 
